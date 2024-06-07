@@ -156,8 +156,8 @@ const formTitle = computed(() => {
                         <v-btn color="error" @click="close">Cancel</v-btn>
                         <v-btn
                             color="secondary"
-                            :disabled="editedItem.userinfo == '' || editedItem.usermail == ''"
                             variant="flat"
+                            :disabled="editedItem.userinfo == '' || editedItem.usermail == ''"
                             @click="save"
                             >Save</v-btn
                         >

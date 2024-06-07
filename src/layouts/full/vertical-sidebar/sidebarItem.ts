@@ -1,87 +1,149 @@
 import {
-  ChartPieIcon,
-  CoffeeIcon,
-  CpuIcon,
-  FlagIcon,
-  BasketIcon,
-  ApertureIcon,
-  LayoutGridIcon,
-  BoxIcon,
-  Message2Icon,
-  FilesIcon,
-  CalendarIcon,
-  UserCircleIcon,
-  ChartBarIcon,
-  ShoppingCartIcon,
-  ChartLineIcon,
-  ChartAreaIcon,
-  ChartDotsIcon,
-  ChartArcsIcon,
-  ChartCandleIcon,
-  ChartDonut3Icon,
-  ChartRadarIcon,
-  LayoutIcon,
-  CardboardsIcon,
-  PhotoIcon,
-  FileTextIcon,
-  BoxAlignBottomIcon,
-  BoxAlignLeftIcon,
-  FileDotsIcon,
-  EditCircleIcon,
-  AppsIcon,
-  BorderAllIcon,
-  BorderHorizontalIcon,
-  BorderInnerIcon,
-  BorderTopIcon,
-  BorderVerticalIcon,
-  BorderStyle2Icon,
-  LoginIcon,
-  CircleDotIcon,
-  UserPlusIcon,
-  RotateIcon,
-  ZoomCodeIcon,
-  SettingsIcon,
-  AlertCircleIcon,
-  BrandTablerIcon,
-  CodeAsterixIcon,
-  BrandCodesandboxIcon,
-  ColumnsIcon,
-  RowInsertBottomIcon,
-  EyeTableIcon,
-  SortAscendingIcon,
-  PageBreakIcon,
-  FilterIcon,
-  BoxModelIcon,
-  ServerIcon,
-  JumpRopeIcon,
-  LayoutKanbanIcon
-
+    ChartPieIcon,
+    CoffeeIcon,
+    CpuIcon,
+    FlagIcon,
+    BasketIcon,
+    ApertureIcon,
+    LayoutGridIcon,
+    BoxIcon,
+    TimelineEventIcon,
+    Message2Icon,
+    FilesIcon,
+    CalendarIcon,
+    UserCircleIcon,
+    ChartBarIcon,
+    ShoppingCartIcon,
+    ChartLineIcon,
+    ChartAreaIcon,
+    ChartDotsIcon,
+    ChartArcsIcon,
+    ChartCandleIcon,
+    ChartDonut3Icon,
+    ChartRadarIcon,
+    LayoutIcon,
+    CardboardsIcon,
+    PhotoIcon,
+    FileTextIcon,
+    BoxAlignBottomIcon,
+    BoxAlignLeftIcon,
+    FileDotsIcon,
+    EditCircleIcon,
+    AppsIcon,
+    BorderAllIcon,
+    BorderHorizontalIcon,
+    BorderInnerIcon,
+    BorderTopIcon,
+    BorderVerticalIcon,
+    BorderStyle2Icon,
+    LoginIcon,
+    CircleDotIcon,
+    UserPlusIcon,
+    RotateIcon,
+    ZoomCodeIcon,
+    SettingsIcon,
+    AlertCircleIcon,
+    BrandTablerIcon,
+    CodeAsterixIcon,
+    BrandCodesandboxIcon,
+    ColumnsIcon,
+    RowInsertBottomIcon,
+    EyeTableIcon,
+    SortAscendingIcon,
+    PageBreakIcon,
+    FilterIcon,
+    BoxModelIcon,
+    ServerIcon,
+    JumpRopeIcon,
+    LayoutKanbanIcon,
+    MoneybagIcon,
+    HotelServiceIcon,
+    UsersGroupIcon
 } from 'vue-tabler-icons';
 
+import { t } from '@/plugins/i18n';
+
 export interface menu {
-  header?: string;
-  title?: string;
-  icon?: any;
-  to?: string;
-  chip?: string;
-  chipBgColor?: string;
-  chipColor?: string;
-  chipVariant?: string;
-  chipIcon?: string;
-  children?: menu[];
-  disabled?: boolean;
-  type?: string;
-  subCaption?: string;
+    header?: string;
+    title?: string;
+    icon?: any;
+    to?: string;
+    chip?: string;
+    chipBgColor?: string;
+    chipColor?: string;
+    chipVariant?: string;
+    chipIcon?: string;
+    children?: menu[];
+    disabled?: boolean;
+    type?: string;
+    subCaption?: string;
 }
 
 const sidebarItem: menu[] = [
-  { header: 'Home' },
-  {
-    title: "Analytical",
-    icon: ChartPieIcon,
-    to: "/dashboards/analytical",
-  },
-  {
+    { header: 'Gestion' },
+    {
+        title: t('Devis'),
+        icon: UserPlusIcon,
+        to: '/demands'
+    },
+    {
+        title: t('Clients'),
+        icon: UsersGroupIcon,
+        to: '/customers'
+    },
+    {
+        title: t('Prestations'),
+        icon: BoxIcon,
+        children: [
+            {
+                title: t('En attente de validation'),
+                to: '/prestations/list/started'
+            },
+            {
+                title: t('Validées'),
+                to: '/prestations/list/validated'
+            },
+            {
+                title: t('En cours'),
+                to: '/prestations/list/processing'
+            },
+            {
+                title: t('Clôturées'),
+                to: '/prestations/list/closed'
+            },
+            {
+                title: t('Annulées'),
+                to: '/prestations/list/cancelled'
+            }
+        ]
+    },
+    {
+        title: t('Paiements'),
+        icon: MoneybagIcon,
+        to: '/payments'
+    },
+    { header: 'Configuration' },
+    {
+        title: t('Services'),
+        icon: HotelServiceIcon,
+        to: '/services'
+    },
+    {
+        title: t('Types de prestations'),
+        icon: BoxIcon,
+        to: '/event_types'
+    },
+    {
+        title: t('Modes de paiement'),
+        icon: BoxIcon,
+        to: '/payment_methods'
+    },
+    {
+        title: t('Utilisateurs'),
+        icon: UserCircleIcon,
+        to: '/admins'
+    }
+    /*  {
     title: "eCommerce",
     icon: ShoppingCartIcon,
     to: "/dashboards/ecommerce",
@@ -117,8 +179,8 @@ const sidebarItem: menu[] = [
         to: '/apps/blog/early-black-friday-amazon-deals-cheap-tvs-headphones'
       }
     ]
-  },
-  {
+  },*/
+    /*  {
     title: 'E-Commerce',
     icon: BasketIcon,
     to: '/ecommerce/',
@@ -422,8 +484,8 @@ const sidebarItem: menu[] = [
     title: 'Fixed Header Table',
     icon: BorderTopIcon,
     to: '/tables/fixed-header'
-  },
-  {
+  },*/
+    /*{
     title: 'Height Table',
     icon: BorderVerticalIcon,
     to: '/tables/height'
@@ -570,8 +632,7 @@ const sidebarItem: menu[] = [
     title: "Tabler",
     icon: BrandTablerIcon,
     to: "/icons/tabler",
-  },
-
+  },*/
 ];
 
 export default sidebarItem;

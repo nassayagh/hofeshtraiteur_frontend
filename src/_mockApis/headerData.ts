@@ -1,17 +1,17 @@
 // project imports
 import mock from './mockAdapter';
 
-import type { notificationType, profileType, languageType, appsLinkType, quickLinksType,searchType } from '@/types/HeaderTypes'
-// 
+import type { notificationType, profileType, languageType, appsLinkType, quickLinksType, searchType } from '@/types/HeaderTypes';
+//
 // Notification
-// 
+//
 import user1 from '@/assets/images/profile/user-1.jpg';
 import user2 from '@/assets/images/profile/user-2.jpg';
 import user3 from '@/assets/images/profile/user-3.jpg';
 import user4 from '@/assets/images/profile/user-4.jpg';
 import user5 from '@/assets/images/profile/user-5.jpg';
 
-const notifications:notificationType[] = [
+const notifications: notificationType[] = [
     {
         avatar: user1,
         title: 'Roman Joined the Team!',
@@ -44,20 +44,20 @@ const notifications:notificationType[] = [
     }
 ];
 
-// 
-// Profile 
-// 
+//
+// Profile
+//
 import proUser1 from '@/assets/images/svgs/icon-account.svg';
 import proUser2 from '@/assets/images/svgs/icon-inbox.svg';
 import proUser3 from '@/assets/images/svgs/icon-tasks.svg';
 const profileDD: profileType[] = [
     {
         avatar: proUser1,
-        title: 'My Profile',
-        subtitle: 'Account settings',
-        href: '/apps/profile'
-    },
-    {
+        title: 'Mon profil',
+        subtitle: 'Paramètres du compte',
+        href: '/profile'
+    }
+    /* {
         avatar: proUser2,
         title: 'My Inbox',
         subtitle: 'Messages & Emails',
@@ -68,12 +68,12 @@ const profileDD: profileType[] = [
         title: 'My Tasks',
         subtitle: 'To-do and Daily tasks',
         href: '/apps/task'
-    }
+    }*/
 ];
 
-// 
+//
 // Language
-// 
+//
 import flag1 from '@/assets/images/flag/icon-flag-en.svg';
 import flag2 from '@/assets/images/flag/icon-flag-fr.svg';
 import flag3 from '@/assets/images/flag/icon-flag-ro.svg';
@@ -85,9 +85,9 @@ const languageDD: languageType[] = [
     { title: '中国人', subtext: 'Chinese', value: 'zh', avatar: flag4 }
 ];
 
-// 
+//
 // AppsLink
-// 
+//
 import img1 from '@/assets/images/svgs/icon-dd-chat.svg';
 import img2 from '@/assets/images/svgs/icon-dd-cart.svg';
 import img3 from '@/assets/images/svgs/icon-dd-invoice.svg';
@@ -147,9 +147,9 @@ const appsLink: appsLinkType[] = [
     }
 ];
 
-// 
+//
 // Quick Links
-// 
+//
 const quickLink: quickLinksType[] = [
     {
         title: 'Pricing Page',
@@ -185,9 +185,9 @@ const quickLink: quickLinksType[] = [
     }
 ];
 
-// 
+//
 // Search Data
-// 
+//
 const searchSugg: searchType[] = [
     {
         title: 'Modern',
@@ -224,8 +224,7 @@ const searchSugg: searchType[] = [
     {
         title: 'Account Setting',
         href: '/pages/account-settings'
-    },
+    }
 ];
 
 export { notifications, profileDD, languageDD, appsLink, quickLink, searchSugg };
-

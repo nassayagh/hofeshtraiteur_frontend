@@ -1,3 +1,5 @@
+import { t } from '@/plugins/i18n';
+
 const MainRoutes = {
     path: '/main',
     meta: {
@@ -8,22 +10,94 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            redirect: "/dashboards/analytical",
+            redirect: '/dashboards/analytical'
+        },
+        {
+            name: t('Gestion des devis'),
+            path: '/demands',
+            component: () => import('@/views/demands/List.vue')
+        },
+        {
+            name: t('Devis'),
+            path: '/demands/:id',
+            component: () => import('@/views/demands/View.vue')
+        },
+        {
+            name: t('Clients'),
+            path: '/customers',
+            component: () => import('@/views/customers/List.vue')
+        },
+        {
+            name: t('Client'),
+            path: '/customers/:id',
+            component: () => import('@/views/customers/View.vue')
+        },
+        {
+            name: t('Gestion des services'),
+            path: '/services',
+            component: () => import('@/views/services/List.vue')
+        },
+        {
+            name: t('Service'),
+            path: '/services/:id',
+            component: () => import('@/views/services/List.vue')
+        },
+        {
+            name: t('Gestions des événements'),
+            path: '/event_types',
+            component: () => import('@/views/eventTypes/List.vue')
+        },
+        {
+            name: t('Modes de paiement'),
+            path: '/payment_methods',
+            component: () => import('@/views/paymentMethods/List.vue')
+        },
+        {
+            name: t('Paiements'),
+            path: '/payments',
+            component: () => import('@/views/payments/List.vue')
+        },
+        {
+            name: t('Gestions des admins'),
+            path: '/admins',
+            component: () => import('@/views/admins/AdminsTable.vue')
+        },
+
+        {
+            name: t('Gestions des prestations'),
+            path: '/prestations/',
+            component: () => import('@/views/prestations/List.vue'),
+            children: [
+                {
+                    name: t('Prestations'),
+                    path: 'list/:status',
+                    component: () => import('@/views/prestations/List.vue')
+                },
+                {
+                    path: '/',
+                    redirect: '/dashboards/analytical'
+                }
+            ]
+        },
+        {
+            name: t('Prestation'),
+            path: '/prestations/:id',
+            component: () => import('@/views/prestations/View.vue')
         },
         {
             name: 'Analytical',
             path: '/dashboards/analytical',
-            component: () => import('@/views/dashboards/analytical/Analytical.vue'),
+            component: () => import('@/views/dashboards/analytical/Analytical.vue')
         },
         {
             name: 'Ecommerce',
             path: '/dashboards/ecommerce',
-            component: () => import('@/views/dashboards/ecommerce/Ecommerce.vue'),
+            component: () => import('@/views/dashboards/ecommerce/Ecommerce.vue')
         },
         {
             name: 'Modern',
             path: '/dashboards/modern',
-            component: () => import('@/views/dashboards/modern/Modern.vue'),
+            component: () => import('@/views/dashboards/modern/Modern.vue')
         },
         {
             name: 'Chats',
@@ -106,7 +180,7 @@ const MainRoutes = {
             path: '/apps/kanban',
             component: () => import('@/views/apps/kanban/Kanban.vue')
         },
-       {
+        {
             name: 'Alert',
             path: '/ui-components/alert',
             component: () => import('@/views/ui-elements/UiAlert.vue')
@@ -117,7 +191,7 @@ const MainRoutes = {
             component: () => import('@/views/ui-elements/UiExpansionPanel.vue')
         },
         {
-            name: 'Avtar',
+            name: 'Avatar',
             path: '/ui-components/avatar',
             component: () => import('@/views/ui-elements/UiAvatar.vue')
         },
@@ -372,16 +446,15 @@ const MainRoutes = {
             component: () => import('@/views/tables/datatables/CrudTable.vue')
         },
         {
-            name: "Material",
-            path: "/icons/material",
-            component: () => import("@/views/icons/MaterialIcons.vue"),
-          },
-          {
-            name: "Tabler",
-            path: "/icons/tabler",
-            component: () => import("@/views/icons/TablerIcons.vue"),
-          },
-        
+            name: 'Material',
+            path: '/icons/material',
+            component: () => import('@/views/icons/MaterialIcons.vue')
+        },
+        {
+            name: 'Tabler',
+            path: '/icons/tabler',
+            component: () => import('@/views/icons/TablerIcons.vue')
+        }
     ]
 };
 

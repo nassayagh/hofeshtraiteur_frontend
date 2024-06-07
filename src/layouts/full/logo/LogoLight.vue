@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import Darklogo from '@/assets/images/logos/logo-white.svg';
+import Darklogo from '@/assets/images/logos/logo.png';
+import DarklogoGold from '@/assets/images/logos/logo-hofesh-traiteur-768x281-1.png';
 </script>
 <template>
     <div class="logo">
         <RouterLink to="/">
-            <img :src="Darklogo" alt="home" />
+            <img :src="DarklogoGold" alt="home" style="max-width: 100%" />
         </RouterLink>
     </div>
 </template>

@@ -15,20 +15,12 @@ export const useAuthStore = defineStore({
     }),
     actions: {
         async login(email: string, password: string) {
-            const user = await axios.post(`/connect`, { email, password });
-
-
-            // update pinia state
-            this.user = user;
-            // store user details and jwt in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
-            // redirect to previous url or default to home page
-            router.push(this.returnUrl || '/dashboards/modern');
+            return await axios.post(`/connect`, { email, password });
         },
         logout() {
             this.user = null;
             localStorage.removeItem('user');
-            router.push('/');
+            router.push('/login');
         }
     }
 });

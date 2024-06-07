@@ -5,10 +5,9 @@ const AuthRoutes = {
         requiresAuth: false
     },
     children: [
-
         {
             name: 'Side Login',
-            path: '/auth/login',
+            path: '/login',
             component: () => import('@/views/authentication/SideLogin.vue')
         },
         {
@@ -55,7 +54,7 @@ const AuthRoutes = {
             name: 'Maintenance',
             path: '/auth/maintenance',
             component: () => import('@/views/authentication/Maintenance.vue')
-        },
+        }
     ]
 };
 

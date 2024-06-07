@@ -32,25 +32,25 @@ const getCart = computed(() => {
 </script>
 
 <template>
-    <v-app-bar elevation="0" :priority="priority" height="64" color="background"  id="top">
+    <v-app-bar elevation="0" :priority="priority" height="64" color="background" id="top">
         <v-btn
-            class="hidden-md-and-down "
+            class="hidden-md-and-down"
             icon
             color="primary"
             variant="text"
             @click.stop="customizer.SET_MINI_SIDEBAR(!customizer.mini_sidebar)"
         >
-            <Menu2Icon size="25"  />
+            <Menu2Icon size="25" />
         </v-btn>
         <v-btn class="hidden-lg-and-up" icon variant="text" @click.stop="customizer.SET_SIDEBAR_DRAWER" size="small">
             <Menu2Icon size="25" />
         </v-btn>
 
         <!-- ---------------------------------------------- -->
-        <!-- Search part -->        <!-- ---------------------------------------------- -->
-        
-            <Searchbar />
-     
+        <!-- Search part -->
+        <!-- ---------------------------------------------- -->
+
+        <Searchbar />
 
         <!---/Search part -->
 
@@ -67,17 +67,17 @@ const getCart = computed(() => {
         <!-- ---------------------------------------------- -->
         <!-- translate -->
         <!-- ---------------------------------------------- -->
-        
-        <LanguageDD />
+
+        <!--        <LanguageDD />-->
 
         <!-- ---------------------------------------------- -->
         <!-- ShoppingCart -->
         <!-- ---------------------------------------------- -->
-        <v-btn icon variant="text" color="primary" to="/ecommerce/checkout">
+        <!--        <v-btn icon variant="text" color="primary" to="/ecommerce/checkout">
             <v-badge  color="error" :content="getCart?.length">
                 <ShoppingCartIcon stroke-width="1.5" size="24" />
             </v-badge>
-        </v-btn>
+        </v-btn>-->
 
         <!-- ---------------------------------------------- -->
         <!-- MessagesDD -->
@@ -86,7 +86,7 @@ const getCart = computed(() => {
         <!-- ---------------------------------------------- -->
         <!-- Notification -->
         <!-- ---------------------------------------------- -->
-        <NotificationDD />
+        <!--        <NotificationDD />-->
         <!-- ---------------------------------------------- -->
         <!-- User Profile -->
         <!-- ---------------------------------------------- -->

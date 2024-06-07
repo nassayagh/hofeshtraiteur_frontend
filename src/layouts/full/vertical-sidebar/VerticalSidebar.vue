@@ -14,11 +14,23 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-    <v-navigation-drawer left v-model="customizer.Sidebar_drawer" elevation="0" rail-width="75" 
-        app class="leftSidebar" :rail="customizer.mini_sidebar" expand-on-hover width="256">
-        <div class="pa-5 pl-4">
-            <Logo />
+    <v-navigation-drawer
+        left
+        v-model="customizer.Sidebar_drawer"
+        elevation="0"
+        rail-width="75"
+        app
+        class="leftSidebar"
+        :rail="customizer.mini_sidebar"
+        expand-on-hover
+        width="256"
+    >
+        <div class="d-flex align-center text-center">
+            <div style="max-width: 170px" class="mx-auto pt-5">
+                <Logo />
+            </div>
         </div>
+
         <!-- ---------------------------------------------- -->
         <!---Navigation -->
         <!-- ---------------------------------------------- -->
@@ -29,9 +41,14 @@ const authStore = useAuthStore();
                     <!---Item Sub Header -->
                     <NavGroup :item="item" v-if="item.header" :key="item.title" />
                     <!---If Has Child -->
-                    <NavCollapse class="leftPadding" :item="item" :level="0" v-else-if="item.children" />
+                    <NavCollapse
+                        class="leftPadding"
+                        :item="item"
+                        :level="0"
+                        v-else-if="item.children && authStore.user.roles && authStore.user.roles.includes(item.to)"
+                    />
                     <!---Single Item-->
-                    <NavItem :item="item" v-else class="leftPadding" />
+                    <NavItem :item="item" v-else-if="authStore.user.roles && authStore.user.roles.includes(item.to)" class="leftPadding" />
                     <!---End Single Item-->
                 </template>
             </v-list>

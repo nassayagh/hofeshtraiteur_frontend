@@ -1,0 +1,1 @@
+const m=(r,t={month:"short",day:"numeric",year:"numeric"})=>r&&new Intl.DateTimeFormat("fr-FR",t).format(new Date(r)),e=(r,t,n)=>new Intl.NumberFormat(n||"fr-FR",{style:"currency",currency:t||"EUR",minimumFractionDigits:2,maximumFractionDigits:2}).format(r);export{e as a,m as f};
