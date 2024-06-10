@@ -21,8 +21,8 @@ const axiosServices = axios.create({
      headers: {
         'Access-Control-Allow-Origin': true,
          'X-Requested-With': 'XMLHttpRequest',
-        withCredentials: true,
-         withXSRFToken: true,
+         'x-xsrf-token': true,
+         'credentials': true,
      }
 });
 axiosServices.get(`${import.meta.env.VITE_APP_BASE_URL}/sanctum/csrf-cookie`).then((response) => {
