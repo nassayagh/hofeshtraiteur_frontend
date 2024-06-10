@@ -9,22 +9,17 @@ import { useAuthStore } from '@/stores/auth';
 const axiosServices = axios.create({
     baseURL: import.meta.env.VITE_APP_API || '',
     withCredentials: true,
-    withXSRFToken: true,
-    'Access-Control-Allow-Origin': true,
-    'X-Requested-With': 'XMLHttpRequest',
-    'x-xsrf-token': true,
-    'credentials': true,
+    withXSRFToken: true
 
     // You can add your headers here
     // ================================
     // baseURL: 'https://some-domain.com/api/',
     // timeout: 1000,
-     headers: {
-        'Access-Control-Allow-Origin': true,
-         'X-Requested-With': 'XMLHttpRequest',
+    /* headers: {
+
          'x-xsrf-token': true,
          'credentials': true,
-     }
+     }*/
 });
 axiosServices.get(`${import.meta.env.VITE_APP_BASE_URL}/sanctum/csrf-cookie`).then((response) => {
     //
@@ -53,7 +48,7 @@ axiosServices.interceptors.request.use((config) => {
     }
 
     // console.log(config)
-    config.withCredentials = true;
+    /*config.withCredentials = true;
     config.withXSRFToken = true;
     config.headers.common = config.headers.common || [];
     config.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -62,7 +57,7 @@ axiosServices.interceptors.request.use((config) => {
     config.headers.common['credentials'] = true;
     config.headers['Access-Control-Allow-Origin'] = true;
     config.headers['x-xsrf-token'] = true;
-    config.headers['credentials'] = true;
+    config.headers['credentials'] = true;*/
 
     return config;
 });
