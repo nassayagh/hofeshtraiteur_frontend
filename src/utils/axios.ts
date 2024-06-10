@@ -12,7 +12,8 @@ const axiosServices = axios.create({
     withXSRFToken: true,
     'Access-Control-Allow-Origin': true,
     'X-Requested-With': 'XMLHttpRequest',
-
+    'x-xsrf-token': true,
+    'credentials': true,
 
     // You can add your headers here
     // ================================
