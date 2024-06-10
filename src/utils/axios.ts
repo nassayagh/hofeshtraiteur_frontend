@@ -58,7 +58,11 @@ axiosServices.interceptors.request.use((config) => {
     config.headers.common = config.headers.common || [];
     config.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     config.headers.common['Access-Control-Allow-Origin'] = true;
+    config.headers.common['x-xsrf-token'] = true;
+    config.headers.common['credentials'] = true;
     config.headers['Access-Control-Allow-Origin'] = true;
+    config.headers['x-xsrf-token'] = true;
+    config.headers['credentials'] = true;
 
     return config;
 });
