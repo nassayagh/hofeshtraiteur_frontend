@@ -118,7 +118,8 @@ const filteredList = computed(() => {
 const roleItems = computed(() => {
     const rs = [];
     for (let i = 0; i < sidebarItems.length; i++) {
-        if (sidebarItems[i].children) {
+        if (sidebarItems[i].children != null && sidebarItems[i].children.length > 0) {
+            rs.push(sidebarItems[i]);
             for (let j = 0; j < sidebarItems[i].children.length; j++) {
                 if (!sidebarItems[i].children[j].header)
                     rs.push({ ...sidebarItems[i].children[j], title: sidebarItems[i].title + ' ' + sidebarItems[i].children[j].title });

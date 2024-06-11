@@ -94,6 +94,7 @@ const sidebarItem: menu[] = [
     {
         title: t('Prestations'),
         icon: BoxIcon,
+        to: '/prestations',
         children: [
             {
                 title: t('En attente de validation'),

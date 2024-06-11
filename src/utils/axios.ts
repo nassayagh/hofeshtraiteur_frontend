@@ -48,7 +48,7 @@ axiosServices.interceptors.request.use((config) => {
     }
 
     // console.log(config)
-    /*config.withCredentials = true;
+    config.withCredentials = true;
     config.withXSRFToken = true;
     config.headers.common = config.headers.common || [];
     config.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -57,7 +57,7 @@ axiosServices.interceptors.request.use((config) => {
     config.headers.common['credentials'] = true;
     config.headers['Access-Control-Allow-Origin'] = true;
     config.headers['x-xsrf-token'] = true;
-    config.headers['credentials'] = true;*/
+    config.headers['credentials'] = true;
 
     return config;
 });
