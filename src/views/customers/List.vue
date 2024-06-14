@@ -17,6 +17,7 @@ const refForm = ref<VForm>();
 
 import { useSnackbar } from '@/stores/snackbar';
 import DatePicker from '@/components/DatePicker.vue';
+import CustomerDashboard from '@/views/customers/CustomerDashboard.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 // theme breadcrumb
@@ -362,6 +363,9 @@ watchEffect(() => {
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
         <v-col cols="12">
+            <CustomerDashboard />
+        </v-col>
+        <v-col cols="12">
             <v-data-table-server
                 class="border rounded-md"
                 :headers="headers"
@@ -392,6 +396,19 @@ watchEffect(() => {
                                     variant="solo"
                                 ></v-text-field>
                             </v-col>
+                            <v-col>
+                                <v-select
+                                    density="compact"
+                                    v-model="filters.status"
+                                    :placeholder="$t('Statut')"
+                                    :items="store.statusesList"
+                                    item-value="id"
+                                    item-title="label"
+                                    clearable
+                                    hide-details
+                                    variant="solo"
+                                ></v-select>
+                            </v-col>
                             <!--                            <v-col>
                                 <v-select
                                     density="compact"
@@ -411,12 +428,14 @@ watchEffect(() => {
                                         <VTextField
                                             v-model="formatedDate"
                                             prepend-inner-icon="bx-calendar"
-                                            readonly
                                             v-bind="props"
                                             density="compact"
                                             :placeholder="$t('Date')"
                                             hide-details
                                             variant="solo"
+                                            clearable
+                                            readonly
+                                            @click:clear="filters.date = null"
                                         />
                                     </template>
                                     <template #default="{ isActive }">

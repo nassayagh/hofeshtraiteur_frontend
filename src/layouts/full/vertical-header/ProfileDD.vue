@@ -48,7 +48,7 @@ const authStore = useAuthStore();
                 </div>
                 <v-divider></v-divider>
             </div>
-            <perfect-scrollbar style="height: calc(100vh - 240px); max-height: 240px">
+<!--            <perfect-scrollbar style="height: calc(100vh - 240px); max-height: 240px">
                 <v-list class="py-0 theme-list" lines="two">
                     <v-list-item v-for="item in profileDD" :key="item.title" class="py-4 px-8 custom-text-primary" :to="item.href">
                         <template v-slot:prepend>
@@ -62,7 +62,7 @@ const authStore = useAuthStore();
                         <p class="text-subtitle-1 font-weight-regular text-medium-emphasis">{{ item.subtitle }}</p>
                     </v-list-item>
                 </v-list>
-            </perfect-scrollbar>
+            </perfect-scrollbar>-->
             <!--            <div class="px-8 py-3">
                 <div class="bg-lightprimary rounded-md pa-5 overflow-hidden position-relative">
                     <h5 class="text-h6">

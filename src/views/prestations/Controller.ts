@@ -18,9 +18,35 @@ export const usePrestationStore = defineStore({
             processing: 2,
             closed: 3,
             cancelled: -1
-        }
+        },
+        statusesList: [
+            { id: 0, label: t('Validation')},
+            { id: 1, label: t('Validée')},
+            { id: 2, label: t('En cours')},
+            { id: 3, label: t('Clôturée')},
+            { id: -1, label: t('Annulé')},
+
+        ],
+        statistics: {
+            total: 0,
+            validation: 0,
+            validated: 0,
+            processing: 0,
+            closed: 0,
+            cancelled: 0,
+            paymentsLeft: 0,
+            paymentsReceived: 0,
+            totalPayments: 0,
+        },
     }),
     actions: {
+        fetchStatistics(params: any) {
+            return axios.get('/statistics/prestations', { params }).then((response) => {
+                if(response.data) {
+                    this.statistics = response.data;
+                }
+            });
+        },
         // 👉 Fetch users data
         fetchItems(params: any) {
             return axios.get('/prestations', { params });

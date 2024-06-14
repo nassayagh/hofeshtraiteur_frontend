@@ -58,7 +58,9 @@ import {
     LayoutKanbanIcon,
     MoneybagIcon,
     HotelServiceIcon,
-    UsersGroupIcon
+    UsersGroupIcon,
+    DashboardIcon,
+    CalendarQuestionIcon,
 } from 'vue-tabler-icons';
 
 import { t } from '@/plugins/i18n';
@@ -80,10 +82,19 @@ export interface menu {
 }
 
 const sidebarItem: menu[] = [
-    { header: 'Gestion' },
+
     {
-        title: t('Devis'),
-        icon: UserPlusIcon,
+        title: t('Dashboard'),
+        icon: ChartBarIcon,
+        to: '/'
+    },
+
+    { header: 'Gestion' },
+
+
+    {
+        title: t('Demandes'),
+        icon: CalendarQuestionIcon,
         to: '/demands'
     },
     {

@@ -2,6 +2,8 @@
 import { ref, computed, onMounted, watch, watchEffect } from 'vue';
 import { useDemandStore } from '@/stores/apps/demands';
 import { useEventTypeStore } from '@/stores/apps/eventType';
+import type { CurrencyEuroIcon, BasketIcon, ShoppingCartIcon } from 'vue-tabler-icons';
+
 import { useDate } from 'vuetify';
 const dateObject = useDate();
 
@@ -9,7 +11,7 @@ const dateObject = useDate();
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 
 import { emailValidator, requiredValidator } from '@/utils/validators';
-import { formatDateToMonthShort, formatDate } from '@/utils/helpers/formatters';
+import { formatDateToMonthShort, formatDate, formatAmount } from '@/utils/helpers/formatters';
 import { t } from '@/plugins/i18n';
 import type { VForm } from 'vuetify/components/VForm';
 import { Form } from 'vee-validate';
@@ -17,10 +19,11 @@ const refForm = ref<VForm>();
 
 import { useSnackbar } from '@/stores/snackbar';
 import DatePicker from '@/components/DatePicker.vue';
+import DemandsDashboard from '@/views/demands/DemandsDashboard.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 // theme breadcrumb
-const page = ref({ title: 'Gestion des devis' });
+const page = ref({ title: t('Gestion des demandes') });
 const breadcrumbs = ref([
     {
         text: t('Dashboard'),
@@ -28,7 +31,7 @@ const breadcrumbs = ref([
         href: '/'
     },
     {
-        text: t('Gestion des devis'),
+        text: t('Gestion des demandes'),
         disabled: true,
         href: '#'
     }
@@ -45,6 +48,7 @@ onMounted(() => {
     fetchEventTypes();
 });
 
+const showDescription = ref(false);
 const loading = ref(false);
 const saving = ref(false);
 const duplicating = ref(false);
@@ -71,6 +75,11 @@ const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
 const sorting = ref([{ key: 'demand_date', order: 'DESC' }]);
 const pageCount = ref(0);
+const statistics = ref({
+    total: 0,
+    validated: 0,
+    unvalidated: 0,
+});
 const filters = ref({
     search: null,
     status: null,
@@ -111,45 +120,49 @@ const defaultItem = ref({
 const dialogDelete = ref(false);
 const headers = ref([
     {
-        title: 'Prénom',
+        title: t('Prénom'),
         align: 'start',
         key: 'customer.firstname',
         sortable: false
     },
     {
-        title: 'Nom',
+        title: t('Nom'),
         align: 'start',
         key: 'customer.lastname',
         sortable: false
     },
     {
-        title: 'Email',
+        title: t('Email'),
         align: 'start',
         key: 'customer.email',
         sortable: false
     },
     {
-        title: 'Téléphone',
+        title: t('Téléphone'),
         align: 'start',
         key: 'customer.phone',
         sortable: false
     },
     {
-        title: 'Prestation',
+        title: t('Prestation'),
         align: 'start',
         key: 'event_type'
     },
     {
-        title: 'Date de la demande',
+        title: t('Date de la demande'),
         align: 'start',
         key: 'demand_date'
     },
     {
-        title: 'Status',
+        title: t('Statut'),
         align: 'start',
         key: 'status'
     },
-    /* { title: 'Protein (g)', key: 'protein' },*/
+
+     { title: t("Date de l'événement "), key: 'event_date' },
+     { title: t('Heure'), key: 'reception_start_time' },
+     { title: t("Lieu"), key: 'event_location' },
+     { title: t("Convives"), key: 'number_people' },
     { title: 'Actions', key: 'actions', sortable: false }
 ]);
 const formatedDate = computed(() => {
@@ -371,6 +384,9 @@ watchEffect(() => {
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
         <v-col cols="12">
+            <demands-dashboard />
+        </v-col>
+        <v-col cols="12">
             <v-data-table-server
                 class="border rounded-md"
                 :headers="headers"
@@ -399,6 +415,7 @@ watchEffect(() => {
                                     :placeholder="$t('Rechercher prénom, nom, email, téléphone...')"
                                     hide-details
                                     variant="solo"
+                                    clearable
                                 ></v-text-field>
                             </v-col>
                             <v-col>
@@ -409,6 +426,21 @@ watchEffect(() => {
                                     :items="eventTypes"
                                     item-value="name"
                                     item-title="name"
+                                    clearable
+                                    multiple
+                                    hide-details
+                                    variant="solo"
+                                ></v-select>
+                            </v-col>
+                            <v-col>
+                                <v-select
+                                    density="compact"
+                                    v-model="filters.status"
+                                    :placeholder="$t('Statut')"
+                                    :items="store.statusesList"
+                                    item-value="id"
+                                    item-title="label"
+                                    clearable
                                     multiple
                                     hide-details
                                     variant="solo"
@@ -420,12 +452,14 @@ watchEffect(() => {
                                         <VTextField
                                             v-model="formatedDate"
                                             prepend-inner-icon="bx-calendar"
-                                            readonly
                                             v-bind="props"
                                             density="compact"
                                             :placeholder="$t('Date')"
                                             hide-details
                                             variant="solo"
+                                            clearable
+                                            readonly
+                                            @click:clear="filters.date = null"
                                         />
                                     </template>
                                     <template #default="{ isActive }">
@@ -447,68 +481,6 @@ watchEffect(() => {
                             </v-col>
                         </v-row>
 
-                        <!--                        <v-dialog v-model="dialog" max-width="350px">
-                            <template v-slot:activator="{ props }">
-                                <v-btn color="primary" variant="flat" @click="editItem = {}" dark v-bind="props">{{
-                                    $t('Ajouter un administrateur')
-                                }}</v-btn>
-                            </template>
-                            <v-card>
-                                <v-card-title class="pa-4 bg-secondary">
-                                    <span class="text-h5">{{ formTitle }}</span>
-                                </v-card-title>
-                                <Form v-slot="{ errors, isSubmitting }" ref="refForm" v-model="valid" @submit="save">
-                                    <v-card-text>
-                                        <v-container class="px-0">
-                                            <v-row>
-                                                <v-col cols="12">
-                                                    <v-text-field
-                                                        v-model="editedItem.name"
-                                                        :rules="[requiredValidator]"
-                                                        :label="$t('Nom')"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12">
-                                                    <v-text-field
-                                                        v-model="editedItem.email"
-                                                        :label="$t('Email')"
-                                                        :rules="[requiredValidator, emailValidator]"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12">
-                                                    <v-text-field
-                                                        v-model="editedItem.password"
-                                                        :label="$t('Mot de passe')"
-                                                        placeholder="············"
-                                                        :append-inner-icon="
-                                                            editedItem.id && editedItem.changePassword ? 'mdi-eye-off' : 'mdi-eye'
-                                                        "
-                                                        :rules="[
-                                                            (editedItem.id && editedItem.changePassword) || !editedItem.id
-                                                                ? requiredValidator
-                                                                : true
-                                                        ]"
-                                                        :readonly="/*editedItem.id && */ !editedItem.changePassword"
-                                                        @click:append-inner="editedItem.changePassword = !editedItem.changePassword"
-                                                    ></v-text-field>
-                                                </v-col>
-                                            </v-row>
-                                            <div v-if="errors.apiError" class="mt-2">
-                                                <v-alert color="error">{{ errors.apiError }}</v-alert>
-                                            </div>
-                                        </v-container>
-                                    </v-card-text>
-
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="error" variant="flat" dark @click="close"> {{ $t('Annuler') }} </v-btn>
-                                        <v-btn color="success" variant="flat" :loading="loading" type="submit">
-                                            {{ $t('Sauvegarder') }}
-                                        </v-btn>
-                                    </v-card-actions>
-                                </Form>
-                            </v-card>
-                        </v-dialog>-->
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
                                 <v-card-title class="text-h5 text-center py-6">{{
@@ -527,8 +499,11 @@ watchEffect(() => {
                 <template v-slot:item.demand_date="{ item }">
                     {{ formatDate(item.demand_date) }}
                 </template>
+                <template v-slot:item.event_date="{ item }">
+                    {{ formatDate(item.event_date) }}
+                </template>
                 <template v-slot:item.status="{ item }">
-                    <v-chip :color="store.statusColor(item)" size="small" label>{{ store.statusText(item) }}</v-chip>
+                    <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
                     <v-btn density="compact" color="primary" variant="outlined" :to="'/demands/' + item.id">{{ $t('Voir') }}</v-btn>

@@ -17,6 +17,7 @@ const refForm = ref<VForm>();
 
 import { useSnackbar } from '@/stores/snackbar';
 import DatePicker from '@/components/DatePicker.vue';
+import PrespationDashboard from '@/views/prestations/PrespationDashboard.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 // theme breadcrumb
@@ -374,6 +375,7 @@ watchEffect(() => {
 </script>
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <PrespationDashboard show-payments show-description show-total-payments/>
     <v-row>
         <v-col cols="12">
             <v-data-table-server

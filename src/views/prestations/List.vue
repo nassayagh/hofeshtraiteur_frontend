@@ -18,6 +18,7 @@ const refForm = ref<VForm>();
 
 import { useSnackbar } from '@/stores/snackbar';
 import DatePicker from '@/components/DatePicker.vue';
+import PrespationDashboard from '@/views/prestations/PrespationDashboard.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 // theme breadcrumb
@@ -136,8 +137,11 @@ const headers = ref([
     {
         title: t('Date de la prestation'),
         align: 'start',
-        key: 'demand_date'
-    }
+        key: 'event_date'
+    },
+    { title: t('Heure'), key: 'demand.reception_start_time' },
+    { title: t("Lieu"), key: 'demand.event_location' },
+    { title: t("Convives"), key: 'demand.number_people' },
 ]);
 const activePage = computed(() => route.params.status);
 const formatedDate = computed(() => {
@@ -464,7 +468,22 @@ onMounted(() => {
 </script>
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+
+
     <v-row>
+        <v-col cols="12" md="6">
+            <PrespationDashboard md="6"
+                                 :show-validation="route.params.status == 'started'"
+                                 :show-validated="route.params.status == 'validated'"
+                                 :show-processing="route.params.status == 'processing'"
+                                 :show-closed="route.params.status == 'closed'"
+                                 :show-cancelled="route.params.status == 'cancelled'"
+                                 show-description
+            />
+        </v-col>
+        <v-col cols="12" md="6">
+            <PrespationDashboard show-payments  show-description/>
+        </v-col>
         <v-col cols="12">
             <v-data-table-server
                 class="border rounded-md"
@@ -495,6 +514,7 @@ onMounted(() => {
                                     hide-details
                                     variant="solo"
                                     flat
+                                    clearable
                                 ></v-text-field>
                             </v-col>
                             <v-col>
@@ -509,8 +529,23 @@ onMounted(() => {
                                     hide-details
                                     variant="solo"
                                     flat
+                                    clearable
                                 ></v-select>
                             </v-col>
+<!--                            <v-col>
+                                <v-select
+                                    density="compact"
+                                    v-model="filters.status"
+                                    :placeholder="$t('Statut')"
+                                    :items="store.statusesList"
+                                    item-value="id"
+                                    item-title="label"
+                                    clearable
+                                    multiple
+                                    hide-details
+                                    variant="solo"
+                                ></v-select>
+                            </v-col>-->
                             <v-col>
                                 <v-dialog ref="dialog" v-model="dateModal" v-model:return-value="filters.date" persistent width="290px">
                                     <template #activator="{ props }">
@@ -524,6 +559,8 @@ onMounted(() => {
                                             hide-details
                                             variant="solo"
                                             flat
+                                            clearable
+                                            @click:clear="filters.date = null"
                                         />
                                     </template>
                                     <template #default="{ isActive }">
@@ -563,11 +600,14 @@ onMounted(() => {
                 <template v-slot:item.demand_date="{ item }">
                     {{ formatDate(item.demand_date) }}
                 </template>
+                <template v-slot:item.event_date="{ item }">
+                    {{ formatDate(item.event_date) }}
+                </template>
                 <template v-slot:item.amount_left="{ item }">
-                    {{ formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0)) }}
+                    <span v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0" class="text-error font-weight-bold " >{{ formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0)) }}</span>
                 </template>
                 <template v-slot:item.services_sum_total="{ item }">
-                    {{ formatAmount(item.services_sum_total || 0) }}
+                    <v-chip variant="tonal" :color="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0?'error':'success'" class="font-weight-bold">{{ formatAmount(item.services_sum_total || 0) }}</v-chip>
                 </template>
                 <template v-slot:item.status="{ item }">
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>

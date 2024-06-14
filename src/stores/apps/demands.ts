@@ -7,6 +7,24 @@ import { t } from '@/plugins/i18n';
 export const useDemandStore = defineStore({
     id: 'Demands',
     state: () => ({
+        statuses: {
+            started: 0,
+            validated: 1,
+            processing: 2,
+            closed: 3,
+            cancelled: -1
+        },
+        statusesList: [
+            { id: 0, label: t('Nouvelle demande')},
+            { id: 1, label: t('Validé')},
+            { id: -1, label: t('Annulé')},
+        ],
+        statistics: {
+            total: 0,
+            validated: 0,
+            unvalidated: 0,
+            cancelled: 0,
+        },
         demands: {
             data: [],
             loading: false,
@@ -14,6 +32,14 @@ export const useDemandStore = defineStore({
         }
     }),
     actions: {
+
+        fetchStatistics(params: any) {
+            return axios.get('/statistics/demands', { params }).then((response) => {
+                if(response.data) {
+                    this.statistics = response.data;
+                }
+            });
+        },
         // 👉 Fetch users data
         fetchItems(params: any) {
             return axios.get('/demands', { params });
@@ -56,41 +82,38 @@ export const useDemandStore = defineStore({
                     .catch((error) => reject(error));
             });
         },
-        validateItem(id: number, comment: String) {
+        validateItem(id: number, comment: string) {
             return new Promise<AxiosResponse>((resolve, reject) => {
                 axios
-                    .post(`/demands/validate/${id}`, {comment: comment})
+                    .post(`/demands/validate/${id}`, { comment: comment })
                     .then((response) => resolve(response))
                     .catch((error) => reject(error));
             });
         },
         statusColor(status: number) {
-          if (status == -1) {
+            if (status == -1) {
                 return '#FA896B';
-            }
-            else if (status == 1) {
+            } else if (status == 1) {
                 return '#1f9007';
-            }
-            else if (status == 2) {
+            } else if (status == 2) {
                 return '#5D87FF';
-            }
-            else {
+            } else {
                 return '#FFAE1F';
             }
         },
         statusText(status: number) {
             if (status == -1) {
                 return t('Annulé');
-            }
-            else if (status == 1) {
+            } else if (status == 1) {
                 return t('Validé');
-            }
-            else if (status == 2) {
+            } else if (status == 2) {
                 return t('Terminé');
-            }
-            else {
+            } else {
                 return t('Nouvelle demande');
             }
+        },
+        getStatuses() {
+
         }
     }
 });

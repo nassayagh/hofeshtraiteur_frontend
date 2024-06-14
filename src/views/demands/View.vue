@@ -43,7 +43,7 @@ const item = ref({
 // theme breadcrumb
 const page = ref({
     title:
-        t('Détails du devis') +
+        t('Détails de la demande') +
         ' ' +
         (item.value.event_type || '') +
         ' ' +
@@ -60,7 +60,7 @@ const breadcrumbs = ref([
         href: '/'
     },
     {
-        text: t('Gestion des devis'),
+        text: t('Gestion des demandes'),
         disabled: false,
         href: '/demands'
     },
@@ -74,7 +74,7 @@ const breadcrumbs = ref([
 function setPageMeta() {
     page.value = {
         title:
-            t('Détails du devis') +
+            t('Détails de la demande') +
             ' ' +
             (item.value.event_type || '') +
             ' (' +
@@ -92,7 +92,7 @@ function setPageMeta() {
             href: '/'
         },
         {
-            text: t('Gestion des devis'),
+            text: t('Gestion des demandes'),
             disabled: false,
             href: '/demands'
         },
@@ -311,7 +311,7 @@ watchEffect(() => {
             </v-chip>
         </v-col>
         <v-col cols="12" md="6" justify="end" align-content="end" align="end">
-            <validate-demand v-if="!item.prestation" v-model="item" />
+            <validate-demand v-if="!item.prestation && item.status == store.statuses.started" v-model="item" />
             <v-btn
                 v-if="item.prestation && item.prestation.id"
                 variant="elevated"

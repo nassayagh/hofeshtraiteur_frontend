@@ -13,6 +13,7 @@ import sidebarItems from '@/layouts/full/vertical-sidebar/sidebarItem';
 const refForm = ref<VForm>();
 
 import { useSnackbar } from '@/stores/snackbar';
+
 const snackbarStore = useSnackbar();
 // theme breadcrumb
 const page = ref({ title: 'Gestions des administrateurs' });
@@ -56,6 +57,7 @@ const rowPerPage = ref(10);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalUsers = ref(0);
+
 
 const valid = ref(false);
 const dialog = ref(false);
@@ -281,6 +283,7 @@ watchEffect(() => {
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
+
         <v-col cols="12">
             <v-data-table-server
                 class="border rounded-md"

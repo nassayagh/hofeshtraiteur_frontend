@@ -11,9 +11,24 @@ export const useCustomerStore = defineStore({
             data: [],
             loading: false,
             error: null
-        }
+        },
+        statusesList: [
+            { id: 0, label: t('Prospets')},
+            { id: 1, label: t('Clients')},
+        ],
+        statistics: {
+            customers: 0,
+            prospects: 0,
+        },
     }),
     actions: {
+        fetchStatistics(params: any) {
+            return axios.get('/statistics/customers', { params }).then((response) => {
+                if(response.data) {
+                    this.statistics = response.data;
+                }
+            });
+        },
         // 👉 Fetch users data
         fetchItems(params: any) {
             return axios.get('/customers', { params });

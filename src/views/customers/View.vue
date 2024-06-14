@@ -304,90 +304,94 @@ watchEffect(() => {
         </v-col>
     </v-row>
     <v-row v-else>
-        <v-col cols="12" md="4">
-            <v-card elevation="10" class="overflow-hidden h-100">
-                <v-card-item class="py-4 px-6 text-white bg-primary">
-                    <h4 class="text-h6">{{ $t('Identification du customereur') }}</h4>
-                </v-card-item>
-                <v-card-text class="pa-6">
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Prénom :') }} {{ item.firstname || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom :') }} {{ item.lastname || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Email :') }} {{ item.email || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Téléphone :') }} {{ item.phone || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">
-                        {{ $t("Date d'enregistrement :") }} {{ formatDate(item.created_at) || '' }}
-                    </p>
-                    <p class="text-subtitle-1 textSecondary mt-3">
-                        {{ $t('Type :') }}
-                        <v-chip v-if="item && item.is_customer" color="success">{{ $t('Client') }} </v-chip>
-                        <v-chip v-else color="error">{{ $t('Prospect') }}</v-chip>
-                    </p>
-                </v-card-text>
-            </v-card>
-        </v-col>
-        <v-col cols="12" md="8">
-            <v-row class="">
-                <v-col cols="12" md="6">
-                    <v-card elevation="10">
-                        <v-card-text>
-                            <div class="d-flex align-start">
-                                <h2 class="text-h4 mt-1">{{ $t('Devis') }}</h2>
-                                <v-spacer></v-spacer>
-                            </div>
-                            <div class="mt-9">
-                                <h2 class="text-h4 font-weight-semibold mb-1">{{ item.demands ? item.demands.length : 0 }}</h2>
-                                <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
-                            </div>
+        <v-col cols="12">
+            <v-row align="center">
+                <v-col cols="12" md="4">
+                    <v-card elevation="10" class="overflow-hidden h-100">
+                        <v-card-item class="py-4 px-6 text-white bg-primary">
+                            <h4 class="text-h6">{{ $t('Identification du customereur') }}</h4>
+                        </v-card-item>
+                        <v-card-text class="pa-6">
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Prénom :') }} {{ item.firstname || '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom :') }} {{ item.lastname || '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Email :') }} {{ item.email || '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Téléphone :') }} {{ item.phone || '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t("Date d'enregistrement :") }} {{ formatDate(item.created_at) || '' }}
+                            </p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t('Type :') }}
+                                <v-chip v-if="item && item.is_customer" color="success">{{ $t('Client') }} </v-chip>
+                                <v-chip v-else color="error">{{ $t('Prospect') }}</v-chip>
+                            </p>
                         </v-card-text>
                     </v-card>
                 </v-col>
-                <v-col cols="12" md="6">
-                    <v-card elevation="10">
-                        <v-card-text>
-                            <div class="d-flex align-start">
-                                <h2 class="text-h4 mt-1">{{ $t('Prestations') }}</h2>
-                                <v-spacer></v-spacer>
-                            </div>
-                            <div class="mt-9">
-                                <h2 class="text-h4 font-weight-semibold mb-1">
-                                    {{ item.prestations ? item.prestations.length : 0 }}
-                                </h2>
-                                <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
-                            </div>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-card elevation="10">
-                        <v-card-text>
-                            <div class="d-flex align-start">
-                                <h2 class="text-h4 mt-1">{{ $t('Paiements') }}</h2>
-                                <v-spacer></v-spacer>
-                            </div>
-                            <div class="mt-9">
-                                <h2 class="text-h4 font-weight-semibold mb-1">
-                                    {{ formatAmount(item.payments_sum_amount || 0) }}
-                                </h2>
-                                <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
-                            </div>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-card elevation="10">
-                        <v-card-text>
-                            <div class="d-flex align-start">
-                                <h2 class="text-h4 mt-1">{{ $t('Prestations Clôturées') }}</h2>
-                                <v-spacer></v-spacer>
-                            </div>
-                            <div class="mt-9">
-                                <h2 class="text-h4 font-weight-semibold mb-1">
-                                    {{ item.prestations_count || 0 }}
-                                </h2>
-                                <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                <v-col cols="12" md="8">
+                    <v-row>
+                        <v-col cols="12" md="3">
+                            <v-card elevation="10" class="bg-primary h-100">
+                                <v-card-text>
+                                    <div class="d-flex align-start">
+                                        <h2 class="text-h4 mt-1">{{ $t('Devis') }}</h2>
+                                        <v-spacer></v-spacer>
+                                    </div>
+                                    <div class="mt-9">
+                                        <h2 class="text-h4 font-weight-semibold mb-1">{{ item.demands ? item.demands.length : 0 }}</h2>
+                                        <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-card elevation="10" class="bg-info h-100">
+                                <v-card-text>
+                                    <div class="d-flex align-start">
+                                        <h2 class="text-h4 mt-1">{{ $t('Prestations') }}</h2>
+                                        <v-spacer></v-spacer>
+                                    </div>
+                                    <div class="mt-9">
+                                        <h2 class="text-h4 font-weight-semibold mb-1">
+                                            {{ item.prestations ? item.prestations.length : 0 }}
+                                        </h2>
+                                        <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-card elevation="10" class="bg-primary  h-100">
+                                <v-card-text>
+                                    <div class="d-flex align-start">
+                                        <h2 class="text-h4 mt-1">{{ $t('Paiements') }}</h2>
+                                        <v-spacer></v-spacer>
+                                    </div>
+                                    <div class="mt-9">
+                                        <h2 class="text-h4 font-weight-semibold mb-1">
+                                            {{ formatAmount(item.payments_sum_amount || 0) }}
+                                        </h2>
+                                        <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-card elevation="10" class="bg-success h-100">
+                                <v-card-text>
+                                    <div class="d-flex align-start">
+                                        <h2 class="text-h4 mt-1">{{ $t('Prestations Clôturées') }}</h2>
+                                        <v-spacer></v-spacer>
+                                    </div>
+                                    <div class="mt-9">
+                                        <h2 class="text-h4 font-weight-semibold mb-1">
+                                            {{ item.prestations_count || 0 }}
+                                        </h2>
+                                        <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
         </v-col>

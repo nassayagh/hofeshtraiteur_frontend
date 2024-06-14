@@ -50,7 +50,7 @@ const getCart = computed(() => {
         <!-- Search part -->
         <!-- ---------------------------------------------- -->
 
-        <Searchbar />
+<!--        <Searchbar />-->
 
         <!---/Search part -->
 
