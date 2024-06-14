@@ -20,20 +20,21 @@ router.beforeEach(async (to, from, next) => {
     const publicPages = ['/login'];
     const authRequired = !publicPages.includes(to.path);
     const auth: any = useAuthStore();
+    const user = auth.user || JSON.parse(localStorage.getItem('user'));
 
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (authRequired && !auth.user) {
+        if (authRequired && !user) {
             auth.returnUrl = to.fullPath;
             return next('/login');
         } else {
-            if (!auth.user || !auth.user.roles || !auth.user.roles.includes(to.path)) {
+            if (!user || !user.roles || !user.roles.includes(to.path)) {
                 return next(/*'/auth/404'*/);
             } else {
                 next();
             }
         }
     } else {
-        if (!auth.user || !auth.user.roles || !auth.user.roles.includes(to.path)) {
+        if (!user || !user.roles || !user.roles.includes(to.path)) {
             return next(/*'/auth/404'*/);
         } else {
             next();

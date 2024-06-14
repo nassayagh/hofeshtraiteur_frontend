@@ -47,9 +47,9 @@ function validate(values: any, { setErrors }: any) {
                     // store user details and jwt in local storage to keep user logged in between page refreshes
                     localStorage.setItem('user', JSON.stringify(response.data));
                     // redirect to previous url or default to home page
-                    router.push(authStore.returnUrl || '/').then(() => {
-                        window.location.reload();
-                    });
+                    router.push('/')/*.then(() => {
+                        //window.location.reload();
+                    })*/;
                 })
                 .catch((error) => setErrors({ apiError: error }))
                 .then(() => {
