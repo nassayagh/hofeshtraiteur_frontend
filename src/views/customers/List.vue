@@ -235,7 +235,7 @@ function deleteItemConfirm() {
 
 //Computed Property
 const formTitle = computed(() => {
-    return editedIndex.value === -1 ? 'Nouvel Client' : 'Modifier Le Client';
+    return editedIndex.value === -1 ? editedItem.value.is_customer?t('Nouvel Client'):t('Nouvel Prospect') : editedItem.value.is_customer?t('Modifier Le Client'):t('Modifier Le Prospect');
 });
 const dateRange = computed(() => {
     if (filters.value.date && filters.value.date.length) {
@@ -459,12 +459,15 @@ watchEffect(() => {
                                 </v-dialog>
                             </v-col>
                             <v-col class="">
+                                <v-btn color="primary" class="align-self-end float-start " variant="flat" @click="editItem({})" dark >{{
+                                        $t('Ajouter un Prospect')
+                                    }}</v-btn>
+
+                                <v-btn color="primary" class="align-self-end float-end" variant="flat" @click="editItem({is_customer: true})" dark >{{
+                                        $t('Ajouter un client')
+                                    }}</v-btn>
                                 <v-dialog v-model="dialogEdit" max-width="600px">
-                                    <template v-slot:activator="{ props }">
-                                        <v-btn color="primary" class="align-self-end float-end" variant="flat" @click="editItem({})" dark v-bind="props">{{
-                                                $t('Ajouter un client')
-                                            }}</v-btn>
-                                    </template>
+
                                     <v-card>
                                         <v-card-title class="pa-4 bg-secondary">
                                             <span class="text-h5">{{ formTitle }}</span>

@@ -408,7 +408,7 @@ function fetchCustomers() {
                     return {...
                         e, name
                     :
-                        e.firstname + ' ' + e.lastname
+                        e.firstname + ' ' + e.lastname + " (" + (e.is_customer?t('Client'):t('Prospect')) +")"
                     }
                 });
                 //currentPage.value = current_page;
