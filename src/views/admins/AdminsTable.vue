@@ -170,7 +170,7 @@ function save(values: any, { setErrors }: any) {
                     loading.value = false;
                     dialog.value = false;
                     editedItem.value = { changePassword: true };
-                    snackbarStore.showSuccess(t('Utilisateur enregistrphp artisan serveé avec succès'));
+                    snackbarStore.showSuccess(t('Utilisateur enregistreé avec succès'));
                 })
                 .catch((error) => {
                     saving.value = false;

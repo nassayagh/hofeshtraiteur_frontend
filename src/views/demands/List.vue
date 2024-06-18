@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watch, watchEffect } from 'vue';
 import { useDemandStore } from '@/stores/apps/demands';
 import { useEventTypeStore } from '@/stores/apps/eventType';
+import { useCustomerStore } from '@/stores/apps/customers';
 import type { CurrencyEuroIcon, BasketIcon, ShoppingCartIcon } from 'vue-tabler-icons';
 
 import { useDate } from 'vuetify';
@@ -22,6 +23,7 @@ import DatePicker from '@/components/DatePicker.vue';
 import DemandsDashboard from '@/views/demands/DemandsDashboard.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
+const customerStore = useCustomerStore();
 // theme breadcrumb
 const page = ref({ title: t('Gestion des demandes') });
 const breadcrumbs = ref([
@@ -38,6 +40,7 @@ const breadcrumbs = ref([
 ]);
 const demands = ref([]);
 const eventTypes = ref([]);
+const customers = ref([]);
 const store = useDemandStore();
 
 onMounted(() => {
@@ -46,6 +49,7 @@ onMounted(() => {
     });*/
     fetchDemands();
     fetchEventTypes();
+    fetchCustomers();
 });
 
 const showDescription = ref(false);
@@ -62,6 +66,7 @@ const createdDate = ref(null);
 const paymentStatus = ref(null);
 const documentStatus = ref(null);
 const dateModal = ref(false);
+const dateDemandModal = ref(false);
 const selectedStatus = ref();
 const rowPerPage = ref(10);
 const currentPage = ref(2);
@@ -69,7 +74,7 @@ const totalPage = ref(2);
 const totalDemands = ref(0);
 
 const valid = ref(false);
-const dialog = ref(false);
+const dialogEdit = ref(false);
 const errorMessage = ref(null);
 const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
@@ -115,7 +120,8 @@ const defaultItem = ref({
     changePassword: true,
     jdate: '',
     role: '',
-    rolestatus: ''
+    rolestatus: '',
+    customer: {}
 });
 const dialogDelete = ref(false);
 const headers = ref([
@@ -175,6 +181,12 @@ const formatedDate = computed(() => {
     }
     return null;
 });
+const formatedDemandDate = computed(() => {
+    if (editedItem.value.event_date ) {
+        return  dateObject.format(editedItem.value.event_date, 'shortDate');
+    }
+    return null;
+});
 
 //Methods
 const filteredList = computed(() => {
@@ -187,7 +199,7 @@ function editItem(item: any) {
     loading.value = false;
     editedIndex.value = demands.value.indexOf(item);
     editedItem.value = Object.assign({}, item);
-    dialog.value = true;
+    dialogEdit.value = true;
 }
 function deleteItem(item: any) {
     editedItem.value = item;
@@ -195,9 +207,9 @@ function deleteItem(item: any) {
 }
 
 function close() {
-    dialog.value = false;
+    dialogEdit.value = false;
     setTimeout(() => {
-        editedItem.value = Object.assign({}, defaultItem.value);
+        editedItem.value = Object.assign({customer: {}}, defaultItem.value);
         editedIndex.value = -1;
     }, 300);
 }
@@ -217,10 +229,12 @@ function save(values: any, { setErrors }: any) {
                     } else {
                         demands.value.unshift(response.data);
                     }
-                    loading.value = false;
-                    dialog.value = false;
-                    editedItem.value = { changePassword: true };
-                    snackbarStore.showSuccess(t('Utilisateur enregistrphp artisan serveé avec succès'));
+                    saving.value = false;
+                    dialogEdit.value = false;
+                    editedItem.value = { customer: {} };
+                    snackbarStore.showSuccess(t('Demande enregistrée avec succès'));
+                    fetchEventTypes();
+                    store.fetchStatistics()
                 })
                 .catch((error) => {
                     saving.value = false;
@@ -248,12 +262,13 @@ function deleteItemConfirm() {
     const index = demands.value.findIndex((e) => e.id == editedItem.value.id);
     demands.value.splice(index, 1);
     dialogDelete.value = false;
-    snackbarStore.showSuccess(t('Utilisateur supprimé avec succès'));
+    snackbarStore.showSuccess(t('Demande supprimée avec succès'));
+    store.fetchStatistics()
 }
 
 //Computed Property
 const formTitle = computed(() => {
-    return editedIndex.value === -1 ? 'Nouvel administrateur' : 'Modifier l’administrateur';
+    return editedIndex.value === -1 ? 'Nouvelle demande' : 'Modifier la demande';
 });
 const dateRange = computed(() => {
     if (filters.value.date && filters.value.date.length) {
@@ -361,7 +376,50 @@ function fetchEventTypes() {
             console.error(error);
         })
         .then(() => {
-            loading.value = false;
+            //loading.value = false;
+        });
+}
+function fetchCustomers() {
+    customerStore
+        .fetchItems({
+            term: '',
+            paginate: 5000,
+            current_page: 1,
+            direction: 'asc',
+            order_by: 'firstname',
+
+            page: 1,
+            per_page: 5000
+        })
+        .then((response) => {
+            if (response.data) {
+                /*if (download != null && download === true) {
+                    const blob = new Blob([jsonToCSV(response.data.result)], { type: 'text/csv;charset=utf-8' });
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+
+                    link.href = url;
+                    link.download = 'reservation.csv';
+                    link.click();
+                } else {*/
+                const { data, current_page, next_page_url, total, per_page, to, last_page } = response.data;
+
+                customers.value = data.map((e) => {
+                    return {...
+                        e, name
+                    :
+                        e.firstname + ' ' + e.lastname
+                    }
+                });
+                //currentPage.value = current_page;
+                /* }*/
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+        .then(() => {
+            //loading.value = false;
         });
 }
 
@@ -379,6 +437,15 @@ watch(
 watchEffect(() => {
     if (currentPage.value > totalPage.value) currentPage.value = totalPage.value;
 });
+
+function customerSelected(val) {
+    if (val) {
+        const customer = customers.value.find((e) => e.id == val);
+        if (customer) {
+          editedItem.value.customer =  customer;
+        }
+    }
+}
 </script>
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
@@ -479,6 +546,137 @@ watchEffect(() => {
                                     </template>
                                 </v-dialog>
                             </v-col>
+                            <v-col class="">
+                                <v-dialog v-model="dialogEdit" max-width="600px">
+                                    <template v-slot:activator="{ props }">
+                                        <v-btn color="primary" class="align-self-end float-end" variant="flat" @click="editItem({customer: {}})" dark v-bind="props">{{
+                                                $t('Ajouter une demande')
+                                            }}</v-btn>
+                                    </template>
+                                    <v-card>
+                                        <v-card-title class="pa-4 bg-secondary">
+                                            <span class="text-h5">{{ formTitle }}</span>
+                                        </v-card-title>
+                                        <Form v-slot="{ errors, isSubmitting }" ref="refForm" v-model="valid" @submit="save">
+                                            <v-card-text>
+                                                <v-container class="px-0">
+
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <v-autocomplete
+                                                                v-model="editedItem.customer_id"
+                                                                :placeholder="$t('Client')"
+                                                                :items="customers"
+                                                                item-value="id"
+                                                                item-title="name"
+                                                                clearable
+                                                                hide-details
+                                                                variant="outlined"
+                                                                @update:modelValue="customerSelected"
+                                                            >
+                                                            </v-autocomplete>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.customer.firstname"
+                                                                :rules="[requiredValidator]"
+                                                                :label="$t('Prénom')"
+                                                            ></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.customer.lastname"
+                                                                :rules="[requiredValidator]"
+                                                                :label="$t('Nom')"
+                                                            ></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.customer.email"
+                                                                :label="$t('Email')"
+                                                            ></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.customer.phone"
+                                                                :label="$t('Téléphone')"
+                                                            ></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-combobox
+                                                                v-model="editedItem.event_type"
+                                                                :placeholder="$t('Type d\'événement')"
+                                                                :items="eventTypes.map((e) => e.name)"
+                                                                clearable
+                                                                hide-details
+                                                                variant="outlined"
+                                                            ></v-combobox>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-dialog ref="dialogDemandDate" v-model="dateDemandModal" v-model:return-value="editedItem.event_date" persistent width="290px">
+                                                                <template #activator="{ props }">
+                                                                    <VTextField
+                                                                        v-model="formatedDemandDate"
+                                                                        prepend-inner-icon="bx-calendar"
+                                                                        v-bind="props"
+                                                                        :placeholder="$t('Date de la demande')"
+                                                                        hide-details
+                                                                        clearable
+                                                                        readonly
+                                                                        @click:clear="editedItem.event_date = null"
+                                                                    />
+                                                                </template>
+                                                                <template #default="{ isActive }">
+                                                                    <VLocaleProvider locale="fr">
+                                                                        <VDatePicker v-model="editedItem.event_date" hide-header>
+                                                                            <template #actions>
+                                                                                <VBtn color="primary" @click="dateDemandModal = false">
+                                                                                    {{ $t('Annuler') }}
+                                                                                </VBtn>
+                                                                                <VSpacer />
+                                                                                <VBtn variant="elevated" color="primary" @click="dateDemandModal = false">
+                                                                                    {{ $t('OK') }}
+                                                                                </VBtn>
+                                                                            </template>
+                                                                        </VDatePicker>
+                                                                    </VLocaleProvider>
+                                                                </template>
+                                                            </v-dialog>
+                                                        </v-col>
+
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field v-model="editedItem.reception_start_time"  hide-details :label="$t('La réception se déroulera plutôt')"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field v-model="editedItem.event_location"  hide-details :label="$t('Lieu de l\'événement')"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field v-model="editedItem.number_people"  hide-details type="number" :label="$t('Nombre de convives')"></v-text-field>
+                                                        </v-col>
+
+                                                        <!--
+                                                <v-col cols="12">
+                                                    <v-textarea v-model="editedItem.description" :label="$t('Description')"></v-textarea>
+                                                </v-col>-->
+                                                    </v-row>
+                                                    <div v-if="errors.apiError" class="mt-2">
+                                                        <v-alert color="error">{{ errors.apiError }}</v-alert>
+                                                    </div>
+                                                </v-container>
+                                            </v-card-text>
+
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn color="error" variant="flat" dark @click="close"> {{ $t('Annuler') }} </v-btn>
+                                                <v-btn color="success" variant="flat" :loading="saving" type="submit">
+                                                    {{ $t('Sauvegarder') }}
+                                                </v-btn>
+                                                <v-spacer></v-spacer>
+                                            </v-card-actions>
+                                        </Form>
+                                    </v-card>
+                                </v-dialog>
+                            </v-col>
                         </v-row>
 
                         <v-dialog v-model="dialogDelete" max-width="500px">
@@ -506,23 +704,24 @@ watchEffect(() => {
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-btn density="compact" color="primary" variant="outlined" :to="'/demands/' + item.id">{{ $t('Voir') }}</v-btn>
-                    <!--                    <div class="d-flex align-center">
-                        <v-tooltip :text="$t('Modifier')">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="editItem(item)" v-bind="props"
+
+                        <div class="d-flex align-center">
+                            <v-btn density="compact" color="primary" variant="outlined" :to="'/demands/' + item.id">{{ $t('Voir') }}</v-btn>
+                            <v-tooltip :text="$t('Modifier')">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn icon flat @click="editItem(item)" v-bind="props"
                                     ><PencilIcon stroke-width="1.5" size="20" class="text-primary"
-                                /></v-btn>
-                            </template>
-                        </v-tooltip>
-                        <v-tooltip :text="$t('Supprimer')">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="deleteItem(item)" v-bind="props"
+                                    /></v-btn>
+                                </template>
+                            </v-tooltip>
+                            <v-tooltip v-if="item.prestation == null" :text="$t('Supprimer')">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn icon flat @click="deleteItem(item)" v-bind="props"
                                     ><TrashIcon stroke-width="1.5" size="20" class="text-error"
-                                /></v-btn>
-                            </template>
-                        </v-tooltip>
-                    </div>-->
+                                    /></v-btn>
+                                </template>
+                            </v-tooltip>
+                    </div>
                 </template>
                 <template v-slot:no-data>
                     <span>{{ $t('Aucune donnée disponible') }}</span>

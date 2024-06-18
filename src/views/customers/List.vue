@@ -43,7 +43,7 @@ onMounted(() => {
         customers.value = response.data.data;
     });*/
     fetchCustomers();
-    fetchEventTypes();
+    //fetchEventTypes();
 });
 
 const loading = ref(false);
@@ -67,6 +67,7 @@ const totalCustomers = ref(0);
 
 const valid = ref(false);
 const dialog = ref(false);
+const dialogEdit = ref(false);
 const errorMessage = ref(null);
 const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
@@ -166,7 +167,7 @@ function editItem(item: any) {
     loading.value = false;
     editedIndex.value = customers.value.indexOf(item);
     editedItem.value = Object.assign({}, item);
-    dialog.value = true;
+    dialogEdit.value = true;
 }
 function deleteItem(item: any) {
     editedItem.value = item;
@@ -174,7 +175,7 @@ function deleteItem(item: any) {
 }
 
 function close() {
-    dialog.value = false;
+    dialogEdit.value = false;
     setTimeout(() => {
         editedItem.value = Object.assign({}, defaultItem.value);
         editedIndex.value = -1;
@@ -196,10 +197,11 @@ function save(values: any, { setErrors }: any) {
                     } else {
                         customers.value.unshift(response.data);
                     }
-                    loading.value = false;
-                    dialog.value = false;
+                    saving.value = false;
+                    dialogEdit.value = false;
                     editedItem.value = { changePassword: true };
-                    snackbarStore.showSuccess(t('Utilisateur enregistrphp artisan serveé avec succès'));
+                    snackbarStore.showSuccess(t('Client enregistré avec succès'));
+                    store.fetchStatistics()
                 })
                 .catch((error) => {
                     saving.value = false;
@@ -227,12 +229,13 @@ function deleteItemConfirm() {
     const index = customers.value.findIndex((e) => e.id == editedItem.value.id);
     customers.value.splice(index, 1);
     dialogDelete.value = false;
-    snackbarStore.showSuccess(t('Utilisateur supprimé avec succès'));
+    snackbarStore.showSuccess(t('Client supprimé avec succès'));
+    store.fetchStatistics()
 }
 
 //Computed Property
 const formTitle = computed(() => {
-    return editedIndex.value === -1 ? 'Nouvel administrateur' : 'Modifier l’administrateur';
+    return editedIndex.value === -1 ? 'Nouvel Client' : 'Modifier Le Client';
 });
 const dateRange = computed(() => {
     if (filters.value.date && filters.value.date.length) {
@@ -455,70 +458,72 @@ watchEffect(() => {
                                     </template>
                                 </v-dialog>
                             </v-col>
+                            <v-col class="">
+                                <v-dialog v-model="dialogEdit" max-width="600px">
+                                    <template v-slot:activator="{ props }">
+                                        <v-btn color="primary" class="align-self-end float-end" variant="flat" @click="editItem({})" dark v-bind="props">{{
+                                                $t('Ajouter un client')
+                                            }}</v-btn>
+                                    </template>
+                                    <v-card>
+                                        <v-card-title class="pa-4 bg-secondary">
+                                            <span class="text-h5">{{ formTitle }}</span>
+                                        </v-card-title>
+                                        <Form v-slot="{ errors, isSubmitting }" ref="refForm" v-model="valid" @submit="save">
+                                            <v-card-text>
+                                                <v-container class="px-0">
+
+                                                    <v-row>
+
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.firstname"
+                                                                :rules="[requiredValidator]"
+                                                                :label="$t('Prénom')"
+                                                            ></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.lastname"
+                                                                :rules="[requiredValidator]"
+                                                                :label="$t('Nom')"
+                                                            ></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.email"
+                                                                :label="$t('Email')"
+                                                            ></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.phone"
+                                                                :label="$t('Téléphone')"
+                                                            ></v-text-field>
+                                                        </v-col>
+
+                                                    </v-row>
+                                                    <div v-if="errors.apiError" class="mt-2">
+                                                        <v-alert color="error">{{ errors.apiError }}</v-alert>
+                                                    </div>
+                                                </v-container>
+                                            </v-card-text>
+
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn color="error" variant="flat" dark @click="close"> {{ $t('Annuler') }} </v-btn>
+                                                <v-btn color="success" variant="flat" :loading="saving" type="submit">
+                                                    {{ $t('Sauvegarder') }}
+                                                </v-btn>
+                                                <v-spacer></v-spacer>
+                                            </v-card-actions>
+                                        </Form>
+                                    </v-card>
+                                </v-dialog>
+                            </v-col>
                         </v-row>
 
-                        <!--                        <v-dialog v-model="dialog" max-width="350px">
-                            <template v-slot:activator="{ props }">
-                                <v-btn color="primary" variant="flat" @click="editItem = {}" dark v-bind="props">{{
-                                    $t('Ajouter un administrateur')
-                                }}</v-btn>
-                            </template>
-                            <v-card>
-                                <v-card-title class="pa-4 bg-secondary">
-                                    <span class="text-h5">{{ formTitle }}</span>
-                                </v-card-title>
-                                <Form v-slot="{ errors, isSubmitting }" ref="refForm" v-model="valid" @submit="save">
-                                    <v-card-text>
-                                        <v-container class="px-0">
-                                            <v-row>
-                                                <v-col cols="12">
-                                                    <v-text-field
-                                                        v-model="editedItem.name"
-                                                        :rules="[requiredValidator]"
-                                                        :label="$t('Nom')"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12">
-                                                    <v-text-field
-                                                        v-model="editedItem.email"
-                                                        :label="$t('Email')"
-                                                        :rules="[requiredValidator, emailValidator]"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12">
-                                                    <v-text-field
-                                                        v-model="editedItem.password"
-                                                        :label="$t('Mot de passe')"
-                                                        placeholder="············"
-                                                        :append-inner-icon="
-                                                            editedItem.id && editedItem.changePassword ? 'mdi-eye-off' : 'mdi-eye'
-                                                        "
-                                                        :rules="[
-                                                            (editedItem.id && editedItem.changePassword) || !editedItem.id
-                                                                ? requiredValidator
-                                                                : true
-                                                        ]"
-                                                        :readonly="/*editedItem.id && */ !editedItem.changePassword"
-                                                        @click:append-inner="editedItem.changePassword = !editedItem.changePassword"
-                                                    ></v-text-field>
-                                                </v-col>
-                                            </v-row>
-                                            <div v-if="errors.apiError" class="mt-2">
-                                                <v-alert color="error">{{ errors.apiError }}</v-alert>
-                                            </div>
-                                        </v-container>
-                                    </v-card-text>
 
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="error" variant="flat" dark @click="close"> {{ $t('Annuler') }} </v-btn>
-                                        <v-btn color="success" variant="flat" :loading="loading" type="submit">
-                                            {{ $t('Sauvegarder') }}
-                                        </v-btn>
-                                    </v-card-actions>
-                                </Form>
-                            </v-card>
-                        </v-dialog>-->
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
                                 <v-card-title class="text-h5 text-center py-6">{{
@@ -543,9 +548,9 @@ watchEffect(() => {
                     }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-btn density="compact" color="primary" variant="outlined" :to="'/customers/' + item.id">{{ $t('Voir') }}</v-btn>
-                    <!--                    <div class="d-flex align-center">
-                        <v-tooltip :text="$t('Modifier')">
+                                        <div class="d-flex align-center">
+                                            <v-btn density="compact" color="primary" variant="outlined" :to="'/customers/' + item.id">{{ $t('Voir') }}</v-btn>
+                                            <v-tooltip :text="$t('Modifier')">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat @click="editItem(item)" v-bind="props"
                                     ><PencilIcon stroke-width="1.5" size="20" class="text-primary"
@@ -559,7 +564,7 @@ watchEffect(() => {
                                 /></v-btn>
                             </template>
                         </v-tooltip>
-                    </div>-->
+                    </div>
                 </template>
                 <template v-slot:no-data>
                     <span>{{ $t('Aucune donnée disponible') }}</span>
