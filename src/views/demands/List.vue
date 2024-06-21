@@ -653,6 +653,9 @@ function customerSelected(val) {
                                                         <v-col cols="12" md="6">
                                                             <v-text-field v-model="editedItem.number_people"  hide-details type="number" :label="$t('Nombre de convives')"></v-text-field>
                                                         </v-col>
+                                                        <v-col cols="12">
+                                                            <v-textarea v-model="editedItem.comment"  hide-details  :label="$t('Commentaire')"></v-textarea>
+                                                        </v-col>
 
                                                         <!--
                                                 <v-col cols="12">
