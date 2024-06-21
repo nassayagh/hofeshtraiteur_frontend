@@ -333,6 +333,7 @@ function setGlobalValues() {
     ];
     items.value = [];
     totalItems.value = 0;
+    headers.value = headersDefault.value;
     switch (route.params.status) {
         case 'started':
             page.value = { title: t('Prestations en attente de validation') };
@@ -352,6 +353,7 @@ function setGlobalValues() {
                 href: '#'
             });
             currentStatus.value = store.statuses.validated;
+            headers.value = headersDefault.value;
             break;
         case 'processing':
             page.value = { title: t('Prestations en cours') };
