@@ -157,6 +157,59 @@ const headers = ref([
     },
     { title: t('Actions'), key: 'actions', sortable: false }
 ]);
+const headersDefault = ref([
+    {
+        title: t('Prénom'),
+        align: 'start',
+        key: 'customer.firstname',
+        sortable: false
+    },
+    {
+        title: t('Nom'),
+        align: 'start',
+        key: 'customer.lastname',
+        sortable: false
+    },
+    {
+        title: t('Email'),
+        align: 'start',
+        key: 'customer.email',
+        sortable: false
+    },
+    {
+        title: t('Téléphone'),
+        align: 'start',
+        key: 'customer.phone',
+        sortable: false
+    },
+    {
+        title: t('Prestation'),
+        align: 'start',
+        key: 'event_type'
+    },
+    {
+        title: t('Date de la prestation'),
+        align: 'start',
+        key: 'event_date'
+    },
+    { title: t('Heure'), key: 'demand.reception_start_time' },
+    { title: t("Lieu"), key: 'demand.event_location' },
+    { title: t("Convives"), key: 'demand.number_people' },
+
+    {
+        title: t('En attente de règlement'),
+        align: 'start',
+        key: 'amount_left',
+        sortable: false
+    },
+    {
+        title: t('Montant total'),
+        align: 'start',
+        key: 'services_sum_total',
+        sortable: false
+    },
+    { title: t('Actions'), key: 'actions', sortable: false }
+]);
 const activePage = computed(() => route.params.status);
 const formatedDate = computed(() => {
     if (filters.value.date && filters.value.date.length > 0) {
@@ -289,7 +342,7 @@ function setGlobalValues() {
                 href: '#'
             });
             currentStatus.value = store.statuses.started;
-            headers.value = headers.value.filter((e)=> e.key != 'services_sum_total' && e.key != 'amount_left')
+            headers.value = headersDefault.value.filter((e)=> e.key != 'services_sum_total' && e.key != 'amount_left')
             break;
         case 'validated':
             page.value = { title: t('Prestations validées') };
