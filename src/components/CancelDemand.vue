@@ -39,11 +39,11 @@ function cancelItemConfirm() {
     <v-dialog v-model="dialog" max-width="350px">
         <template v-slot:activator="{ props }">
             <v-btn v-if="item.status == 0" color="error" class="ml-3" variant="outlined" dark v-bind="props"
-                >{{ $t('Annuler la devis') }}
+                >{{ $t('Annuler la demande') }}
             </v-btn>
         </template>
         <v-card>
-            <v-card-title class="text-h5 text-center py-6">{{ $t('Êtes-vous sûr de vouloir annuller la devis?') }} </v-card-title>
+            <v-card-title class="text-h5 text-center py-6">{{ $t('Êtes-vous sûr de vouloir annuller la demande?') }} </v-card-title>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="error" variant="flat" dark @click="dialog = false">{{ $t('Annuler') }} </v-btn>

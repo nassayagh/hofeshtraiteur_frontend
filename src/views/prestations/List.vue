@@ -142,6 +142,20 @@ const headers = ref([
     { title: t('Heure'), key: 'demand.reception_start_time' },
     { title: t("Lieu"), key: 'demand.event_location' },
     { title: t("Convives"), key: 'demand.number_people' },
+
+    {
+        title: t('En attente de règlement'),
+        align: 'start',
+        key: 'amount_left',
+        sortable: false
+    },
+    {
+        title: t('Montant total'),
+        align: 'start',
+        key: 'services_sum_total',
+        sortable: false
+    },
+    { title: t('Actions'), key: 'actions', sortable: false }
 ]);
 const activePage = computed(() => route.params.status);
 const formatedDate = computed(() => {
@@ -275,6 +289,7 @@ function setGlobalValues() {
                 href: '#'
             });
             currentStatus.value = store.statuses.started;
+            headers.value = headers.value.filter((e)=> e.key != 'services_sum_total' && e.key != 'amount_left')
             break;
         case 'validated':
             page.value = { title: t('Prestations validées') };
@@ -437,7 +452,7 @@ watchEffect(() => {
 });
 
 onMounted(() => {
-    if (route.params.status != 'started') {
+    /*if (route.params.status != 'started') {
         headers.value.push(
             ...[
                 {
@@ -452,18 +467,12 @@ onMounted(() => {
                     key: 'services_sum_total',
                     sortable: false
                 },
-                /* {
-                title: 'Status',
-                align: 'start',
-                key: 'status'
-            },*/
-                /* { title: 'Protein (g)', key: 'protein' },*/
                 { title: t('Actions'), key: 'actions', sortable: false }
             ]
         );
     } else {
         headers.value.push({ title: t('Actions'), key: 'actions', sortable: false });
-    }
+    }*/
 });
 </script>
 <template>
@@ -607,19 +616,36 @@ onMounted(() => {
                     <span v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0" class="text-error font-weight-bold " >{{ formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0)) }}</span>
                 </template>
                 <template v-slot:item.services_sum_total="{ item }">
-                    <v-chip variant="tonal" :color="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0?'error':'success'" class="font-weight-bold">{{ formatAmount(item.services_sum_total || 0) }}</v-chip>
+                    <v-chip variant="tonal" :color="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0?'error':'success'" class="font-weight-bold">{{ formatAmount(item.payments_sum_amount || 0) }}/{{ formatAmount(item.services_sum_total || 0) }}</v-chip>
                 </template>
                 <template v-slot:item.status="{ item }">
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-btn density="compact" color="primary" variant="elevated" :to="'/prestations/' + item.id">{{
-                        $t('Détails de la prestation')
-                    }}</v-btn>
+                    <v-btn-toggle
 
-                    <v-btn density="compact" color="info" variant="outlined" class="ml-4" :to="'/demands/' + item.demand_id">{{
-                        $t('Voir la demande')
-                    }}</v-btn>
+                        variant="tonal"
+                        color="primary"
+                        class="text-center bg-primary"
+                        density="compact"
+                    >
+                        <v-btn :to="'/prestations/' + item.id">{{
+                                $t('Prestation')
+                            }}
+                        </v-btn>
+
+                        <v-menu :location="location">
+                            <template v-slot:activator="{ props }">
+                                <v-btn icon="mdi-chevron-down" v-bind="props"></v-btn>
+                            </template>
+
+                            <v-list>
+                                <v-list-item :to="'/demands/' + item.demand_id" >
+                                    <v-list-item-title>{{ $t('Voir la demande')}}</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </v-btn-toggle>
                     <!--                    <div class="d-flex align-center">
                         <v-tooltip :text="$t('Modifier')">
                             <template v-slot:activator="{ props }">

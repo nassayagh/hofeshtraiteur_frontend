@@ -348,26 +348,33 @@ watchEffect(() => {
                     <h4 class="text-h6">{{ $t('Détails de la demande') }}</h4>
                 </v-card-item>
                 <v-card-text class="pa-6">
-                    <!--                    Type événement : Mariage
-                    Date de l'événement : 11 décembre 2024
-                    La réception se déroulera plutôt : En matinée
-                    Lieu de l'événement : 11 avenue Barbuse, 77270 Paris, France
-                    Nombre de convives : 11
-                    Commentaires :-->
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.event_type || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">
-                        {{ $t("Date de l'événement :") }} {{ formatDate(item.event_date) || '' }}
-                    </p>
-                    <p class="text-subtitle-1 textSecondary mt-3">
-                        {{ $t('La réception se déroulera plutôt :') }} {{ item.reception_start_time || '' }}
-                    </p>
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t("Lieu de l'événement :") }} {{ item.event_location || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nombre de convives :') }} {{ item.number_people || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">
-                        {{ $t('Commentaires :') }}
-                        <br />
-                        {{ item.comment }}
-                    </p>
+                    <v-row>
+                        <v-col cols="12" md="6" lg="5">
+                            <!--                    Type événement : Mariage
+                   Date de l'événement : 11 décembre 2024
+                   La réception se déroulera plutôt : En matinée
+                   Lieu de l'événement : 11 avenue Barbuse, 77270 Paris, France
+                   Nombre de convives : 11
+                   Commentaires :-->
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.event_type || '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t("Date de l'événement :") }} {{ formatDate(item.event_date) || '' }}
+                            </p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t('La réception se déroulera plutôt :') }} {{ item.reception_start_time || '' }}
+                            </p>
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t("Lieu de l'événement :") }} {{ item.event_location || '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nombre de convives :') }} {{ item.number_people || '' }}</p>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="7" v-if="item.comment && item.comment.length > 0">
+                            <v-card flat variant="outlined" density="compact">
+                                <v-card-title>{{ $t("Description de la demande")}}</v-card-title>
+                                <v-card-text v-html="item.comment.replace(/\n/g,'<br/>')"></v-card-text>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+
+
                 </v-card-text>
             </v-card>
         </v-col>

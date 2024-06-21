@@ -654,7 +654,7 @@ function customerSelected(val) {
                                                             <v-text-field v-model="editedItem.number_people"  hide-details type="number" :label="$t('Nombre de convives')"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12">
-                                                            <v-textarea v-model="editedItem.comment"  hide-details  :label="$t('Commentaire')"></v-textarea>
+                                                            <v-textarea v-model="editedItem.comment"  hide-details  :label="$t('Description de la demande')"></v-textarea>
                                                         </v-col>
 
                                                         <!--
