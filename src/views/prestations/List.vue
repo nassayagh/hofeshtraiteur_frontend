@@ -616,17 +616,17 @@ onMounted(() => {
                     <span v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0" class="text-error font-weight-bold " >{{ formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0)) }}</span>
                 </template>
                 <template v-slot:item.services_sum_total="{ item }">
-                    <v-chip variant="tonal" :color="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0?'error':'success'" class="font-weight-bold">{{ formatAmount(item.payments_sum_amount || 0) }}/{{ formatAmount(item.services_sum_total || 0) }}</v-chip>
+                    <v-chip variant="tonal" :color="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0?'error':'success'" class="font-weight-bold">{{ formatAmount(item.payments_sum_amount || 0) }} / {{ formatAmount(item.services_sum_total || 0) }}</v-chip>
                 </template>
                 <template v-slot:item.status="{ item }">
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-btn-toggle
-
-                        variant="tonal"
+                    <v-btn-group
+                            base-color="primaruy"
+                        variant="elevated"
                         color="primary"
-                        class="text-center bg-primary"
+                        class="text-center"
                         density="compact"
                     >
                         <v-btn :to="'/prestations/' + item.id">{{
@@ -645,7 +645,7 @@ onMounted(() => {
                                 </v-list-item>
                             </v-list>
                         </v-menu>
-                    </v-btn-toggle>
+                    </v-btn-group>
                     <!--                    <div class="d-flex align-center">
                         <v-tooltip :text="$t('Modifier')">
                             <template v-slot:activator="{ props }">
