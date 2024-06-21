@@ -458,12 +458,12 @@ watchEffect(() => {
                                     </template>
                                 </v-dialog>
                             </v-col>
-                            <v-col class="">
-                                <v-btn color="primary" class="align-self-end float-start " variant="flat" @click="editItem({})" dark >{{
+                            <v-col class="d-flex gap-2 justify-space-between">
+                                <v-btn color="primary" class="align-self-end " variant="flat" @click="editItem({})" dark >{{
                                         $t('Ajouter un Prospect')
                                     }}</v-btn>
 
-                                <v-btn color="primary" class="align-self-end float-end" variant="flat" @click="editItem({is_customer: true})" dark >{{
+                                <v-btn color="primary" class="align-self-end" variant="flat" @click="editItem({is_customer: true})" dark >{{
                                         $t('Ajouter un client')
                                     }}</v-btn>
                                 <v-dialog v-model="dialogEdit" max-width="600px">
