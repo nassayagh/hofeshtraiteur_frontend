@@ -27,7 +27,7 @@ function cancelItemConfirm() {
             item.value = response.data;
             dialog.value = false;
             snackbarStore.showSuccess(t('Devis annulé avec succès'));
-            router.push('/demands');
+            //router.push('/demands');
         })
         .then(() => {
             loading.value = false;
