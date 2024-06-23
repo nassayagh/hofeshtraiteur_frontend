@@ -41,8 +41,8 @@ function save() {
             //item.value = response.data.service;
             dialog.value = false;
             emit('update:item', response.data);
-            //item.value = {};
-            //item.value = {};
+            item.value = {};
+            item.value = {};
             snackbarStore.showSuccess(t('Service enregistré avec succès'));
         })
         .catch((error) => {

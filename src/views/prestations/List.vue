@@ -330,6 +330,7 @@ function setGlobalValues() {
             disabled: false,
             href: '/'
         }
+
     ];
     items.value = [];
     totalItems.value = 0;

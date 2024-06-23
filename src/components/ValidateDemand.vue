@@ -34,7 +34,7 @@ function validateItemConfirm() {
             item.value = response.data;
             dialog.value = false;
             snackbarStore.showSuccess(t('Devis validé avec succès'));
-            router.push('/demands');
+            //router.push('/demands');
         })
         .catch((error) => {
             loading.value = false;

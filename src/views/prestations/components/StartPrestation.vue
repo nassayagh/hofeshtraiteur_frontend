@@ -31,7 +31,7 @@ function validateItemConfirm() {
             item.value = response.data;
             dialog.value = false;
             snackbarStore.showSuccess(t('Prestation lancée avec succès'));
-            router.push(store.pageLink(item.value.status));
+            //router.push(store.pageLink(item.value.status));
         })
         .catch((error) => {
             loading.value = false;

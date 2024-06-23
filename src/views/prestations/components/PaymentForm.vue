@@ -66,8 +66,8 @@ function save() {
             //item.value = response.data.paymentMethod;
             dialog.value = false;
             emit('update:item', response.data);
-            //item.value = {};
-            //item.value = {};
+            item.value = {};
+            item.value = {};
             snackbarStore.showSuccess(t('PaymentMethod enregistré avec succès'));
         })
         .catch((error) => {
@@ -95,6 +95,7 @@ function paymentMethodSelected(val) {
     <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ props }">
             <v-btn
+                v-if="totalAmountLeft > 0"
                 dark
                 v-bind="props"
                 :icon="item.id != null"
