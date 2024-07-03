@@ -26,6 +26,7 @@ import DeleteService from '@/views/prestations/components/DeleteService.vue';
 import PaymentForm from '@/views/prestations/components/PaymentForm.vue';
 import StartPrestation from '@/views/prestations/components/StartPrestation.vue';
 import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
+import CommentPrestation from '@/views/prestations/components/CommentPrestation.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -385,8 +386,8 @@ watch(
         </v-col>
         <v-col cols="12" md="8" justify="end" align-content="end" align="end">
             <validate-prestation v-if="item.status == store.statuses.started || item.status == store.statuses.cancelled" v-model="item" />
-            <start-prestation v-if="item.status == store.statuses.validated" v-model="item" />
-            <close-prestation v-if="item.status == store.statuses.processing" v-model="item" />
+            <!--            <start-prestation v-if="item.status == store.statuses.validated" v-model="item" />-->
+            <close-prestation v-if="item.status == store.statuses.validated" v-model="item" />
             <cancel-prestation v-model="item" v-if="item.status != store.statuses.cancelled" />
             <v-divider vertical />
             <v-btn variant="elevated" color="success" class="ml-2" :to="'/customers/' + item.customer_id"
@@ -459,17 +460,37 @@ watch(
                             </v-card>
                         </v-col>
                         <v-col class="h-100" cols="12" :md="item.status == store.statuses.cancelled ? '6' : '12'">
-                            <v-card elevation="10" class="h-100">
-                                <v-card-text>
-                                    <div class="d-flex align-start">
-                                        <h2 class="text-h4 mt-1">{{ $t('Note liée à la prestation') }}</h2>
-                                    </div>
-                                    <div class="mt-4">
-                                        <p class="mb-1">{{ item.comment || $t('Aucun commentaire') }}</p>
-                                        <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
-                                    </div>
-                                </v-card-text>
-                            </v-card>
+                            <v-row class="h-100">
+                                <v-col cols="12" md="6" class="h-100">
+                                    <v-card elevation="10" class="h-100">
+                                        <v-card-text>
+                                            <div class="d-flex align-start">
+                                                <h2 class="text-h4 mt-1">{{ $t('Note liée à la prestation') }}</h2>
+                                            </div>
+                                            <div class="mt-4">
+                                                <p class="mb-1">{{ item.comment || $t('Aucun note') }}</p>
+                                                <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-col>
+                                <v-col cols="12" md="6" class="h-100">
+                                    <v-card elevation="10" class="h-100">
+                                        <v-card-text>
+                                            <div class="d-flex align-start">
+                                                <h2 class="text-h4 mt-1">
+                                                    {{ $t('Commentaire') }}
+                                                </h2>
+                                                <comment-prestation v-model="item" />
+                                            </div>
+                                            <div class="mt-4">
+                                                <p class="mb-1">{{ item.commentaire || $t('Aucun commentaire') }}</p>
+                                                <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
                         </v-col>
                     </v-row>
                 </v-col>

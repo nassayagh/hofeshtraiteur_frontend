@@ -38,6 +38,11 @@ const MainRoutes = {
             component: () => import('@/views/services/List.vue')
         },
         {
+            name: t('Gestion des salles'),
+            path: '/halls',
+            component: () => import('@/views/halls/List.vue')
+        },
+        {
             name: t('Service'),
             path: '/services/:id',
             component: () => import('@/views/services/List.vue')
@@ -83,8 +88,7 @@ const MainRoutes = {
             name: t('Prestation'),
             path: '/prestations/:id',
             component: () => import('@/views/prestations/View.vue')
-        },
-
+        }
     ]
 };
 

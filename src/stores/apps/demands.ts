@@ -15,15 +15,15 @@ export const useDemandStore = defineStore({
             cancelled: -1
         },
         statusesList: [
-            { id: 0, label: t('Nouvelle demande')},
-            { id: 1, label: t('Validé')},
-            { id: -1, label: t('Annulé')},
+            { id: 0, label: t('Nouvelle demande') },
+            { id: 1, label: t('Validé') },
+            { id: -1, label: t('Annulé') }
         ],
         statistics: {
             total: 0,
             validated: 0,
             unvalidated: 0,
-            cancelled: 0,
+            cancelled: 0
         },
         demands: {
             data: [],
@@ -32,10 +32,9 @@ export const useDemandStore = defineStore({
         }
     }),
     actions: {
-
         fetchStatistics(params: any) {
             return axios.get('/statistics/demands', { params }).then((response) => {
-                if(response.data) {
+                if (response.data) {
                     this.statistics = response.data;
                 }
             });
@@ -82,10 +81,18 @@ export const useDemandStore = defineStore({
                     .catch((error) => reject(error));
             });
         },
-        validateItem(id: number, comment: string) {
+        addComment(id: number, comment: any) {
             return new Promise<AxiosResponse>((resolve, reject) => {
                 axios
-                    .post(`/demands/validate/${id}`, { comment: comment })
+                    .post(`/demands/comment/${id}`, { comment: comment })
+                    .then((response) => resolve(response))
+                    .catch((error) => reject(error));
+            });
+        },
+        validateItem(id: number, data: any) {
+            return new Promise<AxiosResponse>((resolve, reject) => {
+                axios
+                    .post(`/demands/validate/${id}`, data)
                     .then((response) => resolve(response))
                     .catch((error) => reject(error));
             });
@@ -112,8 +119,6 @@ export const useDemandStore = defineStore({
                 return t('Nouvelle demande');
             }
         },
-        getStatuses() {
-
-        }
+        getStatuses() {}
     }
 });

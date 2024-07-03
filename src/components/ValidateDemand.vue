@@ -2,14 +2,17 @@
 import { ref, computed, onMounted, watch, watchEffect } from 'vue';
 import { t } from '@/plugins/i18n';
 import { useDemandStore } from '@/stores/apps/demands';
+import { useHallStore } from '@/stores/apps/hall';
 import { useSnackbar } from '@/stores/snackbar';
 import { formatDate } from '@/utils/helpers/formatters';
 import { router } from '@/router';
 const store = useDemandStore();
 const snackbarStore = useSnackbar();
+const hallStore = useHallStore();
 
 const props = defineProps({
-    modelValue: Object
+    modelValue: Object,
+    density: { type: String, default: 'default' }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -21,6 +24,8 @@ const item = computed({
 const dialog = ref(false);
 const loading = ref(false);
 const comment = ref('');
+const hall = ref(null);
+const halls = ref([]);
 
 const title = computed(
     () =>
@@ -29,7 +34,7 @@ const title = computed(
 function validateItemConfirm() {
     loading.value = true;
     store
-        .validateItem(item.value.id, comment.value)
+        .validateItem(item.value.id, { comment: comment.value, hall: hall.value })
         .then((response) => {
             item.value = response.data;
             dialog.value = false;
@@ -44,12 +49,26 @@ function validateItemConfirm() {
             loading.value = false;
         });
 }
+
+onMounted(() => {
+    hallStore.fetchItems({ per_page: 1000 }).then((response) => {
+        halls.value = response.data.data;
+    });
+});
 </script>
 
 <template>
     <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ props }">
-            <v-btn dark v-bind="props" variant="elevated" color="primary" @click="loading = false"
+            <v-btn
+                v-if="!item.prestation"
+                dark
+                v-bind="props"
+                variant="elevated"
+                :density="density"
+                :class="classes"
+                color="primary"
+                @click="loading = false"
                 >{{ $t('Valider en prestation') }}
             </v-btn>
         </template>
@@ -63,6 +82,9 @@ function validateItemConfirm() {
                     </v-col>
                     <v-col cols="12">
                         <v-textarea v-model="comment" :label="$t('Note de liée')" />
+                    </v-col>
+                    <v-col cols="12">
+                        <v-select v-model="hall" :items="halls" item-value="id" item-title="name" :label="$t('Salle liée')" />
                     </v-col>
                 </v-row>
             </v-card-text>

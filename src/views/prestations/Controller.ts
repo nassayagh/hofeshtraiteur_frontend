@@ -20,12 +20,11 @@ export const usePrestationStore = defineStore({
             cancelled: -1
         },
         statusesList: [
-            { id: 0, label: t('Validation')},
-            { id: 1, label: t('Validée')},
-            { id: 2, label: t('En cours')},
-            { id: 3, label: t('Clôturée')},
-            { id: -1, label: t('Annulé')},
-
+            { id: 0, label: t('Validation') },
+            { id: 1, label: t('Validée') },
+            { id: 2, label: t('En cours') },
+            { id: 3, label: t('Clôturée') },
+            { id: -1, label: t('Annulé') }
         ],
         statistics: {
             total: 0,
@@ -36,13 +35,13 @@ export const usePrestationStore = defineStore({
             cancelled: 0,
             paymentsLeft: 0,
             paymentsReceived: 0,
-            totalPayments: 0,
-        },
+            totalPayments: 0
+        }
     }),
     actions: {
         fetchStatistics(params: any) {
             return axios.get('/statistics/prestations', { params }).then((response) => {
-                if(response.data) {
+                if (response.data) {
                     this.statistics = response.data;
                 }
             });
@@ -101,6 +100,14 @@ export const usePrestationStore = defineStore({
             return new Promise<AxiosResponse>((resolve, reject) => {
                 axios
                     .post(`/prestations/cancel/${id}`, { comment: comment })
+                    .then((response) => resolve(response))
+                    .catch((error) => reject(error));
+            });
+        },
+        addComment(id: number, comment: any) {
+            return new Promise<AxiosResponse>((resolve, reject) => {
+                axios
+                    .post(`/prestations/comment/${id}`, { comment: comment })
                     .then((response) => resolve(response))
                     .catch((error) => reject(error));
             });

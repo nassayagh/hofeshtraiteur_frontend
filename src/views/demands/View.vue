@@ -19,6 +19,7 @@ import { router } from '@/router';
 import { basicTableData1 } from '@/_mockApis/components/table/basicTables';
 import CancelDemand from '@/components/CancelDemand.vue';
 import ValidateDemand from '@/components/ValidateDemand.vue';
+import CommentDemand from '@/views/demands/CommentDemand.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -331,9 +332,9 @@ watchEffect(() => {
                     <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom :') }} {{ item.customer.lastname || '' }}</p>
                     <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Email :') }} {{ item.customer.email || '' }}</p>
                     <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Téléphone :') }} {{ item.customer.phone || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">
+                    <!--                    <p class="text-subtitle-1 textSecondary mt-3">
                         {{ $t("Date d'enregistrement :") }} {{ formatDate(item.customer.created_at) || '' }}
-                    </p>
+                    </p>-->
                     <p class="text-subtitle-1 textSecondary mt-3">
                         {{ $t('Type :') }}
                         <v-chip v-if="item.customer && item.customer.is_customer" color="success">{{ $t('Client') }} </v-chip>
@@ -363,18 +364,24 @@ watchEffect(() => {
                             <p class="text-subtitle-1 textSecondary mt-3">
                                 {{ $t('La réception se déroulera plutôt :') }} {{ item.reception_start_time || '' }}
                             </p>
-                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t("Lieu de l'événement :") }} {{ item.event_location || '' }}</p>
-                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nombre de convives :') }} {{ item.number_people || '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t("Lieu de l'événement :") }} {{ item.event_location || '' }}
+                            </p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t('Nombre de convives :') }} {{ item.number_people || '' }}
+                            </p>
                         </v-col>
-                        <v-col cols="12" md="6" lg="7" v-if="item.comment && item.comment.length > 0">
+                        <v-col cols="12" md="6" lg="7">
                             <v-card flat variant="outlined" density="compact">
-                                <v-card-title>{{ $t("Description de la demande")}}</v-card-title>
-                                <v-card-text v-html="item.comment.replace(/\n/g,'<br/>')"></v-card-text>
+                                <v-card-title>{{ $t('Description de la demande') }}</v-card-title>
+                                <v-card-text v-html="(item.comment || '').replace(/\n/g, '<br/>')"></v-card-text>
+                            </v-card>
+                            <v-card flat variant="outlined" class="mt-4" density="compact">
+                                <v-card-title>{{ $t('Commentaire') }} <comment-demand v-model="item" /></v-card-title>
+                                <v-card-text v-html="(item.commentaire || '').replace(/\n/g, '<br/>')"></v-card-text>
                             </v-card>
                         </v-col>
                     </v-row>
-
-
                 </v-card-text>
             </v-card>
         </v-col>

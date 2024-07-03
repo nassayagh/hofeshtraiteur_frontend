@@ -57,10 +57,11 @@ import {
     JumpRopeIcon,
     LayoutKanbanIcon,
     MoneybagIcon,
+    BuildingStadiumIcon,
     HotelServiceIcon,
     UsersGroupIcon,
     DashboardIcon,
-    CalendarQuestionIcon,
+    CalendarQuestionIcon
 } from 'vue-tabler-icons';
 
 import { t } from '@/plugins/i18n';
@@ -82,7 +83,6 @@ export interface menu {
 }
 
 const sidebarItem: menu[] = [
-
     {
         title: t('Dashboard'),
         icon: ChartBarIcon,
@@ -90,7 +90,6 @@ const sidebarItem: menu[] = [
     },
 
     { header: 'Gestion' },
-
 
     {
         title: t('Demandes'),
@@ -107,18 +106,18 @@ const sidebarItem: menu[] = [
         icon: BoxIcon,
         to: '/prestations',
         children: [
-            {
+            /*{
                 title: t('En attente de validation'),
                 to: '/prestations/list/started'
-            },
+            },*/
             {
                 title: t('Validées'),
                 to: '/prestations/list/validated'
             },
-            {
+            /* {
                 title: t('En cours'),
                 to: '/prestations/list/processing'
-            },
+            },*/
             {
                 title: t('Clôturées'),
                 to: '/prestations/list/closed'
@@ -135,6 +134,11 @@ const sidebarItem: menu[] = [
         to: '/payments'
     },
     { header: 'Configuration' },
+    {
+        title: t('Salles'),
+        icon: BuildingStadiumIcon,
+        to: '/halls'
+    },
     {
         title: t('Services'),
         icon: HotelServiceIcon,

@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watch, watchEffect } from 'vue';
 import { usePrestationStore } from './Controller';
 import { useEventTypeStore } from '@/stores/apps/eventType';
+import { useHallStore } from '@/stores/apps/hall';
 import { useDate } from 'vuetify';
 const dateObject = useDate();
 import { useRoute, useRouter } from 'vue-router';
@@ -21,6 +22,7 @@ import DatePicker from '@/components/DatePicker.vue';
 import PrespationDashboard from '@/views/prestations/PrespationDashboard.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
+const hallStore = useHallStore();
 // theme breadcrumb
 const page = ref({ title: '' });
 const breadcrumbs = ref([
@@ -37,15 +39,16 @@ const breadcrumbs = ref([
 ]);
 const items = ref([]);
 const eventTypes = ref([]);
+const halls = ref([]);
 const store = usePrestationStore();
 const route = useRoute();
 
 const currentStatus = ref(0);
 
 onMounted(() => {
-    /*store.fetchItems({}).then((response) => {
-        items.value = response.data.data;
-    });*/
+    hallStore.fetchItems({ per_page: 1000 }).then((response) => {
+        halls.value = response.data.data;
+    });
 
     setGlobalValues();
 
@@ -140,8 +143,8 @@ const headers = ref([
         key: 'event_date'
     },
     { title: t('Heure'), key: 'demand.reception_start_time' },
-    { title: t("Lieu"), key: 'demand.event_location' },
-    { title: t("Convives"), key: 'demand.number_people' },
+    { title: t('Lieu'), key: 'demand.event_location' },
+    { title: t('Convives'), key: 'demand.number_people' },
 
     {
         title: t('En attente de règlement'),
@@ -193,8 +196,9 @@ const headersDefault = ref([
         key: 'event_date'
     },
     { title: t('Heure'), key: 'demand.reception_start_time' },
-    { title: t("Lieu"), key: 'demand.event_location' },
-    { title: t("Convives"), key: 'demand.number_people' },
+    { title: t('Lieu'), key: 'demand.event_location' },
+    { title: t('Convives'), key: 'demand.number_people' },
+    { title: t('Salle'), key: 'hall.name' },
 
     {
         title: t('En attente de règlement'),
@@ -330,7 +334,6 @@ function setGlobalValues() {
             disabled: false,
             href: '/'
         }
-
     ];
     items.value = [];
     totalItems.value = 0;
@@ -344,7 +347,7 @@ function setGlobalValues() {
                 href: '#'
             });
             currentStatus.value = store.statuses.started;
-            headers.value = headersDefault.value.filter((e)=> e.key != 'services_sum_total' && e.key != 'amount_left')
+            headers.value = headersDefault.value.filter((e) => e.key != 'services_sum_total' && e.key != 'amount_left');
             break;
         case 'validated':
             page.value = { title: t('Prestations validées') };
@@ -534,20 +537,20 @@ onMounted(() => {
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
 
-
     <v-row>
         <v-col cols="12" md="6">
-            <PrespationDashboard md="6"
-                                 :show-validation="route.params.status == 'started'"
-                                 :show-validated="route.params.status == 'validated'"
-                                 :show-processing="route.params.status == 'processing'"
-                                 :show-closed="route.params.status == 'closed'"
-                                 :show-cancelled="route.params.status == 'cancelled'"
-                                 show-description
+            <PrespationDashboard
+                md="6"
+                :show-validation="route.params.status == 'started'"
+                :show-validated="route.params.status == 'validated'"
+                :show-processing="route.params.status == 'processing'"
+                :show-closed="route.params.status == 'closed'"
+                :show-cancelled="route.params.status == 'cancelled'"
+                show-description
             />
         </v-col>
         <v-col cols="12" md="6">
-            <PrespationDashboard show-payments  show-description/>
+            <PrespationDashboard show-payments show-description />
         </v-col>
         <v-col cols="12">
             <v-data-table-server
@@ -597,7 +600,22 @@ onMounted(() => {
                                     clearable
                                 ></v-select>
                             </v-col>
-<!--                            <v-col>
+                            <v-col>
+                                <v-select
+                                    density="compact"
+                                    v-model="filters.hall"
+                                    :placeholder="$t('Salle')"
+                                    :items="halls"
+                                    item-value="id"
+                                    item-title="name"
+                                    multiple
+                                    hide-details
+                                    variant="solo"
+                                    flat
+                                    clearable
+                                ></v-select>
+                            </v-col>
+                            <!--                            <v-col>
                                 <v-select
                                     density="compact"
                                     v-model="filters.status"
@@ -669,16 +687,26 @@ onMounted(() => {
                     {{ formatDate(item.event_date) }}
                 </template>
                 <template v-slot:item.amount_left="{ item }">
-                    <span v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0" class="text-error font-weight-bold " >{{ formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0)) }}</span>
+                    <span v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0" class="text-error font-weight-bold">{{
+                        formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0))
+                    }}</span>
                 </template>
                 <template v-slot:item.services_sum_total="{ item }">
-                    <v-chip variant="tonal" :color="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0?'error':'success'" class="font-weight-bold">{{ formatAmount(item.payments_sum_amount || 0) }} / {{ formatAmount(item.services_sum_total || 0) }}</v-chip>
+                    <v-chip
+                        variant="tonal"
+                        :color="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0 ? 'error' : 'success'"
+                        class="font-weight-bold"
+                        >{{ formatAmount(item.payments_sum_amount || 0) }} / {{ formatAmount(item.services_sum_total || 0) }}</v-chip
+                    >
                 </template>
                 <template v-slot:item.status="{ item }">
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-btn-group
+                    <v-btn density="compact" color="primary" class="mx-2" variant="outlined" :to="'/prestations/' + item.id">{{
+                        $t('Voir')
+                    }}</v-btn>
+                    <!--                    <v-btn-group
                             base-color="primaruy"
                         variant="elevated"
                         color="primary"
@@ -701,7 +729,7 @@ onMounted(() => {
                                 </v-list-item>
                             </v-list>
                         </v-menu>
-                    </v-btn-group>
+                    </v-btn-group>-->
                     <!--                    <div class="d-flex align-center">
                         <v-tooltip :text="$t('Modifier')">
                             <template v-slot:activator="{ props }">
