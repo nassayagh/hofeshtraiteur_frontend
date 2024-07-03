@@ -210,6 +210,7 @@ function save(values: any, { setErrors }: any) {
                     } else {
                         items.value.unshift(response.data);
                     }
+                    saving.value = false;
                     loading.value = false;
                     dialog.value = false;
                     editedItem.value = { changePassword: true };
@@ -472,7 +473,7 @@ watchEffect(() => {
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn color="error" variant="flat" dark @click="close"> {{ $t('Annuler') }} </v-btn>
-                                        <v-btn color="success" variant="flat" :loading="loading" type="submit">
+                                        <v-btn color="success" variant="flat" :loading="saving" type="submit">
                                             {{ $t('Sauvegarder') }}
                                         </v-btn>
                                     </v-card-actions>
