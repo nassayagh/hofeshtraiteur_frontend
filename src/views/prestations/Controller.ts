@@ -136,6 +136,14 @@ export const usePrestationStore = defineStore({
                     .catch((error) => reject(error));
             });
         },
+        changeHall(id: number, hall: number) {
+            return new Promise<AxiosResponse>((resolve, reject) => {
+                axios
+                    .post(`/prestations/changehall/${id}`, { hall: hall })
+                    .then((response) => resolve(response))
+                    .catch((error) => reject(error));
+            });
+        },
         saveService(id: number, service: any) {
             return new Promise<AxiosResponse>((resolve, reject) => {
                 axios

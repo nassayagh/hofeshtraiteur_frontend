@@ -360,7 +360,7 @@ watchEffect(() => {
                         <v-spacer></v-spacer>
                         <v-dialog v-model="dialog" max-width="750px">
                             <template v-slot:activator="{ props }">
-                                <v-btn color="primary" variant="flat" @click="editItem = {}" dark v-bind="props">{{
+                                <v-btn color="primary" variant="flat" @click="editItem = defaultItem" dark v-bind="props">{{
                                     $t('Ajouter une salle')
                                 }}</v-btn>
                             </template>

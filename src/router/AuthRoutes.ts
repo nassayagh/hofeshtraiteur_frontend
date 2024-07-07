@@ -8,7 +8,7 @@ const AuthRoutes = {
         {
             name: 'Side Login',
             path: '/login',
-            component: () => import('@/views/authentication/SideLogin.vue')
+            component: () => import('@/views/authentication/BoxedLogin.vue')
         },
         {
             name: 'Boxed Login',

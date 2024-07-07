@@ -27,6 +27,7 @@ import PaymentForm from '@/views/prestations/components/PaymentForm.vue';
 import StartPrestation from '@/views/prestations/components/StartPrestation.vue';
 import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
 import CommentPrestation from '@/views/prestations/components/CommentPrestation.vue';
+import HallWidget from '@/views/prestations/components/HallWidget.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -397,10 +398,13 @@ watch(
                 >{{ $t('Voir la demande associée') }}
             </v-btn>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="3">
             <CustomerWidget v-model="item" show-demand-info />
         </v-col>
-        <v-col cols="12" md="8" class="justify-end align-end">
+        <v-col cols="12" md="3">
+            <HallWidget v-model="item" show-demand-info />
+        </v-col>
+        <v-col cols="12" md="6" class="justify-end align-end">
             <v-row class="h-100 align-end justify-end align-content-end">
                 <v-col cols="12" class="h-50 align-end justify-end align-content-end">
                     <v-row class="h-100 align-end justify-end align-content-end">
