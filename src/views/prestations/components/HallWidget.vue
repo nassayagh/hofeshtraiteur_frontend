@@ -30,8 +30,11 @@ const item = computed({
                 <!--                <v-btn variant="tonal" density="compact">{{ $t('Modifier') }}</v-btn>-->
             </h4>
         </v-card-item>
-        <v-card-text class="pl-6 pr-6" v-if="!item.hall">
-            <v-alert type="info">{{ $t("Aucune salle n'a été attribuée. Veuillez attribuer une salle.") }}</v-alert>
+        <v-card-text class="pl-6 pr-6 pt-6" v-if="!item.hall">
+            <v-alert type="info"
+                >{{ $t("Aucune salle n'a été attribuée. Veuillez attribuer une salle.") }} <br />
+                <change-hall v-model="item"
+            /></v-alert>
         </v-card-text>
         <v-card-text v-else class="pl-6 pr-6">
             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom :') }} {{ item.hall.name || '' }}</p>
