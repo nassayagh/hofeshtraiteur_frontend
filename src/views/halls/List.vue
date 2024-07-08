@@ -114,62 +114,67 @@ const headers = ref([
         key: 'id'
     },
     {
-        title: 'Nom',
+        title: t('Nom'),
         align: 'start',
         key: 'name'
     },
     {
-        title: 'Adresse de la salle',
+        title: t('Adresse de la salle'),
         align: 'start',
         key: 'address'
     },
     {
-        title: 'Nom du régisseur',
+        title: t('Nom du régisseur'),
         align: 'start',
         key: 'manager_name'
     },
     {
-        title: 'Téléphone du régisseur',
+        title: t('Téléphone du régisseur'),
         align: 'start',
         key: 'manager_phone'
     },
     {
-        title: 'Parking',
+        title: t('Mail du régisseur'),
+        align: 'start',
+        key: 'manager_email'
+    },
+    {
+        title: t('Parking'),
         align: 'start',
         key: 'packing'
     },
     {
-        title: 'Cuisine',
+        title: t('Cuisine'),
         align: 'start',
         key: 'kitchen'
     },
     {
-        title: 'Chambre froidre',
+        title: t('Chambre froidre'),
         align: 'start',
         key: 'cold_room'
     },
     {
-        title: 'Escalier',
+        title: t('Escalier'),
         align: 'start',
         key: 'ladder'
     },
     {
-        title: 'Bac de poubelle',
+        title: t('Bac de poubelle'),
         align: 'start',
         key: 'bin'
     },
     {
-        title: 'Frais de déplacement',
+        title: t('Frais de déplacement'),
         align: 'start',
         key: 'transportation_fee'
     },
     {
-        title: 'Table de buffet',
+        title: t('Table de buffet'),
         align: 'start',
         key: 'transportation_fee'
     },
     {
-        title: 'Commentaire',
+        title: t('Commentaire'),
         align: 'start',
         key: 'comment'
     },
@@ -385,16 +390,22 @@ watchEffect(() => {
                                                         :label="$t('Adresse de la salle')"
                                                     ></v-text-field>
                                                 </v-col>
-                                                <v-col cols="12" md="6">
+                                                <v-col cols="12" md="4">
                                                     <v-text-field
                                                         v-model="editedItem.manager_name"
                                                         :label="$t('Nom du régisseur')"
                                                     ></v-text-field>
                                                 </v-col>
-                                                <v-col cols="12" md="6">
+                                                <v-col cols="12" md="4">
                                                     <v-text-field
                                                         v-model="editedItem.manager_phone"
                                                         :label="$t('Téléphone du régisseur')"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <v-text-field
+                                                        v-model="editedItem.manager_email"
+                                                        :label="$t('Mail du régisseur')"
                                                     ></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" md="3">
@@ -403,7 +414,7 @@ watchEffect(() => {
                                                         :items="yesNo"
                                                         item-title="label"
                                                         item-value="id"
-                                                        :label="$t('Packing')"
+                                                        :label="$t('Parking')"
                                                         clearable
                                                 /></v-col>
                                                 <v-col cols="12" md="3">

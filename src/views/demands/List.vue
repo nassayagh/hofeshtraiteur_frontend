@@ -458,9 +458,9 @@ function customerSelected(val) {
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
-        <v-col cols="12">
+        <!--        <v-col cols="12">
             <demands-dashboard />
-        </v-col>
+        </v-col>-->
         <v-col cols="12">
             <v-data-table-server
                 class="border rounded-md"
@@ -516,7 +516,6 @@ function customerSelected(val) {
                                     item-value="id"
                                     item-title="label"
                                     clearable
-                                    multiple
                                     hide-details
                                     variant="solo"
                                 ></v-select>
@@ -679,11 +678,13 @@ function customerSelected(val) {
                                                         </v-col>
 
                                                         <v-col cols="12" md="6">
-                                                            <v-text-field
+                                                            <v-select
                                                                 v-model="editedItem.reception_start_time"
                                                                 hide-details
+                                                                :items="[$t('En matiné'), $t('Le midi'), $t('En soirée')]"
                                                                 :label="$t('La réception se déroulera plutôt')"
-                                                            ></v-text-field>
+                                                                clearable
+                                                            ></v-select>
                                                         </v-col>
                                                         <v-col cols="12" md="6">
                                                             <v-text-field

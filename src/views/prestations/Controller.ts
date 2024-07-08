@@ -20,9 +20,9 @@ export const usePrestationStore = defineStore({
             cancelled: -1
         },
         statusesList: [
-            { id: 0, label: t('Validation') },
+            /*{ id: 0, label: t('Validation') },*/
             { id: 1, label: t('Validée') },
-            { id: 2, label: t('En cours') },
+            /*{ id: 2, label: t('En cours') },*/
             { id: 3, label: t('Clôturée') },
             { id: -1, label: t('Annulé') }
         ],

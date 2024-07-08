@@ -70,9 +70,9 @@ const MainRoutes = {
 
         {
             name: t('Gestions des prestations'),
-            path: '/prestations/',
-            component: () => import('@/views/prestations/List.vue'),
-            children: [
+            path: '/prestations',
+            component: () => import('@/views/prestations/List.vue')
+            /*children: [
                 {
                     name: t('Prestations'),
                     path: 'list/:status',
@@ -82,7 +82,7 @@ const MainRoutes = {
                     path: '/',
                     redirect: '/dashboards/analytical'
                 }
-            ]
+            ]*/
         },
         {
             name: t('Prestation'),

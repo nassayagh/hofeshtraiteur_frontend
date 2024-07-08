@@ -20,6 +20,9 @@ const refForm = ref<VForm>();
 import { useSnackbar } from '@/stores/snackbar';
 import DatePicker from '@/components/DatePicker.vue';
 import PrespationDashboard from '@/views/prestations/PrespationDashboard.vue';
+import HallWidget from '@/views/prestations/components/HallWidget.vue';
+import ValidateDemand from '@/components/ValidateDemand.vue';
+import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const hallStore = useHallStore();
@@ -73,7 +76,8 @@ const pageCount = ref(0);
 const filters = ref({
     search: null,
     date: null,
-    event_type: null
+    event_type: null,
+    status: store.statuses.validated
 });
 const options = ref({
     itemsPerPage: 10,
@@ -198,7 +202,7 @@ const headersDefault = ref([
     { title: t('Heure'), key: 'demand.reception_start_time' },
     { title: t('Lieu'), key: 'demand.event_location' },
     { title: t('Convives'), key: 'demand.number_people' },
-    { title: t('Salle'), key: 'hall.name' },
+    { title: t('Salle'), key: 'hall' },
 
     {
         title: t('En attente de règlement'),
@@ -615,7 +619,7 @@ onMounted(() => {
                                     clearable
                                 ></v-select>
                             </v-col>
-                            <!--                            <v-col>
+                            <v-col>
                                 <v-select
                                     density="compact"
                                     v-model="filters.status"
@@ -624,11 +628,10 @@ onMounted(() => {
                                     item-value="id"
                                     item-title="label"
                                     clearable
-                                    multiple
                                     hide-details
                                     variant="solo"
                                 ></v-select>
-                            </v-col>-->
+                            </v-col>
                             <v-col>
                                 <v-dialog ref="dialog" v-model="dateModal" v-model:return-value="filters.date" persistent width="290px">
                                     <template #activator="{ props }">
@@ -701,6 +704,10 @@ onMounted(() => {
                 </template>
                 <template v-slot:item.status="{ item }">
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
+                </template>
+                <template v-slot:item.hall="{ index, item }">
+                    <span v-if="item.hall">{{ item.hall.name }}</span>
+                    <ChangeHall v-if="!item.hall" v-model="items[index]" show-demand-info />
                 </template>
                 <template v-slot:item.actions="{ item }">
                     <v-btn density="compact" color="primary" class="mx-2" variant="outlined" :to="'/prestations/' + item.id">{{

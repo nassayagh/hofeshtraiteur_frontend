@@ -41,6 +41,7 @@ const item = computed({
             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Adresse :') }} {{ item.hall.address || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom du régisseur :') }} {{ item.hall.manager_name || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Téléphone du régisseur :') }} {{ item.hall.manager_phone || '' }}</p>
+            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Mail du régisseur :') }} {{ item.hall.manager_email || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.packing">{{ $t('Parking :') }} {{ 'Oui' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.kitchen">{{ $t('Cuisine :') }} {{ 'Oui' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.cold_rooom">{{ $t('Chambre froidre :') }} {{ 'Oui' }}</p>

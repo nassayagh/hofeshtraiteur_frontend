@@ -394,9 +394,9 @@ watch(
             <v-btn variant="elevated" color="success" class="ml-2" :to="'/customers/' + item.customer_id"
                 >{{ $t('Voir le Client') }}
             </v-btn>
-            <v-btn variant="elevated" color="info" class="ml-2" :to="'/demands/' + item.demand_id"
+            <!--            <v-btn variant="elevated" color="info" class="ml-2" :to="'/demands/' + item.demand_id"
                 >{{ $t('Voir la demande associée') }}
-            </v-btn>
+            </v-btn>-->
         </v-col>
         <v-col cols="12" md="3">
             <CustomerWidget v-model="item" show-demand-info />

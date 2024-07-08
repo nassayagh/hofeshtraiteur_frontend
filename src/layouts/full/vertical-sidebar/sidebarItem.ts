@@ -97,27 +97,22 @@ const sidebarItem: menu[] = [
         to: '/demands'
     },
     {
-        title: t('Clients'),
-        icon: UsersGroupIcon,
-        to: '/customers'
-    },
-    {
         title: t('Prestations'),
         icon: BoxIcon,
-        to: '/prestations',
-        children: [
-            /*{
+        to: '/prestations'
+        /*children: [
+            {
                 title: t('En attente de validation'),
                 to: '/prestations/list/started'
-            },*/
+            },
             {
                 title: t('Validées'),
                 to: '/prestations/list/validated'
             },
-            /* {
+             {
                 title: t('En cours'),
                 to: '/prestations/list/processing'
-            },*/
+            },
             {
                 title: t('Clôturées'),
                 to: '/prestations/list/closed'
@@ -126,7 +121,12 @@ const sidebarItem: menu[] = [
                 title: t('Annulées'),
                 to: '/prestations/list/cancelled'
             }
-        ]
+        ]*/
+    },
+    {
+        title: t('Clients'),
+        icon: UsersGroupIcon,
+        to: '/customers'
     },
     {
         title: t('Paiements'),

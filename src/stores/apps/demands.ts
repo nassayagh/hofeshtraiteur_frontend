@@ -16,7 +16,7 @@ export const useDemandStore = defineStore({
         },
         statusesList: [
             { id: 0, label: t('Nouvelle demande') },
-            { id: 1, label: t('Validé') },
+            /*{ id: 1, label: t('Validé') },*/
             { id: -1, label: t('Annulé') }
         ],
         statistics: {
