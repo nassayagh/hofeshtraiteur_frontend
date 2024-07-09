@@ -24,7 +24,8 @@ export const usePrestationStore = defineStore({
             { id: 1, label: t('Validée') },
             /*{ id: 2, label: t('En cours') },*/
             { id: 3, label: t('Clôturée') },
-            { id: -1, label: t('Annulé') }
+            { id: -1, label: t('Annulé') },
+            { id: null, label: t('Tous') }
         ],
         statistics: {
             total: 0,

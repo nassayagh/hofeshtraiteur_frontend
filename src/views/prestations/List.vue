@@ -146,7 +146,8 @@ const headers = ref([
         align: 'start',
         key: 'event_date'
     },
-    { title: t('Heure'), key: 'demand.reception_start_time' },
+    { title: t('La réception se déroulera plutôt'), key: 'reception_period' },
+    { title: t('Heure'), key: 'reception_start_time' },
     { title: t('Lieu'), key: 'demand.event_location' },
     { title: t('Convives'), key: 'demand.number_people' },
 
@@ -199,7 +200,8 @@ const headersDefault = ref([
         align: 'start',
         key: 'event_date'
     },
-    { title: t('Heure'), key: 'demand.reception_start_time' },
+    { title: t('La réception se déroulera plutôt'), key: 'reception_period' },
+    { title: t('Heure'), key: 'reception_start_time' },
     { title: t('Lieu'), key: 'demand.event_location' },
     { title: t('Convives'), key: 'demand.number_people' },
     { title: t('Salle'), key: 'hall' },
@@ -613,6 +615,23 @@ onMounted(() => {
                                     item-value="id"
                                     item-title="name"
                                     multiple
+                                    hide-details
+                                    variant="solo"
+                                    flat
+                                    clearable
+                                ></v-select>
+                            </v-col>
+                            <v-col>
+                                <v-select
+                                    density="compact"
+                                    v-model="filters.payment_status"
+                                    :placeholder="$t('Reste à payer')"
+                                    :items="[
+                                        { id: 'waiting', label: $t('En attente') },
+                                        { id: 'completed', label: $t('Soldé') }
+                                    ]"
+                                    item-value="id"
+                                    item-title="label"
                                     hide-details
                                     variant="solo"
                                     flat

@@ -362,7 +362,10 @@ watchEffect(() => {
                                 {{ $t("Date de l'événement :") }} {{ formatDate(item.event_date) || '' }}
                             </p>
                             <p class="text-subtitle-1 textSecondary mt-3">
-                                {{ $t('La réception se déroulera plutôt :') }} {{ item.reception_start_time || '' }}
+                                {{ $t('La réception se déroulera plutôt :') }} {{ item.reception_period || '' }}
+                            </p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t('Heure de réception :') }} {{ item.reception_start_time || '' }}
                             </p>
                             <p class="text-subtitle-1 textSecondary mt-3">
                                 {{ $t("Lieu de l'événement :") }} {{ item.event_location || '' }}

@@ -178,6 +178,7 @@ const headers = ref([
     },
 
     { title: t("Date de l'événement "), key: 'event_date' },
+    { title: t('La réception se déroulera plutôt'), key: 'reception_period' },
     { title: t('Heure'), key: 'reception_start_time' },
     { title: t('Lieu'), key: 'event_location' },
     { title: t('Convives'), key: 'number_people' },
@@ -679,12 +680,20 @@ function customerSelected(val) {
 
                                                         <v-col cols="12" md="6">
                                                             <v-select
-                                                                v-model="editedItem.reception_start_time"
+                                                                v-model="editedItem.reception_period"
                                                                 hide-details
                                                                 :items="[$t('En matiné'), $t('Le midi'), $t('En soirée')]"
                                                                 :label="$t('La réception se déroulera plutôt')"
                                                                 clearable
                                                             ></v-select>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6">
+                                                            <v-text-field
+                                                                v-model="editedItem.reception_start_time"
+                                                                hide-details
+                                                                :label="$t('Heure de réception')"
+                                                                clearable
+                                                            ></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="6">
                                                             <v-text-field
