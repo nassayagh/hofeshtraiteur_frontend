@@ -12,7 +12,8 @@ const hallStore = useHallStore();
 
 const props = defineProps({
     modelValue: Object,
-    density: { type: String, default: 'default' }
+    density: { type: String, default: 'default' },
+    icon: { type: Boolean, default: false }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -24,7 +25,7 @@ const item = computed({
 const dialog = ref(false);
 const loading = ref(false);
 const comment = ref('');
-const hall = ref(null);
+const hall = ref(item.value.hall_id);
 const halls = ref([]);
 
 const title = computed(
@@ -64,12 +65,14 @@ onMounted(() => {
                 v-if="!item.prestation"
                 dark
                 v-bind="props"
+                flat
                 variant="elevated"
                 :density="density"
-                :class="classes"
                 color="primary"
+                :icon="icon"
                 @click="loading = false"
-                >{{ $t('Valider en prestation') }}
+                >{{ !icon ? $t('Valider en prestation') : '' }}
+                <CheckIcon stroke-width="1.5" size="20" />
             </v-btn>
         </template>
         <v-card>

@@ -244,7 +244,7 @@ watchEffect(() => {
 });
 </script>
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <BaseBreadcrumb :title="`${page.title}(${totalItems})`" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
         <v-col cols="12">
             <v-data-table-server

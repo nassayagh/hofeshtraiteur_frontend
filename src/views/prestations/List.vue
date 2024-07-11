@@ -27,7 +27,7 @@ const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const hallStore = useHallStore();
 // theme breadcrumb
-const page = ref({ title: '' });
+const page = ref({ title: t('Prestations') });
 const breadcrumbs = ref([
     {
         text: t('Dashboard'),
@@ -63,7 +63,7 @@ const loading = ref(false);
 const saving = ref(false);
 const timeout = ref(null);
 const dateModal = ref(false);
-const rowPerPage = ref(10);
+const rowPerPage = ref(25);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalItems = ref(0);
@@ -80,8 +80,8 @@ const filters = ref({
     status: store.statuses.validated
 });
 const options = ref({
-    itemsPerPage: 10,
-    rowsPerPage: 10,
+    itemsPerPage: 25,
+    rowsPerPage: 25,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'demand_date', order: 'DESC' }]
@@ -185,29 +185,29 @@ const headersDefault = ref([
         sortable: false
     },
     {
-        title: t('Téléphone'),
+        title: t('Tél.'),
         align: 'start',
         key: 'customer.phone',
         sortable: false
     },
-    {
+    /* {
         title: t('Prestation'),
         align: 'start',
         key: 'event_type'
-    },
+    },*/
     {
-        title: t('Date de la prestation'),
+        title: t('Date prest.'),
         align: 'start',
         key: 'event_date'
     },
-    { title: t('La réception se déroulera plutôt'), key: 'reception_period' },
+    { title: t('Moment'), key: 'reception_period' },
     { title: t('Heure'), key: 'reception_start_time' },
-    { title: t('Lieu'), key: 'demand.event_location' },
-    { title: t('Convives'), key: 'demand.number_people' },
+    /*   { title: t('Lieu'), key: 'demand.event_location' },*/
+    { title: t('Con.'), key: 'demand.number_people' },
     { title: t('Salle'), key: 'hall' },
 
     {
-        title: t('En attente de règlement'),
+        title: t('Reste à payer'),
         align: 'start',
         key: 'amount_left',
         sortable: false
@@ -393,7 +393,7 @@ function setGlobalValues() {
             currentStatus.value = store.statuses.cancelled;
             break;
         default:
-            page.value = { title: t('Prestations en attente de validation') };
+            page.value = { title: `${t('Prestations')}` };
             breadcrumbs.value.push({
                 text: page.value.title,
                 disabled: true,
@@ -541,12 +541,12 @@ onMounted(() => {
 });
 </script>
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <BaseBreadcrumb :title="`${page.title}(${totalItems})`" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
 
     <v-row>
-        <v-col cols="12" md="6">
+        <!--        <v-col cols="12" md="4">
             <PrespationDashboard
-                md="6"
+                md="12"
                 :show-validation="route.params.status == 'started'"
                 :show-validated="route.params.status == 'validated'"
                 :show-processing="route.params.status == 'processing'"
@@ -555,9 +555,9 @@ onMounted(() => {
                 show-description
             />
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="8">
             <PrespationDashboard show-payments show-description />
-        </v-col>
+        </v-col>-->
         <v-col cols="12">
             <v-data-table-server
                 class="border rounded-md"
@@ -729,9 +729,9 @@ onMounted(() => {
                     <ChangeHall v-if="!item.hall" v-model="items[index]" show-demand-info />
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-btn density="compact" color="primary" class="mx-2" variant="outlined" :to="'/prestations/' + item.id">{{
-                        $t('Voir')
-                    }}</v-btn>
+                    <v-btn icon flat density="compact" class="mx-2" :to="'/prestations/' + item.id">
+                        <EyeIcon stroke-width="1.5" size="20" class="text-primary" />
+                    </v-btn>
                     <!--                    <v-btn-group
                             base-color="primaruy"
                         variant="elevated"

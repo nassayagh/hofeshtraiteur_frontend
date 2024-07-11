@@ -60,7 +60,7 @@ const paymentStatus = ref(null);
 const documentStatus = ref(null);
 const dateModal = ref(false);
 const selectedStatus = ref();
-const rowPerPage = ref(10);
+const rowPerPage = ref(25);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalPayments = ref(0);
@@ -79,8 +79,8 @@ const filters = ref({
     event_type: null
 });
 const options = ref({
-    itemsPerPage: 10,
-    rowsPerPage: 10,
+    itemsPerPage: 25,
+    rowsPerPage: 25,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'created_at', order: 'DESC' }]
@@ -374,8 +374,8 @@ watchEffect(() => {
 });
 </script>
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
-    <PrespationDashboard show-payments show-description show-total-payments/>
+    <BaseBreadcrumb :title="`${page.title}(${totalPayments})`" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <PrespationDashboard show-payments show-description show-total-payments />
     <v-row>
         <v-col cols="12">
             <v-data-table-server

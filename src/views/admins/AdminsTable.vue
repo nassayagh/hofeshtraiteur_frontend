@@ -58,7 +58,6 @@ const currentPage = ref(2);
 const totalPage = ref(2);
 const totalUsers = ref(0);
 
-
 const valid = ref(false);
 const dialog = ref(false);
 const errorMessage = ref(null);
@@ -281,9 +280,8 @@ watchEffect(() => {
 });
 </script>
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <BaseBreadcrumb :title="`${page.title}(${totalUsers})`" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
-
         <v-col cols="12">
             <v-data-table-server
                 class="border rounded-md"

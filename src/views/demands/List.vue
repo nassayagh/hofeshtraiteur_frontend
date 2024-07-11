@@ -3,6 +3,7 @@ import { ref, computed, onMounted, watch, watchEffect } from 'vue';
 import { useDemandStore } from '@/stores/apps/demands';
 import { useEventTypeStore } from '@/stores/apps/eventType';
 import { useCustomerStore } from '@/stores/apps/customers';
+import { useHallStore } from '@/stores/apps/hall';
 import type { CurrencyEuroIcon, BasketIcon, ShoppingCartIcon } from 'vue-tabler-icons';
 
 import { useDate } from 'vuetify';
@@ -25,6 +26,7 @@ import ValidateDemand from '@/components/ValidateDemand.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const customerStore = useCustomerStore();
+const hallStore = useHallStore();
 // theme breadcrumb
 const page = ref({ title: t('Gestion des demandes') });
 const breadcrumbs = ref([
@@ -42,6 +44,7 @@ const breadcrumbs = ref([
 const demands = ref([]);
 const eventTypes = ref([]);
 const customers = ref([]);
+const halls = ref([]);
 const store = useDemandStore();
 
 onMounted(() => {
@@ -51,6 +54,9 @@ onMounted(() => {
     fetchDemands();
     fetchEventTypes();
     fetchCustomers();
+    hallStore.fetchItems({ per_page: 1000 }).then((response) => {
+        halls.value = response.data.data;
+    });
 });
 
 const showDescription = ref(false);
@@ -69,7 +75,7 @@ const documentStatus = ref(null);
 const dateModal = ref(false);
 const dateDemandModal = ref(false);
 const selectedStatus = ref();
-const rowPerPage = ref(10);
+const rowPerPage = ref(25);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalDemands = ref(0);
@@ -93,8 +99,8 @@ const filters = ref({
     event_type: null
 });
 const options = ref({
-    itemsPerPage: 10,
-    rowsPerPage: 10,
+    itemsPerPage: 25,
+    rowsPerPage: 25,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'id', order: 'DESC' }]
@@ -151,7 +157,7 @@ const headers = ref([
         sortable: false
     },
     {
-        title: t('Téléphone'),
+        title: t('Tél.'),
         align: 'start',
         key: 'customer.phone',
         sortable: false
@@ -166,22 +172,23 @@ const headers = ref([
         align: 'start',
         key: 'demand_date'
     },*/
-    {
+    /* {
         title: t('Statut'),
         align: 'start',
         key: 'status'
-    },
+    },*/
     {
         title: t('Source'),
         align: 'start',
         key: 'source'
     },
 
-    { title: t("Date de l'événement "), key: 'event_date' },
-    { title: t('La réception se déroulera plutôt'), key: 'reception_period' },
+    { title: t("Date 'évén"), key: 'event_date' },
+    { title: t('Moment'), key: 'reception_period' },
     { title: t('Heure'), key: 'reception_start_time' },
     { title: t('Lieu'), key: 'event_location' },
-    { title: t('Convives'), key: 'number_people' },
+    { title: t('Salle'), key: 'hall.name' },
+    { title: t('Conv'), key: 'number_people' },
     { title: 'Actions', key: 'actions', sortable: false }
 ]);
 const formatedDate = computed(() => {
@@ -457,7 +464,7 @@ function customerSelected(val) {
 }
 </script>
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <BaseBreadcrumb :title="`${page.title}(${totalDemands})`" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
         <!--        <v-col cols="12">
             <demands-dashboard />
@@ -508,7 +515,7 @@ function customerSelected(val) {
                                     variant="solo"
                                 ></v-select>
                             </v-col>
-                            <v-col>
+                            <!--                            <v-col>
                                 <v-select
                                     density="compact"
                                     v-model="filters.status"
@@ -520,7 +527,7 @@ function customerSelected(val) {
                                     hide-details
                                     variant="solo"
                                 ></v-select>
-                            </v-col>
+                            </v-col>-->
                             <v-col>
                                 <v-select
                                     density="compact"
@@ -695,12 +702,21 @@ function customerSelected(val) {
                                                                 clearable
                                                             ></v-text-field>
                                                         </v-col>
-                                                        <v-col cols="12" md="6">
+                                                        <v-col cols="12" md="6" v-if="editedItem.source != 'admin'">
                                                             <v-text-field
                                                                 v-model="editedItem.event_location"
                                                                 hide-details
                                                                 :label="$t('Lieu de l\'événement')"
                                                             ></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="6" v-else>
+                                                            <v-select
+                                                                v-model="editedItem.hall_id"
+                                                                :items="halls"
+                                                                item-value="id"
+                                                                item-title="name"
+                                                                :label="$t('Salle liée')"
+                                                            />
                                                         </v-col>
                                                         <v-col cols="12" md="6">
                                                             <v-text-field
@@ -764,15 +780,33 @@ function customerSelected(val) {
                 <template v-slot:item.event_date="{ item }">
                     {{ formatDate(item.event_date) }}
                 </template>
+                <template v-slot:item.event_location="{ item }">
+                    <v-tooltip :text="item.event_location">
+                        <template v-slot:activator="{ props }">
+                            <span>{{
+                                item.event_location && item.event_location.length < 10
+                                    ? item.event_location
+                                    : item.event_location.substring(9) + '....'
+                            }}</span>
+                        </template>
+                    </v-tooltip>
+                </template>
                 <template v-slot:item.status="{ item }">
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ index, item }">
                     <div class="d-flex align-center">
-                        <validate-demand density="compact" v-if="!item.prestation" v-model="demands[index]" />
-                        <v-btn density="compact" color="primary" class="mx-2" variant="outlined" :to="'/demands/' + item.id">{{
+                        <validate-demand v-if="!item.prestation" v-model="demands[index]" :icon="true" />
+                        <!--                        <v-btn density="compact" color="primary" class="mx-2" variant="outlined" :to="'/demands/' + item.id">{{
                             $t('Voir')
-                        }}</v-btn>
+                        }}</v-btn>-->
+                        <v-tooltip :text="$t('Voir')">
+                            <template v-slot:activator="{ props }">
+                                <v-btn icon flat :to="'/demands/' + item.id" v-bind="props"
+                                    ><EyeIcon stroke-width="1.5" size="20" class="text-primary"
+                                /></v-btn>
+                            </template>
+                        </v-tooltip>
                         <v-tooltip :text="$t('Modifier')">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat @click="editItem(item)" v-bind="props"

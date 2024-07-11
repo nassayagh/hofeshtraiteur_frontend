@@ -90,8 +90,8 @@ const headers = ref([
         title: 'Nom',
         align: 'start',
         key: 'name'
-    },/*
-    { title: 'Description', key: 'description' },*/
+    } /*
+    { title: 'Description', key: 'description' },*/,
     { title: 'Actions', key: 'actions', sortable: false }
 ]);
 
@@ -243,7 +243,7 @@ watchEffect(() => {
 });
 </script>
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <BaseBreadcrumb :title="`${page.title}(${totalItems})`" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
         <v-col cols="12">
             <v-data-table-server
@@ -297,7 +297,7 @@ watchEffect(() => {
                                                         :label="$t('Nom')"
                                                     ></v-text-field>
                                                 </v-col>
-<!--                                                <v-col cols="12">
+                                                <!--                                                <v-col cols="12">
                                                     <v-textarea v-model="editedItem.description" :label="$t('Description')"></v-textarea>
                                                 </v-col>-->
                                             </v-row>
@@ -310,7 +310,7 @@ watchEffect(() => {
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn color="error" variant="flat" dark @click="close"> {{ $t('Annuler') }} </v-btn>
-                                        <v-btn color="success" variant="flat" :loading="loading"  type="submit">
+                                        <v-btn color="success" variant="flat" :loading="loading" type="submit">
                                             {{ $t('Sauvegarder') }}
                                         </v-btn>
                                     </v-card-actions>

@@ -60,7 +60,7 @@ const paymentStatus = ref(null);
 const documentStatus = ref(null);
 const dateModal = ref(false);
 const selectedStatus = ref();
-const rowPerPage = ref(10);
+const rowPerPage = ref(25);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalCustomers = ref(0);
@@ -80,8 +80,8 @@ const filters = ref({
     event_type: null
 });
 const options = ref({
-    itemsPerPage: 10,
-    rowsPerPage: 10,
+    itemsPerPage: 25,
+    rowsPerPage: 25,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'created_at', order: 'DESC' }]
@@ -201,7 +201,7 @@ function save(values: any, { setErrors }: any) {
                     dialogEdit.value = false;
                     editedItem.value = { changePassword: true };
                     snackbarStore.showSuccess(t('Client enregistré avec succès'));
-                    store.fetchStatistics()
+                    store.fetchStatistics();
                 })
                 .catch((error) => {
                     saving.value = false;
@@ -230,12 +230,18 @@ function deleteItemConfirm() {
     customers.value.splice(index, 1);
     dialogDelete.value = false;
     snackbarStore.showSuccess(t('Client supprimé avec succès'));
-    store.fetchStatistics()
+    store.fetchStatistics();
 }
 
 //Computed Property
 const formTitle = computed(() => {
-    return editedIndex.value === -1 ? editedItem.value.is_customer?t('Nouvel Client'):t('Nouvel Prospect') : editedItem.value.is_customer?t('Modifier Le Client'):t('Modifier Le Prospect');
+    return editedIndex.value === -1
+        ? editedItem.value.is_customer
+            ? t('Nouvel Client')
+            : t('Nouvel Prospect')
+        : editedItem.value.is_customer
+          ? t('Modifier Le Client')
+          : t('Modifier Le Prospect');
 });
 const dateRange = computed(() => {
     if (filters.value.date && filters.value.date.length) {
@@ -363,7 +369,7 @@ watchEffect(() => {
 });
 </script>
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <BaseBreadcrumb :title="`${page.title}(${totalCustomers})`" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
         <v-col cols="12">
             <CustomerDashboard />
@@ -459,15 +465,19 @@ watchEffect(() => {
                                 </v-dialog>
                             </v-col>
                             <v-col class="d-flex gap-2 justify-space-between">
-                                <v-btn color="primary" class="align-self-end " variant="flat" @click="editItem({})" dark >{{
-                                        $t('Ajouter un Prospect')
-                                    }}</v-btn>
+                                <v-btn color="primary" class="align-self-end" variant="flat" @click="editItem({})" dark>{{
+                                    $t('Ajouter un Prospect')
+                                }}</v-btn>
 
-                                <v-btn color="primary" class="align-self-end" variant="flat" @click="editItem({is_customer: true})" dark >{{
-                                        $t('Ajouter un client')
-                                    }}</v-btn>
+                                <v-btn
+                                    color="primary"
+                                    class="align-self-end"
+                                    variant="flat"
+                                    @click="editItem({ is_customer: true })"
+                                    dark
+                                    >{{ $t('Ajouter un client') }}</v-btn
+                                >
                                 <v-dialog v-model="dialogEdit" max-width="600px">
-
                                     <v-card>
                                         <v-card-title class="pa-4 bg-secondary">
                                             <span class="text-h5">{{ formTitle }}</span>
@@ -475,9 +485,7 @@ watchEffect(() => {
                                         <Form v-slot="{ errors, isSubmitting }" ref="refForm" v-model="valid" @submit="save">
                                             <v-card-text>
                                                 <v-container class="px-0">
-
                                                     <v-row>
-
                                                         <v-col cols="12" md="6">
                                                             <v-text-field
                                                                 v-model="editedItem.firstname"
@@ -493,10 +501,7 @@ watchEffect(() => {
                                                             ></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="6">
-                                                            <v-text-field
-                                                                v-model="editedItem.email"
-                                                                :label="$t('Email')"
-                                                            ></v-text-field>
+                                                            <v-text-field v-model="editedItem.email" :label="$t('Email')"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="6">
                                                             <v-text-field
@@ -504,7 +509,6 @@ watchEffect(() => {
                                                                 :label="$t('Téléphone')"
                                                             ></v-text-field>
                                                         </v-col>
-
                                                     </v-row>
                                                     <div v-if="errors.apiError" class="mt-2">
                                                         <v-alert color="error">{{ errors.apiError }}</v-alert>
@@ -525,7 +529,6 @@ watchEffect(() => {
                                 </v-dialog>
                             </v-col>
                         </v-row>
-
 
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
@@ -551,9 +554,9 @@ watchEffect(() => {
                     }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                                        <div class="d-flex align-center">
-                                            <v-btn density="compact" color="primary" variant="outlined" :to="'/customers/' + item.id">{{ $t('Voir') }}</v-btn>
-                                            <v-tooltip :text="$t('Modifier')">
+                    <div class="d-flex align-center">
+                        <v-btn density="compact" color="primary" variant="outlined" :to="'/customers/' + item.id">{{ $t('Voir') }}</v-btn>
+                        <v-tooltip :text="$t('Modifier')">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat @click="editItem(item)" v-bind="props"
                                     ><PencilIcon stroke-width="1.5" size="20" class="text-primary"
