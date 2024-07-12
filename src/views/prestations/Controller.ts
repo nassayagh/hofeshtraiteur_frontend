@@ -40,6 +40,9 @@ export const usePrestationStore = defineStore({
         }
     }),
     actions: {
+        fetchYearStatistics(params: any) {
+            return axios.get('/statistics/prestations', { params });
+        },
         fetchStatistics(params: any) {
             return axios.get('/statistics/prestations', { params }).then((response) => {
                 if (response.data) {

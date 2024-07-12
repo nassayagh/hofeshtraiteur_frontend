@@ -56,7 +56,7 @@ const route = useRoute();
 // theme breadcrumb
 const page = ref({
     title:
-        t('Détails du devis') +
+        t('Détails du prestation') +
         ' ' +
         (item.value.event_type || '') +
         ' ' +
@@ -73,10 +73,15 @@ const breadcrumbs = ref([
         href: '/'
     },
     {
+        text: t('Prestations'),
+        disabled: false,
+        href: '/prestations'
+    },
+    /*{
         text: store.pageTitle(item.value.status),
         disabled: false,
         href: store.pageLink(item.value.status)
-    },
+    },*/
     {
         text: item.value.event_type || '',
         disabled: true,
@@ -105,10 +110,15 @@ function setPageMeta() {
             href: '/'
         },
         {
+            text: t('Prestations'),
+            disabled: false,
+            href: '/prestations'
+        },
+        /*{
             text: store.pageTitle(item.value.status),
             disabled: false,
             href: store.pageLink(item.value.status)
-        },
+        },*/
         {
             text: page.value.title,
             disabled: true,

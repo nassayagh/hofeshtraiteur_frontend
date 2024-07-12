@@ -41,6 +41,20 @@ export const formatDateToMonthShort = (value: string, toTimeForCurrentDay = true
 
     return new Intl.DateTimeFormat('fr-FR', formatting).format(new Date(value));
 };
+export const formatDateToMonthShortYear = (value: string) => {
+    const formatting: Record<string, string> = { month: 'short', year: '2-digit' };
+
+    //if (toTimeForCurrentDay && isToday(date)) formatting = { hour: 'numeric', minute: 'numeric' };
+
+    return new Intl.DateTimeFormat('fr-FR', formatting).format(new Date(value));
+};
+export const formatDateToYear = (value: string) => {
+    const formatting: Record<string, string> = { year: 'numeric' };
+
+    //if (toTimeForCurrentDay && isToday(date)) formatting = { hour: 'numeric', minute: 'numeric' };
+
+    return new Intl.DateTimeFormat('fr-FR', formatting).format(new Date(value));
+};
 
 export const formatAmount = (number: number, currency: string, local: string) => {
     return new Intl.NumberFormat(local || 'fr-FR', {

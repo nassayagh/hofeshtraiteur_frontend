@@ -786,7 +786,7 @@ function customerSelected(val) {
                             <span>{{
                                 item.event_location && item.event_location.length < 10
                                     ? item.event_location
-                                    : item.event_location.substring(9) + '....'
+                                    : `${item.event_location.substring(9)}...`
                             }}</span>
                         </template>
                     </v-tooltip>
