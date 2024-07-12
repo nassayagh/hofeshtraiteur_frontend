@@ -50,7 +50,7 @@ store.fetchItems(props.options).then((response) => {
                 </thead>
                 <tbody>
                     <tr v-for="item in items" :key="item.id" class="month-item">
-                        <td>
+                        <td class="text-no-wrap">
                             {{ item.name }}
                         </td>
                         <td class="text-no-wrap">
