@@ -70,28 +70,35 @@ const breadcrumbs = ref([
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'year_income' }"
             />
         </v-col>
-        <v-col cols="12" md="6" lg="6" xl="3" xxl="3">
+        <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <HallTable
                 class="h-100"
                 :title="$t('LISTE SALLES')"
                 :options="{ per_page: 10, order_by: 'name', direction: 'ASC', statistics: 'dashboard' }"
             />
         </v-col>
-        <v-col cols="12" md="6" lg="6" xl="3" xxl="3">
+        <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PaymentTable
                 class="h-100"
                 :title="$t('LISTE REGLEMENTS')"
                 :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'dashboard' }"
             />
         </v-col>
-        <v-col cols="12" md="6" lg="6" xl="3" xxl="3">
+        <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
+            <PrestastionTable
+                class="h-100"
+                :title="$t('LISTE REGLEMENTS EN ATTENTE')"
+                :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'closed' }"
+            />
+        </v-col>
+        <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PaymentTypeTable
                 class="h-100"
                 :title="$t('TYPE REGLEMENTS')"
                 :options="{ per_page: 1000, order_by: 'name', direction: 'ASC', statistics: 'dashboard' }"
             />
         </v-col>
-        <v-col cols="12" md="6" lg="6" xl="3" xxl="3">
+        <v-col cols="12" md="6" lg="6" xl="6" xxl="6">
             <PrestationTypeTable
                 class="h-100"
                 :title="$t('TYPE PRESTATIONS')"

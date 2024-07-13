@@ -44,9 +44,9 @@ store.fetchItems(props.options).then((response) => {
                 <thead>
                     <tr>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Nom') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Date') }}</th>
+                        <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Date') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Montant') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Lieu') }}</th>
+                        <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Lieu') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,7 +65,7 @@ store.fetchItems(props.options).then((response) => {
                         <td>
                             {{ formatAmount(item.services_sum_total) }}
                         </td>
-                        <td class="text-no-wrap text-truncate">
+                        <td v-if="props.options.statistics != 'closed'" class="text-no-wrap text-truncate">
                             {{
                                 item.event_location == null || item.event_location.length < 10
                                     ? item.event_location
