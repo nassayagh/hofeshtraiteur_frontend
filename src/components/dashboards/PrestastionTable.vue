@@ -59,7 +59,7 @@ store.fetchItems(props.options).then((response) => {
                         <td class="text-no-wrap">
                             {{ item.customer ? `${item.customer.firstname} ${item.customer.lastname}` : '-' }}
                         </td>
-                        <td class="text-no-wrap">
+                        <td v-if="props.options.statistics != 'closed'" class="text-no-wrap">
                             {{ formatDate(item.event_date) }}
                         </td>
                         <td>
