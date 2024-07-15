@@ -42,7 +42,9 @@ function yearChanged(e) {
         <v-card-text>
             <div class="d-sm-flex align-center">
                 <div>
-                    <h2 class="text-h4">{{ title }}</h2>
+                    <h2 class="text-h4">
+                        {{ title }} {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.amount_paid, 0)) }}
+                    </h2>
                 </div>
                 <v-spacer></v-spacer>
                 <div class="ml-auto">
@@ -63,12 +65,12 @@ function yearChanged(e) {
                 <thead>
                     <tr>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Mois') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Reste à payer') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Déjà payer') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Reste') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Déjà') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('CA') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Clients') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Prest fait') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Prest annulé') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Cls') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Fait') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Anlé') }}</th>
                     </tr>
                 </thead>
                 <tbody>

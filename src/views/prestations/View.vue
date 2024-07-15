@@ -100,7 +100,7 @@ function setPageMeta() {
             ' ' +
             (item.value.customer || { lastname: '' }).lastname +
             ' ' +
-            (formatDate(item.value.demand_date) || '') +
+            (formatDate(item.value.event_date) || '') +
             ')'
     };
     breadcrumbs.value = [
@@ -608,7 +608,7 @@ watch(
                                     {{ payment.amount }}
                                 </td>
                                 <td>
-                                    {{ formatDate(payment.created_at) }}
+                                    {{ formatDate(payment.payment_date) }}
                                 </td>
                             </tr>
                         </tbody>

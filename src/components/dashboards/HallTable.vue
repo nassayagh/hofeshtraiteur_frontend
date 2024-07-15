@@ -44,8 +44,8 @@ store.fetchItems(props.options).then((response) => {
                 <thead>
                     <tr>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Nom') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('PREST faite') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('PREST à venir') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Faite') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Venir') }}</th>
                     </tr>
                 </thead>
                 <tbody>

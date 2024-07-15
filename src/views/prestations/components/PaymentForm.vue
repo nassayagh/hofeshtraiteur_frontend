@@ -8,7 +8,8 @@ import { formatDate } from '@/utils/helpers/formatters';
 const store = usePrestationStore();
 const snackbarStore = useSnackbar();
 const paymentMethodStore = usePaymentMethodStore();
-
+import { useDate } from 'vuetify';
+const dateObject = useDate();
 const props = defineProps({
     modelValue: Object,
     prestation: Object,
@@ -23,6 +24,7 @@ const item = computed({
     set: (val) => emit('update:modelValue', val)
 });
 const dialog = ref(false);
+const datePaymentModal = ref(false);
 const loading = ref(false);
 const prestationPaymentMethods = ref([]);
 
@@ -89,6 +91,13 @@ function paymentMethodSelected(val) {
         }
     }
 }
+
+const formatedDemandDate = computed(() => {
+    if (item.value.payment_date) {
+        return dateObject.format(item.value.payment_date, 'shortDate');
+    }
+    return null;
+});
 </script>
 
 <template>
@@ -123,10 +132,47 @@ function paymentMethodSelected(val) {
                             item-value="id"
                             :filled="false"
                             variant="outlined"
+                            required
                             @update:modelValue="paymentMethodSelected"
                         />
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" md="6">
+                        <v-dialog
+                            ref="dialogDemandDate"
+                            v-model="datePaymentModal"
+                            v-model:return-value="item.payment_date"
+                            persistent
+                            width="290px"
+                        >
+                            <template #activator="{ props }">
+                                <VTextField
+                                    v-model="formatedDemandDate"
+                                    v-bind="props"
+                                    :placeholder="$t('Date de la demande')"
+                                    hide-details
+                                    clearable
+                                    readonly
+                                    @click:clear="item.payment_date = null"
+                                />
+                            </template>
+                            <template #default="{ isActive }">
+                                <VLocaleProvider locale="fr">
+                                    <VDatePicker v-model="item.payment_date" hide-header>
+                                        <template #actions>
+                                            <VBtn color="primary" @click="datePaymentModal = false">
+                                                {{ $t('Annuler') }}
+                                            </VBtn>
+                                            <VSpacer />
+                                            <VBtn variant="elevated" color="primary" @click="datePaymentModal = false">
+                                                {{ $t('OK') }}
+                                            </VBtn>
+                                        </template>
+                                    </VDatePicker>
+                                </VLocaleProvider>
+                            </template>
+                        </v-dialog>
+                    </v-col>
+                    <v-col cols="12" md="6">
                         <v-text-field :min="0" v-model="item.amount" type="number" :label="$t('Montant')" />
                     </v-col>
                     <!--                    <v-col cols="12" md="4">

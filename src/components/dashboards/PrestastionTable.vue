@@ -31,11 +31,16 @@ store.fetchItems(props.options).then((response) => {
         <v-card-text>
             <div class="d-sm-flex align-center">
                 <div>
-                    <h2 class="text-h4">{{ title }}</h2>
+                    <h2 class="text-h4">
+                        {{ title }}
+                        {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.service_total, 0)) }}
+                    </h2>
                 </div>
                 <v-spacer></v-spacer>
                 <div class="ml-auto">
-                    <v-btn variant="tonal" color="primary" density="compact" to="/prestations">{{ $t('Voir plus') }}</v-btn>
+                    <v-btn variant="tonal" color="primary" density="compact" :to="`/prestations?status=${options.status}`">{{
+                        $t('Voir plus')
+                    }}</v-btn>
                     <!--                    <v-select v-model="select" :items="months" variant="outlined" dense hide-details></v-select>-->
                 </div>
             </div>
@@ -63,13 +68,13 @@ store.fetchItems(props.options).then((response) => {
                             {{ formatDate(item.event_date) }}
                         </td>
                         <td>
-                            {{ formatAmount(item.services_sum_total) }}
+                            {{ formatAmount(item.service_total) }}
                         </td>
                         <td v-if="props.options.statistics != 'closed'" class="text-no-wrap text-truncate">
                             {{
                                 item.event_location == null || item.event_location.length < 10
                                     ? item.event_location
-                                    : `${item.event_location.length}: ${item.event_location.replace('\n', ' ').substring(9)}...`
+                                    : `${item.event_location.replace('\n', ' ').slice(0, 9)}...`
                             }}
                         </td>
                     </tr>

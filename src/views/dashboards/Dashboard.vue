@@ -32,14 +32,14 @@ const breadcrumbs = ref([
             <PrestastionTable
                 class="h-100"
                 :title="$t('LISTE PRESTATION A VENIR')"
-                :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'future' }"
+                :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'future', status: 1 }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PrestastionTable
                 class="h-100"
                 :title="$t('LISTE PRESTATION DEJA PASSE')"
-                :options="{ per_page: 10, order_by: 'event_date', direction: 'DESC', statistics: 'past' }"
+                :options="{ per_page: 10, order_by: 'event_date', direction: 'DESC', statistics: 'past', status: 3 }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
@@ -52,14 +52,14 @@ const breadcrumbs = ref([
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <IncomePerMonthTable
                 class="h-100"
-                :title="$t('CHIFFRE D’AFFAIRE PAR MOIS - DÉJÀ PASSÉ')"
+                :title="$t('CA/MOIS - DÉJÀ PASSÉ')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'month_income', section: 'past' }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <IncomePerMonthTable
                 class="h-100"
-                :title="$t('CHIFFRE D’AFFAIRE PAR MOIS - A VENIR')"
+                :title="$t('CA/MOIS - A VENIR')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'month_income', section: 'future' }"
             />
         </v-col>
@@ -108,7 +108,12 @@ const breadcrumbs = ref([
     </v-row>
 </template>
 <style>
+.dashboard th {
+    height: auto !important;
+    padding: 5px 2px !important;
+}
 .dashboard td {
     height: auto !important;
+    padding: 0 2px !important;
 }
 </style>

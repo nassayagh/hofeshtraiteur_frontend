@@ -21,7 +21,7 @@ import PrespationDashboard from '@/views/prestations/PrespationDashboard.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 // theme breadcrumb
-const page = ref({ title: 'Gestion des devis' });
+const page = ref({ title: 'Gestion des paiements' });
 const breadcrumbs = ref([
     {
         text: t('Dashboard'),
@@ -29,7 +29,7 @@ const breadcrumbs = ref([
         href: '/'
     },
     {
-        text: t('Gestion des devis'),
+        text: t('Gestion des paiements'),
         disabled: true,
         href: '#'
     }
@@ -70,7 +70,7 @@ const dialog = ref(false);
 const errorMessage = ref(null);
 const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
-const sorting = ref([{ key: 'created_at', order: 'DESC' }]);
+const sorting = ref([{ key: 'payment_date', order: 'DESC' }]);
 const pageCount = ref(0);
 const filters = ref({
     search: null,
@@ -83,7 +83,7 @@ const options = ref({
     rowsPerPage: 25,
     page: 1,
     sortDesc: [true],
-    sortBy: [{ key: 'created_at', order: 'DESC' }]
+    sortBy: [{ key: 'payment_date', order: 'DESC' }]
 });
 
 const editedIndex = ref(-1);
@@ -153,7 +153,7 @@ const headers = ref([
     {
         title: t('Date du paiement'),
         align: 'start',
-        key: 'created_at'
+        key: 'payment_date'
     },
     /* { title: 'Protein (g)', key: 'protein' },*/
     { title: 'Actions', key: 'actions', sortable: false }
@@ -433,6 +433,8 @@ watchEffect(() => {
                                             :placeholder="$t('Date')"
                                             hide-details
                                             variant="solo"
+                                            clearable
+                                            @click:clear="filters.date = null"
                                         />
                                     </template>
                                     <template #default="{ isActive }">
@@ -534,8 +536,8 @@ watchEffect(() => {
                 <template v-slot:item.amount="{ item }">
                     {{ formatAmount(item.amount) }}
                 </template>
-                <template v-slot:item.created_at="{ item }">
-                    {{ formatDate(item.created_at) }}
+                <template v-slot:item.payment_date="{ item }">
+                    {{ formatDate(item.payment_date) }}
                 </template>
                 <!--                <template v-slot:item.status="{ item }">
                     <v-chip :color="store.statusColor(item)" size="small" label>{{ store.statusText(item) }}</v-chip>

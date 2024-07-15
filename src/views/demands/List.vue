@@ -163,7 +163,7 @@ const headers = ref([
         sortable: false
     },
     {
-        title: t('Prestation'),
+        title: t('Prest.'),
         align: 'start',
         key: 'event_type'
     },
@@ -783,10 +783,19 @@ function customerSelected(val) {
                 <template v-slot:item.event_location="{ item }">
                     <v-tooltip :text="item.event_location">
                         <template v-slot:activator="{ props }">
-                            <span>{{
-                                item.event_location && item.event_location.length < 10
+                            <span v-bind="props">{{
+                                !item.event_location || item.event_location.length < 10
                                     ? item.event_location
-                                    : `${item.event_location.substring(9)}...`
+                                    : `${item.event_location.slice(0, 9)}...`
+                            }}</span>
+                        </template>
+                    </v-tooltip>
+                </template>
+                <template v-slot:item.event_type="{ item }">
+                    <v-tooltip :text="item.event_type">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">{{
+                                !item.event_type || item.event_type.length < 10 ? item.event_type : `${item.event_type.slice(0, 9)}...`
                             }}</span>
                         </template>
                     </v-tooltip>

@@ -119,22 +119,22 @@ const headers = ref([
         key: 'name'
     },
     {
-        title: t('Adresse de la salle'),
+        title: t('Adrse'),
         align: 'start',
         key: 'address'
     },
     {
-        title: t('Nom du régisseur'),
+        title: t('Nom.régis'),
         align: 'start',
         key: 'manager_name'
     },
     {
-        title: t('Téléphone du régisseur'),
+        title: t('Tél.rég'),
         align: 'start',
         key: 'manager_phone'
     },
     {
-        title: t('Mail du régisseur'),
+        title: t('Mail.rég'),
         align: 'start',
         key: 'manager_email'
     },
@@ -149,7 +149,7 @@ const headers = ref([
         key: 'kitchen'
     },
     {
-        title: t('Chambre froidre'),
+        title: t('Chambre'),
         align: 'start',
         key: 'cold_room'
     },
@@ -159,22 +159,22 @@ const headers = ref([
         key: 'ladder'
     },
     {
-        title: t('Bac de poubelle'),
+        title: t('Bac'),
         align: 'start',
         key: 'bin'
     },
     {
-        title: t('Frais de déplacement'),
+        title: t('Frais'),
         align: 'start',
         key: 'transportation_fee'
     },
     {
-        title: t('Table de buffet'),
+        title: t('Table'),
         align: 'start',
         key: 'transportation_fee'
     },
     {
-        title: t('Commentaire'),
+        title: t('Cmt'),
         align: 'start',
         key: 'comment'
     },
@@ -506,6 +506,37 @@ watchEffect(() => {
                         </v-dialog>
                     </v-toolbar>
                 </template>
+                <template v-slot:item.address="{ item }">
+                    <v-tooltip :text="item.address">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">{{
+                                !item.address || item.address.length < 10 ? item.address : `${item.address.slice(0, 9)}...`
+                            }}</span>
+                        </template>
+                    </v-tooltip>
+                </template>
+                <template v-slot:item.manager_email="{ item }">
+                    <v-tooltip :text="item.manager_email">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">{{
+                                !item.manager_email || item.manager_email.length < 10
+                                    ? item.manager_email
+                                    : `${item.manager_email.slice(0, 9)}...`
+                            }}</span>
+                        </template>
+                    </v-tooltip>
+                </template>
+                <template v-slot:item.manager_name="{ item }">
+                    <v-tooltip :text="item.manager_name">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">{{
+                                !item.manager_name || item.manager_name.length < 10
+                                    ? item.manager_name
+                                    : `${item.manager_name.slice(0, 9)}...`
+                            }}</span>
+                        </template>
+                    </v-tooltip>
+                </template>
                 <template v-slot:item.packing="{ item }">
                     {{ item.packing ? $t('Oui') : $t('Non') }}
                 </template>
@@ -526,6 +557,15 @@ watchEffect(() => {
                 </template>
                 <template v-slot:item.bin="{ item }">
                     {{ item.bin == 'salle' ? $t('Salle') : $t('Client') }}
+                </template>
+                <template v-slot:item.comment="{ item }">
+                    <v-tooltip :text="item.comment">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">{{
+                                !item.comment || item.comment.length < 10 ? item.comment : `${item.comment.slice(0, 9)}...`
+                            }}</span>
+                        </template>
+                    </v-tooltip>
                 </template>
                 <template v-slot:item.actions="{ item }">
                     <v-icon color="info" size="small" class="me-2" @click="editItem(item)"> mdi-pencil </v-icon>

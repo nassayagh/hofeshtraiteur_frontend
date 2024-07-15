@@ -31,7 +31,10 @@ store.fetchItems(props.options).then((response) => {
         <v-card-text>
             <div class="d-sm-flex align-center">
                 <div>
-                    <h2 class="text-h4">{{ title }}</h2>
+                    <h2 class="text-h4">
+                        {{ title }}
+                        {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.payments_sum_amount, 0)) }}
+                    </h2>
                 </div>
                 <v-spacer></v-spacer>
                 <div class="ml-auto">

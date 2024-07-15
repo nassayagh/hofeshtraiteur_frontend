@@ -31,7 +31,10 @@ store.fetchItems(props.options).then((response) => {
         <v-card-text>
             <div class="d-sm-flex align-center">
                 <div>
-                    <h2 class="text-h4">{{ title }}</h2>
+                    <h2 class="text-h4">
+                        {{ title }}
+                        {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + parseFloat(item.amount), 0)) }}
+                    </h2>
                 </div>
                 <v-spacer></v-spacer>
                 <div class="ml-auto">
@@ -44,7 +47,8 @@ store.fetchItems(props.options).then((response) => {
                 <thead>
                     <tr>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Montant') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Prestation') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Client') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Prest') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Date') }}</th>
                     </tr>
                 </thead>
@@ -57,6 +61,11 @@ store.fetchItems(props.options).then((response) => {
                     >
                         <td class="text-no-wrap">
                             {{ formatAmount(item.amount) }}
+                        </td>
+                        <td class="text-no-wrap">
+                            {{
+                                `${item.prestation && item.prestation.customer ? `${item.prestation.customer.firstname} ${item.prestation.customer.lastname}` : ''}`
+                            }}
                         </td>
                         <td class="text-no-wrap">
                             {{ `${item.prestation ? `${item.prestation.event_type || '-'}` : ''}` }}

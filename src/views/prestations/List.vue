@@ -538,6 +538,9 @@ onMounted(() => {
     } else {
         headers.value.push({ title: t('Actions'), key: 'actions', sortable: false });
     }*/
+    if (route.query.status) {
+        filters.value.status = parseInt(route.query.status || 0);
+    }
 });
 </script>
 <template>
