@@ -38,7 +38,7 @@ store.fetchItems(props.options).then((response) => {
                 </div>
                 <v-spacer></v-spacer>
                 <div class="ml-auto">
-                    <v-btn variant="tonal" color="primary" density="compact" to="/payment_methods">{{ $t('Voir plus') }}</v-btn>
+                    <v-btn variant="tonal" color="primary" density="compact" to="/payments">{{ $t('Voir plus') }}</v-btn>
                     <!--                    <v-select v-model="select" :items="months" variant="outlined" dense hide-details></v-select>-->
                 </div>
             </div>
@@ -53,7 +53,7 @@ store.fetchItems(props.options).then((response) => {
                 </thead>
                 <tbody>
                     <tr v-for="item in items" :key="item.id" class="month-item">
-                        <td class="text-no-wrap">
+                        <td class="text-no-wrap cursor-pointer" @click="$router.push(`/payments?method=${item.name}`)">
                             {{ item.name }}
                         </td>
                         <td class="text-no-wrap">

@@ -51,6 +51,28 @@ const route = useRoute();
 const currentStatus = ref(0);
 
 onMounted(() => {
+    if (route.query.status) {
+        filters.value.status = parseInt(route.query.status || 0);
+        if (filters.value.status == -1) {
+            filters.value.status = null;
+        }
+    }
+    if (route.query.date) {
+        const ds = route.query.date.split(',');
+        const d1 = new Date(ds[0]);
+        const d2 = new Date(ds[1]);
+        filters.value.date = [d1, d2];
+        filters.value.status = null;
+    }
+    if (route.query.hall) {
+        filters.value.hall = [parseInt(route.query.hall || 0)];
+        filters.value.status = null;
+    }
+    if (route.query.event_type) {
+        filters.value.event_type = [route.query.event_type];
+        filters.value.status = null;
+    }
+
     hallStore.fetchItems({ per_page: 1000 }).then((response) => {
         halls.value = response.data.data;
     });
@@ -73,7 +95,7 @@ const totalItems = ref(0);
 const dialog = ref(false);
 const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
-const sorting = ref([{ key: 'created_at', order: 'DESC' }]);
+const sorting = ref([{ key: 'event_date', order: 'ASC' }]);
 const pageCount = ref(0);
 const filters = ref({
     search: null,
@@ -86,7 +108,7 @@ const options = ref({
     rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
-    sortBy: [{ key: 'created_at', order: 'DESC' }]
+    sortBy: [{ key: 'event_date', order: 'ASC' }]
 });
 
 const editedIndex = ref(-1);
@@ -520,33 +542,6 @@ watch(
 // 👉 watching current page
 watchEffect(() => {
     if (currentPage.value > totalPage.value) currentPage.value = totalPage.value;
-});
-
-onMounted(() => {
-    /*if (route.params.status != 'started') {
-        headers.value.push(
-            ...[
-                {
-                    title: t('En attente de règlement'),
-                    align: 'start',
-                    key: 'amount_left',
-                    sortable: false
-                },
-                {
-                    title: t('Montant total'),
-                    align: 'start',
-                    key: 'services_sum_total',
-                    sortable: false
-                },
-                { title: t('Actions'), key: 'actions', sortable: false }
-            ]
-        );
-    } else {
-        headers.value.push({ title: t('Actions'), key: 'actions', sortable: false });
-    }*/
-    if (route.query.status) {
-        filters.value.status = parseInt(route.query.status || 0);
-    }
 });
 </script>
 <template>

@@ -19,6 +19,7 @@ const refForm = ref<VForm>();
 import { useSnackbar } from '@/stores/snackbar';
 import DatePicker from '@/components/DatePicker.vue';
 import PrespationDashboard from '@/views/prestations/PrespationDashboard.vue';
+import { useRoute, useRouter } from 'vue-router';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const methodStore = usePaymentMethodStore();
@@ -40,11 +41,15 @@ const payments = ref([]);
 const eventTypes = ref([]);
 const methods = ref([]);
 const store = usePaymentStore();
+const route = useRoute();
 
 onMounted(() => {
     /*store.fetchPayments({}).then((response) => {
         payments.value = response.data.data;
     });*/
+    if (route.query.method) {
+        filters.value.payment_method = [route.query.method];
+    }
     fetchPayments();
     fetchEventTypes();
     fetchMethods();

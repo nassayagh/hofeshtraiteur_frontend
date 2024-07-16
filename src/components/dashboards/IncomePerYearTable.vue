@@ -56,7 +56,10 @@ store.fetchYearStatistics(props.options).then((response) => {
                 </thead>
                 <tbody>
                     <tr v-for="item in items" :key="item.id" class="month-item">
-                        <td class="text-no-wrap">
+                        <td
+                            class="text-no-wrap cursor-pointer"
+                            @click="$router.push(`/prestations?status=-5&date=${[item.date1, item.date2]}`)"
+                        >
                             {{ item.year }}
                         </td>
                         <td class="text-no-wrap">

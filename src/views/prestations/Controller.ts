@@ -50,6 +50,9 @@ export const usePrestationStore = defineStore({
                 }
             });
         },
+        fetchStats(params: any) {
+            return axios.get('/statistics/prestations/stats', { params });
+        },
         // 👉 Fetch users data
         fetchItems(params: any) {
             return axios.get('/prestations', { params });

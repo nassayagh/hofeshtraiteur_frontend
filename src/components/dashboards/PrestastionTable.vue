@@ -6,6 +6,7 @@ import { formatDateToMonthShort, formatDate, formatAmount } from '@/utils/helper
 const select = ref('March');
 const months = ref(['March', 'April', 'May', 'June']);
 const items = ref([]);
+const total = ref(0);
 const store = usePrestationStore();
 
 const props = defineProps({
@@ -22,8 +23,9 @@ const props = defineProps({
     }
 });
 
-store.fetchItems(props.options).then((response) => {
+store.fetchStats(props.options).then((response) => {
     items.value = response.data.data;
+    total.value = response.data.total || 0;
 });
 </script>
 <template>
@@ -32,7 +34,7 @@ store.fetchItems(props.options).then((response) => {
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">
-                        {{ title }}
+                        {{ title }}: {{ total || 0 }} -
                         {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.service_total, 0)) }}
                     </h2>
                 </div>
@@ -72,13 +74,13 @@ store.fetchItems(props.options).then((response) => {
                             {{ formatAmount(item.service_total) }}
                         </td>
                         <td v-if="props.options.statistics != 'closed'" class="text-no-wrap text-truncate">
-                            <v-tooltip :text="item.event_location">
+                            <v-tooltip :text="item.hall ? item.hall.name : ''">
                                 <template v-slot:activator="{ props }">
-                                    <span v-bind="props">
+                                    <span v-bind="props" v-if="item.hall">
                                         {{
-                                            item.event_location == null || item.event_location.length < 10
-                                                ? item.event_location
-                                                : `${item.event_location.replace('\n', ' ').slice(0, 9)}...`
+                                            item.hall.name.length < 10
+                                                ? item.hall.name
+                                                : `${item.hall.name.replace('\n', ' ').slice(0, 9)}...`
                                         }}
                                     </span>
                                 </template>

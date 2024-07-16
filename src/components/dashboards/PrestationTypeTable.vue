@@ -22,11 +22,20 @@ const props = defineProps({
     }
 });
 
+const dataYears = ref([]);
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 4 }, (_, i) => currentYear - i);
 
 store.fetchItems(props.options).then((response) => {
     items.value = response.data.data;
+    for (let i = 0; i < 4; i++) {
+        const year = new Date().getFullYear() - i;
+        for (let j = 0; j < items.value.length; j++) {
+            if (items.value[j][`prestation_${year}`] > 0 && dataYears.value.indexOf(year) == -1) {
+                dataYears.value.push(year);
+            }
+        }
+    }
 });
 </script>
 <template>
@@ -47,15 +56,15 @@ store.fetchItems(props.options).then((response) => {
                 <thead>
                     <tr>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Nom') }}</th>
-                        <th class="text-subtitle-1 font-weight-medium" v-for="year in years">{{ year }}</th>
+                        <th class="text-subtitle-1 font-weight-medium" v-for="year in dataYears">{{ year }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="item in items" :key="item.id" class="month-item">
-                        <td class="text-no-wrap">
+                        <td class="text-no-wrap cursor-pointer" @click="$router.push(`/prestations?event_type=${item.name}`)">
                             {{ item.name }}
                         </td>
-                        <td class="text-no-wrap" v-for="year in years">
+                        <td class="text-no-wrap" v-for="year in dataYears">
                             {{ item[`prestation_${year}`] || 0 }}
                         </td>
                     </tr>
