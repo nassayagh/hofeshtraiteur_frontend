@@ -52,6 +52,7 @@ store.fetchItems(props.options).then((response) => {
                         <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Date') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Montant') }}</th>
                         <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Lieu') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Type') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,11 +72,30 @@ store.fetchItems(props.options).then((response) => {
                             {{ formatAmount(item.service_total) }}
                         </td>
                         <td v-if="props.options.statistics != 'closed'" class="text-no-wrap text-truncate">
-                            {{
-                                item.event_location == null || item.event_location.length < 10
-                                    ? item.event_location
-                                    : `${item.event_location.replace('\n', ' ').slice(0, 9)}...`
-                            }}
+                            <v-tooltip :text="item.event_location">
+                                <template v-slot:activator="{ props }">
+                                    <span v-bind="props">
+                                        {{
+                                            item.event_location == null || item.event_location.length < 10
+                                                ? item.event_location
+                                                : `${item.event_location.replace('\n', ' ').slice(0, 9)}...`
+                                        }}
+                                    </span>
+                                </template>
+                            </v-tooltip>
+                        </td>
+                        <td class="text-no-wrap text-truncate">
+                            <v-tooltip :text="item.event_type">
+                                <template v-slot:activator="{ props }">
+                                    <span v-bind="props">
+                                        {{
+                                            item.event_type == null || item.event_type.length < 10
+                                                ? item.event_type
+                                                : `${item.event_type.replace('\n', ' ').slice(0, 9)}...`
+                                        }}
+                                    </span>
+                                </template>
+                            </v-tooltip>
                         </td>
                     </tr>
                 </tbody>

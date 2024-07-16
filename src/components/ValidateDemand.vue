@@ -72,7 +72,7 @@ onMounted(() => {
                 :icon="icon"
                 @click="loading = false"
                 >{{ !icon ? $t('Valider en prestation') : '' }}
-                <CheckIcon stroke-width="1.5" size="20" />
+                <CheckIcon v-if="icon" stroke-width="1.5" size="20" />
             </v-btn>
         </template>
         <v-card>

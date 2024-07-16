@@ -23,6 +23,8 @@ import PrespationDashboard from '@/views/prestations/PrespationDashboard.vue';
 import HallWidget from '@/views/prestations/components/HallWidget.vue';
 import ValidateDemand from '@/components/ValidateDemand.vue';
 import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
+import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
+import PaymentForm from '@/views/prestations/components/PaymentForm.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const hallStore = useHallStore();
@@ -63,7 +65,7 @@ const loading = ref(false);
 const saving = ref(false);
 const timeout = ref(null);
 const dateModal = ref(false);
-const rowPerPage = ref(25);
+const rowPerPage = ref(100);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalItems = ref(0);
@@ -71,7 +73,7 @@ const totalItems = ref(0);
 const dialog = ref(false);
 const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
-const sorting = ref([{ key: 'demand_date', order: 'DESC' }]);
+const sorting = ref([{ key: 'created_at', order: 'DESC' }]);
 const pageCount = ref(0);
 const filters = ref({
     search: null,
@@ -80,11 +82,11 @@ const filters = ref({
     status: store.statuses.validated
 });
 const options = ref({
-    itemsPerPage: 25,
-    rowsPerPage: 25,
+    itemsPerPage: 100,
+    rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
-    sortBy: [{ key: 'demand_date', order: 'DESC' }]
+    sortBy: [{ key: 'created_at', order: 'DESC' }]
 });
 
 const editedIndex = ref(-1);
@@ -137,7 +139,7 @@ const headers = ref([
         sortable: false
     },
     {
-        title: t('Prestation'),
+        title: t('Prest'),
         align: 'start',
         key: 'event_type'
     },
@@ -190,11 +192,11 @@ const headersDefault = ref([
         key: 'customer.phone',
         sortable: false
     },
-    /* {
-        title: t('Prestation'),
+    {
+        title: t('Prest.'),
         align: 'start',
         key: 'event_type'
-    },*/
+    },
     {
         title: t('Date prest.'),
         align: 'start',
@@ -315,7 +317,11 @@ function deleteItemConfirm() {
     dialogDelete.value = false;
     snackbarStore.showSuccess(t('Utilisateur supprimé avec succès'));
 }
-
+const payment = ref({
+    id: null,
+    prestation_id: null,
+    amount: 0
+});
 //Computed Property
 const formTitle = computed(() => {
     return editedIndex.value === -1 ? 'Nouvel administrateur' : 'Modifier l’administrateur';
@@ -705,16 +711,64 @@ onMounted(() => {
                         </v-dialog>
                     </v-toolbar>
                 </template>
+                <template v-slot:item.customer.firstname="{ item }">
+                    <span class="cursor-pointer" @click="$router.push('/prestations/' + item.id)">{{
+                        item.customer ? item.customer.firstname : ''
+                    }}</span>
+                </template>
+                <template v-slot:item.customer.lastname="{ item }">
+                    <span class="cursor-pointer" @click="$router.push('/prestations/' + item.id)">{{
+                        item.customer ? item.customer.lastname : ''
+                    }}</span>
+                </template>
+                <template v-slot:item.customer.email="{ item }">
+                    <v-tooltip :text="item.customer.email">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">
+                                {{
+                                    !item.customer || item.customer.email == null || item.customer.email.length < 7
+                                        ? item.customer.email
+                                        : `${item.customer.email.replace('\n', ' ').slice(0, 6)}...`
+                                }}
+                            </span>
+                        </template>
+                    </v-tooltip>
+                </template>
                 <template v-slot:item.demand_date="{ item }">
                     {{ formatDate(item.demand_date) }}
                 </template>
                 <template v-slot:item.event_date="{ item }">
                     {{ formatDate(item.event_date) }}
                 </template>
-                <template v-slot:item.amount_left="{ item }">
-                    <span v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0" class="text-error font-weight-bold">{{
-                        formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0))
-                    }}</span>
+                <template v-slot:item.event_type="{ item }">
+                    <v-tooltip :text="item.event_type">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">
+                                {{
+                                    item.event_type == null || item.event_type.length < 10
+                                        ? item.event_type
+                                        : `${item.event_type.replace('\n', ' ').slice(0, 9)}...`
+                                }}
+                            </span>
+                        </template>
+                    </v-tooltip>
+                </template>
+                <template v-slot:item.amount_left="{ index, item }">
+                    <payment-form
+                        v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0"
+                        v-model="payment"
+                        :prestation="items[index]"
+                        @update:item="fetchItems"
+                        :button-text="$t('Ajouter un paiement')"
+                        :title="$t('Ajouter un paiement')"
+                        variant="text"
+                    >
+                        <span
+                            v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0"
+                            class="text-error font-weight-bold"
+                            >{{ formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0)) }}</span
+                        >
+                    </payment-form>
                 </template>
                 <template v-slot:item.services_sum_total="{ item }">
                     <v-chip
@@ -731,7 +785,8 @@ onMounted(() => {
                     <span v-if="item.hall">{{ item.hall.name }}</span>
                     <ChangeHall v-if="!item.hall" v-model="items[index]" show-demand-info />
                 </template>
-                <template v-slot:item.actions="{ item }">
+                <template v-slot:item.actions="{ index, item }">
+                    <close-prestation v-if="item.status == store.statuses.validated" @refresh="fetchItems" v-model="items[index]" icon />
                     <v-btn icon flat density="compact" class="mx-2" :to="'/prestations/' + item.id">
                         <EyeIcon stroke-width="1.5" size="20" class="text-primary" />
                     </v-btn>

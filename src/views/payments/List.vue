@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watch, watchEffect } from 'vue';
 import { usePaymentStore } from '@/stores/apps/payments';
 import { useEventTypeStore } from '@/stores/apps/eventType';
+import { usePaymentMethodStore } from '@/stores/apps/paymentMethod';
 import { useDate } from 'vuetify';
 const dateObject = useDate();
 
@@ -20,6 +21,7 @@ import DatePicker from '@/components/DatePicker.vue';
 import PrespationDashboard from '@/views/prestations/PrespationDashboard.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
+const methodStore = usePaymentMethodStore();
 // theme breadcrumb
 const page = ref({ title: 'Gestion des paiements' });
 const breadcrumbs = ref([
@@ -36,6 +38,7 @@ const breadcrumbs = ref([
 ]);
 const payments = ref([]);
 const eventTypes = ref([]);
+const methods = ref([]);
 const store = usePaymentStore();
 
 onMounted(() => {
@@ -44,6 +47,7 @@ onMounted(() => {
     });*/
     fetchPayments();
     fetchEventTypes();
+    fetchMethods();
 });
 
 const loading = ref(false);
@@ -60,7 +64,7 @@ const paymentStatus = ref(null);
 const documentStatus = ref(null);
 const dateModal = ref(false);
 const selectedStatus = ref();
-const rowPerPage = ref(25);
+const rowPerPage = ref(100);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalPayments = ref(0);
@@ -79,8 +83,8 @@ const filters = ref({
     event_type: null
 });
 const options = ref({
-    itemsPerPage: 25,
-    rowsPerPage: 25,
+    itemsPerPage: 100,
+    rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'payment_date', order: 'DESC' }]
@@ -358,6 +362,44 @@ function fetchEventTypes() {
         });
 }
 
+function fetchMethods() {
+    methodStore
+        .fetchItems({
+            term: '',
+            paginate: 500,
+            current_page: 1,
+            direction: 'asc',
+            order_by: 'name',
+
+            page: 1,
+            per_page: 500
+        })
+        .then((response) => {
+            if (response.data) {
+                /*if (download != null && download === true) {
+                    const blob = new Blob([jsonToCSV(response.data.result)], { type: 'text/csv;charset=utf-8' });
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+
+                    link.href = url;
+                    link.download = 'reservation.csv';
+                    link.click();
+                } else {*/
+                const { data, current_page, next_page_url, total, per_page, to, last_page } = response.data;
+
+                methods.value = data;
+                //currentPage.value = current_page;
+                /* }*/
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+        .then(() => {
+            loading.value = false;
+        });
+}
+
 watch(
     [search, options, filters /*currentPage, rowPerPage*/],
     () => {
@@ -419,6 +461,21 @@ watchEffect(() => {
                                     multiple
                                     hide-details
                                     variant="solo"
+                                    clearable
+                                ></v-select>
+                            </v-col>
+                            <v-col>
+                                <v-select
+                                    density="compact"
+                                    v-model="filters.payment_method"
+                                    :placeholder="$t('Mode de paiement')"
+                                    :items="methods"
+                                    item-value="name"
+                                    item-title="name"
+                                    multiple
+                                    hide-details
+                                    variant="solo"
+                                    clearable
                                 ></v-select>
                             </v-col>
                             <v-col>
@@ -543,25 +600,22 @@ watchEffect(() => {
                     <v-chip :color="store.statusColor(item)" size="small" label>{{ store.statusText(item) }}</v-chip>
                 </template>-->
                 <template v-slot:item.actions="{ item }">
-                    <v-btn density="compact" color="primary" variant="outlined" :to="'/prestations/' + item.prestation_id">{{
-                        $t('Voir la prestation liée')
-                    }}</v-btn>
-                    <!--                    <div class="d-flex align-center">
-                        <v-tooltip :text="$t('Modifier')">
+                    <div class="d-flex align-center">
+                        <v-tooltip :text="$t('Voir la prestation liée')">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="editItem(item)" v-bind="props"
-                                    ><PencilIcon stroke-width="1.5" size="20" class="text-primary"
+                                <v-btn icon flat :to="'/prestations/' + item.prestation_id" v-bind="props"
+                                    ><EyeIcon stroke-width="1.5" size="20" class="text-primary"
                                 /></v-btn>
                             </template>
                         </v-tooltip>
-                        <v-tooltip :text="$t('Supprimer')">
+                        <!--                        <v-tooltip :text="$t('Supprimer')">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat @click="deleteItem(item)" v-bind="props"
                                     ><TrashIcon stroke-width="1.5" size="20" class="text-error"
                                 /></v-btn>
                             </template>
-                        </v-tooltip>
-                    </div>-->
+                        </v-tooltip>-->
+                    </div>
                 </template>
                 <template v-slot:no-data>
                     <span>{{ $t('Aucune donnée disponible') }}</span>

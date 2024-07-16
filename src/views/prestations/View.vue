@@ -580,8 +580,8 @@ watch(
                     <h4 class="text-h6 d-flex align-center">
                         <span>{{ $t('Paiements') }}</span>
                         <v-spacer> </v-spacer>
+                        <!--                            v-if="item.status < store.statuses.closed"-->
                         <payment-form
-                            v-if="item.status < store.statuses.closed"
                             v-model="payment"
                             :prestation="item"
                             @update:item="updatePrestation"

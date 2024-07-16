@@ -53,7 +53,7 @@ const paymentStatus = ref(null);
 const documentStatus = ref(null);
 const duplicateDialog = ref(false);
 const selectedStatus = ref();
-const rowPerPage = ref(10);
+const rowPerPage = ref(100);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalUsers = ref(0);
@@ -66,8 +66,8 @@ const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
 const sorting = ref([{ key: 'name', order: 'asc' }]);
 const pageCount = ref(0);
 const options = ref({
-    itemsPerPage: 10,
-    rowsPerPage: 10,
+    itemsPerPage: 100,
+    rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'name', order: 'desc' }]

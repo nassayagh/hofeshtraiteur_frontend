@@ -42,16 +42,7 @@ const item = ref({
 });
 // theme breadcrumb
 const page = ref({
-    title:
-        t('Détails du devis') +
-        ' ' +
-        (item.value.event_type || '') +
-        ' ' +
-        (item.value.customer || { firstname: '' }).firstname +
-        ' ' +
-        (item.value.customer || { lastname: '' }).lastname +
-        ' ' +
-        (formatDate(item.value.created_at) || '')
+    title: t('Détails')
 });
 const breadcrumbs = ref([
     {
@@ -73,17 +64,7 @@ const breadcrumbs = ref([
 
 function setPageMeta() {
     page.value = {
-        title:
-            t('Détails du devis') +
-            ' ' +
-            (item.value.event_type || '') +
-            ' (' +
-            (item.value.customer || { firstname: '' }).firstname +
-            ' ' +
-            (item.value.customer || { lastname: '' }).lastname +
-            ' ' +
-            (formatDate(item.value.created_at) || '') +
-            ')'
+        title: t('Détails du client')
     };
     breadcrumbs.value = [
         {
@@ -92,7 +73,7 @@ function setPageMeta() {
             href: '/'
         },
         {
-            text: t('Gestion des devis'),
+            text: t('Clients'),
             disabled: false,
             href: '/customers'
         },
@@ -115,7 +96,7 @@ onMounted(() => {
 
 const loading = ref(false);
 const cancelling = ref(false);
-const rowPerPage = ref(10);
+const rowPerPage = ref(100);
 const currentPage = ref(2);
 const totalPage = ref(2);
 
@@ -127,8 +108,8 @@ const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
 const sorting = ref([{ key: 'created_at', order: 'DESC' }]);
 const pageCount = ref(0);
 const options = ref({
-    itemsPerPage: 10,
-    rowsPerPage: 10,
+    itemsPerPage: 100,
+    rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'created_at', order: 'DESC' }]
@@ -360,7 +341,7 @@ watchEffect(() => {
                             </v-card>
                         </v-col>
                         <v-col cols="12" md="3">
-                            <v-card elevation="10" class="bg-primary  h-100">
+                            <v-card elevation="10" class="bg-primary h-100">
                                 <v-card-text>
                                     <div class="d-flex align-start">
                                         <h2 class="text-h4 mt-1">{{ $t('Paiements') }}</h2>
@@ -472,7 +453,7 @@ watchEffect(() => {
                                 </td>
                                 <td>
                                     <h6 class="text-h6 font-weight-medium text-medium-emphasis">
-                                        {{ prestation.demand ? prestation.demand.event_type : '' }}
+                                        {{ prestation.event_type }}
                                     </h6>
                                 </td>
                                 <td>

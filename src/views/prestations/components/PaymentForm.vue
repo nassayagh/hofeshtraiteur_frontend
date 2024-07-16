@@ -14,6 +14,7 @@ const props = defineProps({
     modelValue: Object,
     prestation: Object,
     title: t('PaymentMethod'),
+    variant: { type: String, default: 'elevated' },
     buttonText: t('Ajouter un paymentMethod')
 });
 
@@ -109,12 +110,14 @@ const formatedDemandDate = computed(() => {
                 v-bind="props"
                 :icon="item.id != null"
                 :flat="item.id != null"
-                variant="elevated"
+                :variant="variant"
                 :color="item.id != null ? null : 'primary'"
                 @click="loading = false"
             >
-                <EditIcon v-if="item.id" stroke-width="1.5" size="20" class="text-primary" />
-                <span v-else>{{ buttonText }}</span>
+                <slot>
+                    <EditIcon v-if="item.id" stroke-width="1.5" size="20" class="text-primary" />
+                    <span v-else>{{ buttonText }}</span>
+                </slot>
             </v-btn>
         </template>
         <v-card>

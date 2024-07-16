@@ -75,7 +75,7 @@ const documentStatus = ref(null);
 const dateModal = ref(false);
 const dateDemandModal = ref(false);
 const selectedStatus = ref();
-const rowPerPage = ref(25);
+const rowPerPage = ref(100);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalDemands = ref(0);
@@ -99,8 +99,8 @@ const filters = ref({
     event_type: null
 });
 const options = ref({
-    itemsPerPage: 25,
-    rowsPerPage: 25,
+    itemsPerPage: 100,
+    rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'id', order: 'DESC' }]
@@ -347,7 +347,13 @@ function fetchDemands() {
                     } else {*/
                     const { data, current_page, next_page_url, total, per_page, to, last_page } = response.data;
 
-                    demands.value = data;
+                    demands.value = data.map((e) => {
+                        const dateObject = new Date(e.event_date);
+                        return {
+                            ...e,
+                            event_date: dateObject
+                        };
+                    });
                     totalPage.value = last_page;
                     totalDemands.value = total;
                     //currentPage.value = current_page;

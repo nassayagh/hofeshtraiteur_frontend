@@ -40,7 +40,7 @@ onMounted(() => {
 const loading = ref(false);
 const saving = ref(false);
 const timeout = ref(null);
-const rowPerPage = ref(10);
+const rowPerPage = ref(100);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalItems = ref(0);
@@ -52,8 +52,8 @@ const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
 const sorting = ref([{ key: 'id', order: 'DESC' }]);
 const pageCount = ref(0);
 const options = ref({
-    itemsPerPage: 10,
-    rowsPerPage: 10,
+    itemsPerPage: 100,
+    rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'id', order: 'desc' }]

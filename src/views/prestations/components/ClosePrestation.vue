@@ -10,7 +10,8 @@ const store = usePrestationStore();
 const snackbarStore = useSnackbar();
 
 const props = defineProps({
-    modelValue: Object
+    modelValue: Object,
+    icon: { type: Boolean, default: false }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -32,6 +33,7 @@ function validateItemConfirm() {
             item.value = response.data;
             dialog.value = false;
             snackbarStore.showSuccess(t('Prestation clôturée avec succès'));
+            emit('refresh');
             //router.push(store.pageLink(item.value.status));
         })
         .catch((error) => {
@@ -47,8 +49,9 @@ function validateItemConfirm() {
 <template>
     <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ props }">
-            <v-btn dark v-bind="props" variant="elevated" color="primary" @click="loading = false"
-                >{{ $t('Terminer la prestation') }}
+            <v-btn dark v-bind="props" variant="elevated" color="primary" @click="loading = false" :icon="icon">
+                {{ !icon ? $t('Terminer la prestation') : '' }}
+                <CheckIcon v-if="icon" stroke-width="1.5" size="20" />
             </v-btn>
         </template>
         <v-card>
