@@ -20,9 +20,15 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'update:item']);
 
-const item = computed({
+const oldItem = computed({
     get: () => props.modelValue,
     set: (val) => emit('update:modelValue', val)
+});
+const item = ref({
+    id: null,
+    prestation_id: null,
+    amount: 0,
+    payment_date: new Date()
 });
 const dialog = ref(false);
 const datePaymentModal = ref(false);

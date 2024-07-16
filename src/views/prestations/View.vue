@@ -516,9 +516,9 @@ watch(
                     <h4 class="text-h6 d-flex align-center">
                         <span>{{ $t('Désignation des services attendus') }}</span>
                         <v-spacer> </v-spacer>
+                        <!--                        v-if="item.status < store.statuses.processing"-->
                         <service-form
                             v-model="service"
-                            v-if="item.status < store.statuses.processing"
                             :prestation="item"
                             @update:item="updatePrestation"
                             :button-text="$t('Ajouter un service')"
@@ -582,7 +582,6 @@ watch(
                         <v-spacer> </v-spacer>
                         <!--                            v-if="item.status < store.statuses.closed"-->
                         <payment-form
-                            v-model="payment"
                             :prestation="item"
                             @update:item="updatePrestation"
                             :button-text="$t('Ajouter un paiement')"

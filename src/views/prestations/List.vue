@@ -751,7 +751,6 @@ watchEffect(() => {
                 <template v-slot:item.amount_left="{ index, item }">
                     <payment-form
                         v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0"
-                        v-model="payment"
                         :prestation="items[index]"
                         @update:item="fetchItems"
                         :button-text="$t('Ajouter un paiement')"

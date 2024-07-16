@@ -613,13 +613,13 @@ watchEffect(() => {
                                 /></v-btn>
                             </template>
                         </v-tooltip>
-                        <!--                        <v-tooltip :text="$t('Supprimer')">
+                        <v-tooltip :text="$t('Supprimer')">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat @click="deleteItem(item)" v-bind="props"
                                     ><TrashIcon stroke-width="1.5" size="20" class="text-error"
                                 /></v-btn>
                             </template>
-                        </v-tooltip>-->
+                        </v-tooltip>
                     </div>
                 </template>
                 <template v-slot:no-data>
