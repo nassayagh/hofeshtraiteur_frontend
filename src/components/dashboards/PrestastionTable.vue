@@ -35,7 +35,17 @@ store.fetchStats(props.options).then((response) => {
                 <div>
                     <h2 class="text-h4">
                         {{ title }} : {{ total || 0 }} -
-                        {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.service_total, 0)) }}
+                        {{
+                            formatAmount(
+                                items.reduce(
+                                    (acc, item) =>
+                                        props.options.statistics != 'closed'
+                                            ? parseFloat(acc) + item.service_total
+                                            : parseFloat(acc) + (item.service_total - item.payment_total),
+                                    0
+                                )
+                            )
+                        }}
                     </h2>
                 </div>
                 <v-spacer></v-spacer>
@@ -71,7 +81,11 @@ store.fetchStats(props.options).then((response) => {
                             {{ formatDate(item.event_date) }}
                         </td>
                         <td>
-                            {{ formatAmount(item.service_total) }}
+                            {{
+                                formatAmount(
+                                    props.options.statistics != 'closed' ? item.service_total : item.service_total - item.payment_total
+                                )
+                            }}
                         </td>
                         <td class="text-no-wrap text-truncate">
                             <v-tooltip :text="item.event_type">

@@ -71,7 +71,7 @@ store.fetchItems(props.options).then((response) => {
                             {{ `${item.prestation ? `${item.prestation.event_type || '-'}` : ''}` }}
                         </td>
                         <td class="text-no-wrap">
-                            {{ formatDate(item.created_at) }}
+                            {{ formatDate(item.payment_date) }}
                         </td>
                     </tr>
                 </tbody>

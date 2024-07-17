@@ -85,7 +85,7 @@ const dialogEdit = ref(false);
 const errorMessage = ref(null);
 const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
-const sorting = ref([{ key: 'id', order: 'DESC' }]);
+const sorting = ref([{ key: 'event_date', order: 'ASC' }]);
 const pageCount = ref(0);
 const statistics = ref({
     total: 0,
@@ -103,7 +103,7 @@ const options = ref({
     rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
-    sortBy: [{ key: 'id', order: 'DESC' }]
+    sortBy: [{ key: 'event_date', order: 'ASC' }]
 });
 
 const editedIndex = ref(-1);
@@ -779,6 +779,29 @@ function customerSelected(val) {
                             </v-card>
                         </v-dialog>
                     </v-toolbar>
+                </template>
+                <template v-slot:item.customer.firstname="{ item }">
+                    <span class="cursor-pointer" @click="$router.push('/demands/' + item.id)">{{
+                        item.customer ? item.customer.firstname : ''
+                    }}</span>
+                </template>
+                <template v-slot:item.customer.lastname="{ item }">
+                    <span class="cursor-pointer" @click="$router.push('/demands/' + item.id)">{{
+                        item.customer ? item.customer.lastname : ''
+                    }}</span>
+                </template>
+                <template v-slot:item.customer.email="{ item }">
+                    <v-tooltip :text="item.customer.email">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">
+                                {{
+                                    !item.customer || item.customer.email == null || item.customer.email.length < 7
+                                        ? item.customer.email
+                                        : `${item.customer.email.replace('\n', ' ').slice(0, 6)}...`
+                                }}
+                            </span>
+                        </template>
+                    </v-tooltip>
                 </template>
                 <template v-slot:item.demand_date="{ item }">
                     {{ formatDate(item.demand_date) }}

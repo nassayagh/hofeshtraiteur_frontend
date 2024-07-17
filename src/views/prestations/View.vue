@@ -23,6 +23,7 @@ import ValidatePrestation from './components/ValidatePrestation.vue';
 import CustomerWidget from '@/components/CustomerWidget.vue';
 import ServiceForm from '@/views/prestations/components/ServiceForm.vue';
 import DeleteService from '@/views/prestations/components/DeleteService.vue';
+import DeletePayment from '@/views/prestations/components/DeletePayment.vue';
 import PaymentForm from '@/views/prestations/components/PaymentForm.vue';
 import StartPrestation from '@/views/prestations/components/StartPrestation.vue';
 import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
@@ -450,7 +451,9 @@ watch(
                                         </div>
                                     </div>
                                     <div class="mt-9">
-                                        <h2 class="text-h4 font-weight-semibold mb-1">{{ formatAmount(totalAmount || 0) }}</h2>
+                                        <h2 class="text-h4 font-weight-semibold mb-1">
+                                            {{ formatAmount(item.payment_total || 0) }}/{{ formatAmount(totalAmount || 0) }}
+                                        </h2>
                                         <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                     </div>
                                 </v-card-text>
@@ -578,7 +581,8 @@ watch(
             <v-card elevation="10" class="overflow-hidden h-100">
                 <v-card-item class="py-4 px-6 text-white bg-info">
                     <h4 class="text-h6 d-flex align-center">
-                        <span>{{ $t('Paiements') }}</span>
+                        <span class="mr-2">{{ $t('Paiements') }}</span> : {{ item.payments.length }} -
+                        {{ formatAmount(item.payment_total || 0) }}
                         <v-spacer> </v-spacer>
                         <!--                            v-if="item.status < store.statuses.closed"-->
                         <payment-form
@@ -596,18 +600,34 @@ watch(
                                 <th class="text-h6">{{ $t('Mode de paiement') }}</th>
                                 <th class="text-h6">{{ $t('Montant payé') }}</th>
                                 <th class="text-h6">{{ $t('Date du paiement') }}</th>
+                                <th class="text-h6">{{ $t('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(payment, index) in item.payments" :key="payment.id">
+                            <tr v-for="(pa, index) in item.payments" :key="payment.id">
                                 <td>
-                                    {{ payment.payment_method }}
+                                    {{ pa.payment_method }}
                                 </td>
                                 <td>
-                                    {{ payment.amount }}
+                                    {{ formatAmount(pa.amount) }}
                                 </td>
                                 <td>
-                                    {{ formatDate(payment.payment_date) }}
+                                    {{ formatDate(pa.payment_date) }}
+                                </td>
+                                <td>
+                                    <v-tooltip :text="$t('Modifier')">
+                                        <template v-slot:activator="{ props }">
+                                            <payment-form
+                                                v-model="item.payments[index]"
+                                                icon
+                                                :prestation="item"
+                                                @update:item="updatePrestation"
+                                                :button-text="$t('Modifier le paiement')"
+                                                :title="$t('Modifier le paiement')"
+                                            />
+                                        </template>
+                                    </v-tooltip>
+                                    <DeletePayment v-model="item" :payment="item.payments[index]" />
                                 </td>
                             </tr>
                         </tbody>

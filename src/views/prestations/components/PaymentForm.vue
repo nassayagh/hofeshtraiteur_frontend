@@ -24,12 +24,14 @@ const oldItem = computed({
     get: () => props.modelValue,
     set: (val) => emit('update:modelValue', val)
 });
-const item = ref({
-    id: null,
-    prestation_id: null,
-    amount: 0,
-    payment_date: new Date()
-});
+const item = ref(
+    oldItem.value || {
+        id: null,
+        prestation_id: null,
+        amount: 0,
+        payment_date: new Date()
+    }
+);
 const dialog = ref(false);
 const datePaymentModal = ref(false);
 const loading = ref(false);
@@ -41,7 +43,9 @@ onMounted(() => {
         console.log(prestationPaymentMethods.value);
     });
 
-    item.value.amount = totalAmountLeft.value;
+    if (!item.value.id) {
+        item.value.amount = totalAmountLeft.value;
+    }
 });
 
 const totalAmount = computed(() => {
@@ -75,9 +79,9 @@ function save() {
             //item.value = response.data.paymentMethod;
             dialog.value = false;
             emit('update:item', response.data);
-            item.value = {};
-            item.value = {};
-            snackbarStore.showSuccess(t('PaymentMethod enregistré avec succès'));
+            // oldItem.value = {};
+            //oldItem.value = {};
+            snackbarStore.showSuccess(t('Paiement enregistré avec succès'));
         })
         .catch((error) => {
             loading.value = false;
@@ -94,7 +98,9 @@ function paymentMethodSelected(val) {
         const paymentMethod = prestationPaymentMethods.value.find((e) => e.id == val);
         if (paymentMethod) {
             item.value.payment_method = paymentMethod.name || null;
-            item.value.amount = totalAmountLeft.value;
+            if (!item.value.id) {
+                item.value.amount = totalAmountLeft.value;
+            }
         }
     }
 }
@@ -105,6 +111,22 @@ const formatedDemandDate = computed(() => {
     }
     return null;
 });
+function newPayment() {
+    loading.value = false;
+    if (!item.value.id) {
+        item.value = { payment_date: new Date(), amount: totalAmountLeft.value };
+    }
+}
+watch(
+    [props.prestation],
+    (val) => {
+        console.log('prestat', val);
+        if (!item.value.id) {
+            item.value.amount = totalAmountLeft.value;
+        }
+    },
+    { deep: true }
+);
 </script>
 
 <template>
@@ -118,7 +140,7 @@ const formatedDemandDate = computed(() => {
                 :flat="item.id != null"
                 :variant="variant"
                 :color="item.id != null ? null : 'primary'"
-                @click="loading = false"
+                @click="newPayment"
             >
                 <slot>
                     <EditIcon v-if="item.id" stroke-width="1.5" size="20" class="text-primary" />

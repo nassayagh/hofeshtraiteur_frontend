@@ -28,14 +28,14 @@ const breadcrumbs = ref([
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
 
     <v-row class="dashboard">
-        <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
+        <v-col cols="12" md="6" lg="6" xl="6" xxl="6">
             <PrestastionTable
                 class="h-100"
                 :title="$t('PRESTATION A VENIR')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'future', status: 1 }"
             />
         </v-col>
-        <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
+        <v-col cols="12" md="6" lg="6" xl="6" xxl="6">
             <PrestastionTable
                 class="h-100"
                 :title="$t('PRESTATION DEJA PASSE')"
@@ -98,7 +98,7 @@ const breadcrumbs = ref([
                 :options="{ per_page: 1000, order_by: 'name', direction: 'ASC', statistics: 'dashboard' }"
             />
         </v-col>
-        <v-col cols="12" md="6" lg="6" xl="6" xxl="6">
+        <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PrestationTypeTable
                 class="h-100"
                 :title="$t('TYPE PRESTATIONS')"
