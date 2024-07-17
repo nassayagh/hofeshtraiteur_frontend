@@ -43,7 +43,7 @@ function yearChanged(e) {
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">
-                        {{ title }} {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.amount_paid, 0)) }}
+                        {{ title }} {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.total_amount, 0)) }}
                     </h2>
                 </div>
                 <v-spacer></v-spacer>

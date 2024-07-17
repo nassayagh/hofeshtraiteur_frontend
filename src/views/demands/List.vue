@@ -348,7 +348,7 @@ function fetchDemands() {
                     const { data, current_page, next_page_url, total, per_page, to, last_page } = response.data;
 
                     demands.value = data.map((e) => {
-                        const dateObject = new Date(e.event_date);
+                        const dateObject = e.event_date != null ? new Date(e.event_date) : null;
                         return {
                             ...e,
                             event_date: dateObject

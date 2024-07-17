@@ -34,7 +34,7 @@ store.fetchStats(props.options).then((response) => {
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">
-                        {{ title }}: {{ total || 0 }} -
+                        {{ title }} : {{ total || 0 }} -
                         {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.service_total, 0)) }}
                     </h2>
                 </div>
@@ -53,8 +53,8 @@ store.fetchStats(props.options).then((response) => {
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Nom') }}</th>
                         <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Date') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Montant') }}</th>
-                        <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Lieu') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Type') }}</th>
+                        <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Lieu') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,19 +73,6 @@ store.fetchStats(props.options).then((response) => {
                         <td>
                             {{ formatAmount(item.service_total) }}
                         </td>
-                        <td v-if="props.options.statistics != 'closed'" class="text-no-wrap text-truncate">
-                            <v-tooltip :text="item.hall ? item.hall.name : ''">
-                                <template v-slot:activator="{ props }">
-                                    <span v-bind="props" v-if="item.hall">
-                                        {{
-                                            item.hall.name.length < 10
-                                                ? item.hall.name
-                                                : `${item.hall.name.replace('\n', ' ').slice(0, 9)}...`
-                                        }}
-                                    </span>
-                                </template>
-                            </v-tooltip>
-                        </td>
                         <td class="text-no-wrap text-truncate">
                             <v-tooltip :text="item.event_type">
                                 <template v-slot:activator="{ props }">
@@ -94,6 +81,19 @@ store.fetchStats(props.options).then((response) => {
                                             item.event_type == null || item.event_type.length < 10
                                                 ? item.event_type
                                                 : `${item.event_type.replace('\n', ' ').slice(0, 9)}...`
+                                        }}
+                                    </span>
+                                </template>
+                            </v-tooltip>
+                        </td>
+                        <td v-if="props.options.statistics != 'closed'" class="text-no-wrap text-truncate">
+                            <v-tooltip :text="item.hall ? item.hall.name : ''">
+                                <template v-slot:activator="{ props }">
+                                    <span v-bind="props" v-if="item.hall">
+                                        {{
+                                            item.hall.name.length < 10
+                                                ? item.hall.name
+                                                : `${item.hall.name.replace('\n', ' ').slice(0, 9)}...`
                                         }}
                                     </span>
                                 </template>

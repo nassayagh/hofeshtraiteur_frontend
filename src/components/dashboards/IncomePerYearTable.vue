@@ -32,7 +32,7 @@ store.fetchYearStatistics(props.options).then((response) => {
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">
-                        {{ title }} {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + item.amount_paid, 0)) }}
+                        {{ title }}
                     </h2>
                 </div>
                 <!--                <v-spacer></v-spacer>

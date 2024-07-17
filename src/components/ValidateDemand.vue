@@ -24,7 +24,7 @@ const item = computed({
 });
 const dialog = ref(false);
 const loading = ref(false);
-const comment = ref('');
+const comment = ref(item.value.comment);
 const hall = ref(item.value.hall_id);
 const halls = ref([]);
 

@@ -42,6 +42,7 @@ const item = computed({
             <v-divider />
         </v-card-text>
         <v-card-text class="pl-6 pr-6" v-if="showDemandInfo">
+            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.event_type || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Date de la demande :') }} {{ formatDate(item.demand_date) || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">
                 {{ $t('Date création de la prestation :') }} {{ formatDate(item.created_at) || '' }}

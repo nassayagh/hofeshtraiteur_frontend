@@ -31,22 +31,22 @@ const breadcrumbs = ref([
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PrestastionTable
                 class="h-100"
-                :title="$t('LISTE PRESTATION A VENIR')"
+                :title="$t('PRESTATION A VENIR')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'future', status: 1 }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PrestastionTable
                 class="h-100"
-                :title="$t('LISTE PRESTATION DEJA PASSE')"
+                :title="$t('PRESTATION DEJA PASSE')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'DESC', statistics: 'past', status: 3 }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <CustomerTable
                 class="h-100"
-                :title="$t('LISTE DES CLIENTS RECENTS')"
-                :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'past' }"
+                :title="$t('CLIENTS RECENTS')"
+                :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'past', status: 1 }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
@@ -80,14 +80,14 @@ const breadcrumbs = ref([
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PaymentTable
                 class="h-100"
-                :title="$t('LISTE REGLEMENTS')"
+                :title="$t('REGLEMENTS')"
                 :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'dashboard' }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PrestastionTable
                 class="h-100"
-                :title="$t('LISTE REGLEMENTS EN ATTENTE')"
+                :title="$t('REGLEMENTS EN ATTENTE')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'closed' }"
             />
         </v-col>
