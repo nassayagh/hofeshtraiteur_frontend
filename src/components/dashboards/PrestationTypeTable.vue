@@ -6,6 +6,7 @@ import { formatDateToMonthShort, formatDate, formatAmount } from '@/utils/helper
 const select = ref('March');
 const months = ref(['March', 'April', 'May', 'June']);
 const items = ref([]);
+const loading = ref(true);
 const store = useEventTypeStore();
 
 const props = defineProps({
@@ -36,11 +37,13 @@ store.fetchItems(props.options).then((response) => {
             }
         }
     }
+    loading.value = false;
 });
 </script>
 <template>
     <VCard elevation="10">
-        <v-card-text>
+        <v-skeleton-loader v-if="loading" height="290"></v-skeleton-loader>
+        <v-card-text v-else>
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">{{ title }}</h2>

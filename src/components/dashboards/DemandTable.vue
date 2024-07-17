@@ -7,6 +7,7 @@ const select = ref('March');
 const months = ref(['March', 'April', 'May', 'June']);
 const items = ref([]);
 const total = ref(0);
+const loading = ref(true);
 const store = useDemandStore();
 
 const props = defineProps({
@@ -26,11 +27,13 @@ const props = defineProps({
 store.fetchStats(props.options).then((response) => {
     items.value = response.data.data;
     total.value = response.data.total || 0;
+    loading.value = false;
 });
 </script>
 <template>
     <VCard elevation="10">
-        <v-card-text>
+        <v-skeleton-loader v-if="loading" height="290"></v-skeleton-loader>
+        <v-card-text v-else>
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">{{ title }} : {{ total || 0 }}</h2>

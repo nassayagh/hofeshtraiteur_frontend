@@ -8,6 +8,7 @@ const currentYear = new Date().getFullYear();
 const select = ref(currentYear);
 const months = ref(['March', 'April', 'May', 'June']);
 const items = ref([]);
+const loading = ref(true);
 const store = usePrestationStore();
 
 const props = defineProps({
@@ -27,6 +28,7 @@ const years = Array.from({ length: 20 }, (_, i) => (props.options.section == 'fu
 function getData() {
     store.fetchYearStatistics({ ...props.options, year: select.value }).then((response) => {
         items.value = response.data;
+        loading.value = false;
     });
 }
 onMounted(() => {
@@ -39,7 +41,8 @@ function yearChanged(e) {
 </script>
 <template>
     <VCard elevation="10">
-        <v-card-text>
+        <v-skeleton-loader v-if="loading" height="290"></v-skeleton-loader>
+        <v-card-text v-else>
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">
