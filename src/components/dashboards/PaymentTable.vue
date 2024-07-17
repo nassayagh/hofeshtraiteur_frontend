@@ -32,7 +32,7 @@ store.fetchItems(props.options).then((response) => {
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">
-                        {{ title }}
+                        {{ title }} :
                         {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + parseFloat(item.amount), 0)) }}
                     </h2>
                 </div>

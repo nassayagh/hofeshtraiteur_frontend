@@ -133,7 +133,6 @@ watch(
     <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ props }">
             <v-btn
-                v-if="totalAmountLeft > 0"
                 dark
                 v-bind="props"
                 :icon="item.id != null"
