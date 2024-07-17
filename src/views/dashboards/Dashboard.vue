@@ -13,6 +13,7 @@ import HallTable from '@/components/dashboards/HallTable.vue';
 import PaymentTable from '@/components/dashboards/PaymentTable.vue';
 import PaymentTypeTable from '@/components/dashboards/PaymentTypeTable.vue';
 import PrestationTypeTable from '@/components/dashboards/PrestationTypeTable.vue';
+import DemandTable from '@/components/dashboards/DemandTable.vue';
 
 const page = ref({ title: 'Dashboard' });
 const breadcrumbs = ref([
@@ -42,10 +43,17 @@ const breadcrumbs = ref([
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'DESC', statistics: 'past', status: 3 }"
             />
         </v-col>
-        <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
+        <v-col cols="12" md="6" lg="6" xl="6" xxl="6">
             <CustomerTable
                 class="h-100"
                 :title="$t('CLIENTS RECENTS')"
+                :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'past', status: 1 }"
+            />
+        </v-col>
+        <v-col cols="12" md="6" lg="6" xl="6" xxl="6">
+            <DemandTable
+                class="h-100"
+                :title="$t('DEMANDES RECENTS')"
                 :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'past', status: 1 }"
             />
         </v-col>

@@ -39,6 +39,9 @@ export const useDemandStore = defineStore({
                 }
             });
         },
+        fetchStats(params: any) {
+            return axios.get('/statistics/demands/stats', { params });
+        },
         // 👉 Fetch users data
         fetchItems(params: any) {
             return axios.get('/demands', { params });
