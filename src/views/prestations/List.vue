@@ -215,6 +215,11 @@ const headersDefault = ref([
         sortable: false
     },
     {
+        title: t('Source'),
+        align: 'start',
+        key: 'demand.source'
+    },
+    {
         title: t('Prest.'),
         align: 'start',
         key: 'event_type'

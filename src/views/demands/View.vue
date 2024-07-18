@@ -363,6 +363,7 @@ watchEffect(() => {
                    Lieu de l'événement : 11 avenue Barbuse, 77270 Paris, France
                    Nombre de convives : 11
                    Commentaires :-->
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Source :') }} {{ item.source || '' }}</p>
                             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.event_type || '' }}</p>
                             <p class="text-subtitle-1 textSecondary mt-3">
                                 {{ $t("Date de l'événement :") }} {{ formatDate(item.event_date) || '' }}

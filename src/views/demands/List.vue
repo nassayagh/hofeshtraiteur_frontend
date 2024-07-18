@@ -536,7 +536,7 @@ function customerSelected(val) {
                                     variant="solo"
                                 ></v-select>
                             </v-col>-->
-                            <v-col>
+                            <!--                            <v-col>
                                 <v-select
                                     density="compact"
                                     v-model="filters.source"
@@ -546,7 +546,7 @@ function customerSelected(val) {
                                     hide-details
                                     variant="solo"
                                 ></v-select>
-                            </v-col>
+                            </v-col>-->
                             <v-col>
                                 <v-dialog ref="dialog" v-model="dateModal" v-model:return-value="filters.date" persistent width="290px">
                                     <template #activator="{ props }">

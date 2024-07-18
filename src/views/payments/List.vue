@@ -591,6 +591,16 @@ watchEffect(() => {
                         </v-dialog>
                     </v-toolbar>
                 </template>
+                <template v-slot:item.prestation.customer.firstname="{ item }">
+                    <span class="cursor-pointer" @click="$router.push('/prestations/' + item.prestation_id)">{{
+                        item.prestation && item.prestation.customer ? item.prestation.customer.firstname : ''
+                    }}</span>
+                </template>
+                <template v-slot:item.prestation.customer.lastname="{ item }">
+                    <span class="cursor-pointer" @click="$router.push('/prestations/' + item.prestation_id)">{{
+                        item.prestation && item.prestation.customer ? item.prestation.customer.lastname : ''
+                    }}</span>
+                </template>
                 <template v-slot:item.amount="{ item }">
                     {{ formatAmount(item.amount) }}
                 </template>

@@ -417,7 +417,7 @@ watch(
             </v-btn>-->
         </v-col>
         <v-col cols="12" md="3">
-            <CustomerWidget v-model="item" show-demand-info />
+            <CustomerWidget v-model="item" show-demand-info :source="item.source" />
         </v-col>
         <v-col cols="12" md="3">
             <HallWidget v-model="item" show-demand-info />

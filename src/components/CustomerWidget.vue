@@ -8,7 +8,8 @@ import { formatDate } from '@/utils/helpers/formatters';
 const store = usePrestationStore();
 const props = defineProps({
     modelValue: Object,
-    showDemandInfo: Boolean
+    showDemandInfo: Boolean,
+    source: { type: String, default: 'SITE' }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -42,14 +43,15 @@ const item = computed({
             <v-divider />
         </v-card-text>
         <v-card-text class="pl-6 pr-6" v-if="showDemandInfo">
+            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Source :') }} {{ props.source || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.event_type || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Date de la demande :') }} {{ formatDate(item.demand_date) || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">
                 {{ $t('Date création de la prestation :') }} {{ formatDate(item.created_at) || '' }}
             </p>
-            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.status >= store.statuses.processing">
+            <!--            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.status >= store.statuses.processing">
                 {{ $t('Date lancement de la prestation :') }} {{ formatDate(item.start_date) || '' }}
-            </p>
+            </p>-->
             <p class="text-subtitle-1 textSecondary mt-3" v-if="item.status >= store.statuses.closed">
                 {{ $t('Date clôture de la prestation :') }} {{ formatDate(item.closed_date) || '' }}
             </p>
