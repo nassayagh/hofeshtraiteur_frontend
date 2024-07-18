@@ -9,7 +9,8 @@ import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
 const store = usePrestationStore();
 const props = defineProps({
     modelValue: Object,
-    showDemandInfo: Boolean
+    showDemandInfo: Boolean,
+    type: { type: String, default: 'prestation' }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -26,14 +27,14 @@ const item = computed({
             <h4 class="text-h6 d-flex align-content-center align-center">
                 {{ $t('Information de la salle') }}
                 <v-spacer></v-spacer>
-                <change-hall v-model="item" />
+                <change-hall v-model="item" :type="props.type" />
                 <!--                <v-btn variant="tonal" density="compact">{{ $t('Modifier') }}</v-btn>-->
             </h4>
         </v-card-item>
         <v-card-text class="pl-6 pr-6 pt-6" v-if="!item.hall">
             <v-alert type="info"
                 >{{ $t("Aucune salle n'a été attribuée. Veuillez attribuer une salle.") }} <br />
-                <change-hall v-model="item"
+                <change-hall v-model="item" :type="props.type"
             /></v-alert>
         </v-card-text>
         <v-card-text v-else class="pl-6 pr-6">

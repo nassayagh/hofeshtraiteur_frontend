@@ -95,9 +95,9 @@ store.fetchStats(props.options).then((response) => {
                                 <template v-slot:activator="{ props }">
                                     <span v-bind="props">
                                         {{
-                                            item.event_type == null || item.event_type.length < 10
+                                            item.event_type == null || item.event_type.length < 30
                                                 ? item.event_type
-                                                : `${item.event_type.replace('\n', ' ').slice(0, 9)}...`
+                                                : `${item.event_type.replace('\n', ' ').slice(0, 29)}...`
                                         }}
                                     </span>
                                 </template>
@@ -108,9 +108,9 @@ store.fetchStats(props.options).then((response) => {
                                 <template v-slot:activator="{ props }">
                                     <span v-bind="props" v-if="item.hall">
                                         {{
-                                            item.hall.name.length < 10
+                                            item.hall.name.length < 30
                                                 ? item.hall.name
-                                                : `${item.hall.name.replace('\n', ' ').slice(0, 9)}...`
+                                                : `${item.hall.name.replace('\n', ' ').slice(0, 29)}...`
                                         }}
                                     </span>
                                 </template>

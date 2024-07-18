@@ -52,6 +52,7 @@ store.fetchStats(props.options).then((response) => {
                     <tr>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Nom') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Date') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Source') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Type') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Lieu') }}</th>
                     </tr>
@@ -61,18 +62,21 @@ store.fetchStats(props.options).then((response) => {
                         <td class="text-no-wrap">
                             {{ item.customer ? `${item.customer.firstname} ${item.customer.lastname}` : '-' }}
                         </td>
+
                         <td v-if="props.options.statistics != 'closed'" class="text-no-wrap">
                             {{ formatDate(item.event_date) }}
                         </td>
-
+                        <td class="text-no-wrap">
+                            {{ item.source }}
+                        </td>
                         <td class="text-no-wrap text-truncate">
                             <v-tooltip :text="item.event_type">
                                 <template v-slot:activator="{ props }">
                                     <span v-bind="props">
                                         {{
-                                            item.event_type == null || item.event_type.length < 10
+                                            item.event_type == null || item.event_type.length < 30
                                                 ? item.event_type
-                                                : `${item.event_type.replace('\n', ' ').slice(0, 9)}...`
+                                                : `${item.event_type.replace('\n', ' ').slice(0, 29)}...`
                                         }}
                                     </span>
                                 </template>
@@ -83,9 +87,9 @@ store.fetchStats(props.options).then((response) => {
                                 <template v-slot:activator="{ props }">
                                     <span v-bind="props" v-if="item.hall">
                                         {{
-                                            item.hall.name.length < 10
+                                            item.hall.name.length < 30
                                                 ? item.hall.name
-                                                : `${item.hall.name.replace('\n', ' ').slice(0, 9)}...`
+                                                : `${item.hall.name.replace('\n', ' ').slice(0, 29)}...`
                                         }}
                                     </span>
                                 </template>

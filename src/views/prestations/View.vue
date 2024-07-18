@@ -556,7 +556,7 @@ watch(
                                 </td>
 
                                 <td>
-                                    <div class="d-flex align-center" v-if="item.status < store.statuses.processing">
+                                    <div class="d-flex align-center">
                                         <v-tooltip :text="$t('Modifier')">
                                             <template v-slot:activator="{ props }">
                                                 <service-form

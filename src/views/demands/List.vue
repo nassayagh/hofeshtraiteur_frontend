@@ -23,6 +23,7 @@ import { useSnackbar } from '@/stores/snackbar';
 import DatePicker from '@/components/DatePicker.vue';
 import DemandsDashboard from '@/views/demands/DemandsDashboard.vue';
 import ValidateDemand from '@/components/ValidateDemand.vue';
+import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const customerStore = useCustomerStore();
@@ -779,6 +780,10 @@ function customerSelected(val) {
                             </v-card>
                         </v-dialog>
                     </v-toolbar>
+                </template>
+                <template v-slot:item.hall.name="{ index, item }">
+                    <span v-if="item.hall">{{ item.hall.name }}</span>
+                    <ChangeHall v-if="!item.hall" v-model="demands[index]" show-demand-info type="demand" />
                 </template>
                 <template v-slot:item.customer.firstname="{ item }">
                     <span class="cursor-pointer" @click="$router.push('/demands/' + item.id)">{{

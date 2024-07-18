@@ -12,7 +12,8 @@ const snackbarStore = useSnackbar();
 const hallStore = useHallStore();
 
 const props = defineProps({
-    modelValue: Object
+    modelValue: Object,
+    type: { type: String, default: 'prestation' }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -31,7 +32,7 @@ const title = computed(() => `${t('Modifier la salle')}`);
 function validateItemConfirm() {
     loading.value = true;
     store
-        .changeHall(item.value.id, hall.value)
+        .changeHall(item.value.id, hall.value, props.type)
         .then((response) => {
             item.value = response.data;
             dialog.value = false;

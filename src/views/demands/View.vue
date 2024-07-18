@@ -20,6 +20,8 @@ import { basicTableData1 } from '@/_mockApis/components/table/basicTables';
 import CancelDemand from '@/components/CancelDemand.vue';
 import ValidateDemand from '@/components/ValidateDemand.vue';
 import CommentDemand from '@/views/demands/CommentDemand.vue';
+import CustomerWidget from '@/components/CustomerWidget.vue';
+import HallWidget from '@/views/prestations/components/HallWidget.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -322,7 +324,7 @@ watchEffect(() => {
             </v-btn>
             <cancel-demand v-if="!item.prestation" v-model="item" />
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="3">
             <v-card elevation="10" class="overflow-hidden h-100">
                 <v-card-item class="py-4 px-6 text-white bg-primary">
                     <h4 class="text-h6">{{ $t('Identification du demandeur') }}</h4>
@@ -343,7 +345,11 @@ watchEffect(() => {
                 </v-card-text>
             </v-card>
         </v-col>
-        <v-col cols="12" md="8">
+
+        <v-col cols="12" md="3">
+            <HallWidget v-model="item" type="demand" show-demand-info />
+        </v-col>
+        <v-col cols="12" md="6" class="justify-end align-end">
             <v-card elevation="10" class="overflow-hidden h-100">
                 <v-card-item class="py-4 px-6 text-white bg-info">
                     <h4 class="text-h6">{{ $t('Détails de la demande') }}</h4>
