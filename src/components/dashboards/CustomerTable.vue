@@ -30,7 +30,7 @@ store.fetchItems(props.options).then((response) => {
 </script>
 <template>
     <VCard elevation="10">
-        <v-skeleton-loader v-if="loading" height="290"></v-skeleton-loader>
+        <v-skeleton-loader v-if="loading" height="200" type="table-tbody"></v-skeleton-loader>
         <v-card-text v-else>
             <div class="d-sm-flex align-center">
                 <div>
