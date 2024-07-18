@@ -74,7 +74,7 @@ const totalAmountLeft = computed(() => {
 function save() {
     loading.value = true;
     store
-        .savePayment(props.prestation.id, item.value)
+        .savePayment(props.prestation.id, { ...item.value, payment_date: formatedDemandDate.value })
         .then((response) => {
             //item.value = response.data.paymentMethod;
             dialog.value = false;

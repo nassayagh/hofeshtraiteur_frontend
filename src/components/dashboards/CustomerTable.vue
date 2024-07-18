@@ -7,6 +7,7 @@ const select = ref('March');
 const months = ref(['March', 'April', 'May', 'June']);
 const items = ref([]);
 const loading = ref(true);
+const total = ref(0);
 const store = useCustomerStore();
 
 const props = defineProps({
@@ -25,6 +26,7 @@ const props = defineProps({
 
 store.fetchItems(props.options).then((response) => {
     items.value = response.data.data;
+    total.value = response.data.total;
     loading.value = false;
 });
 </script>
@@ -34,7 +36,7 @@ store.fetchItems(props.options).then((response) => {
         <v-card-text v-else>
             <div class="d-sm-flex align-center">
                 <div>
-                    <h2 class="text-h4">{{ title }}</h2>
+                    <h2 class="text-h4">{{ title }} : {{ total }}</h2>
                 </div>
                 <v-spacer></v-spacer>
                 <div class="ml-auto">

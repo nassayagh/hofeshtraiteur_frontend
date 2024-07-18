@@ -3,6 +3,7 @@ import { ref, computed, onMounted, watch, watchEffect } from 'vue';
 import { usePrestationStore } from '@/views/prestations/Controller';
 import { useDate } from 'vuetify';
 import { formatDateToYear, formatDate, formatAmount, formatDateToMonthShortYear } from '@/utils/helpers/formatters';
+const dateObject = useDate();
 const currentYear = new Date().getFullYear();
 
 const select = ref(currentYear);
@@ -41,7 +42,7 @@ function yearChanged(e) {
 </script>
 <template>
     <VCard elevation="10">
-        <v-skeleton-loader v-if="loading" height="200" type="table-tbody"></v-skeleton-loader>
+        <v-skeleton-loader v-if="loading" height="290" type="table-tbody"></v-skeleton-loader>
         <v-card-text v-else>
             <div class="d-sm-flex align-center">
                 <div>
@@ -80,7 +81,11 @@ function yearChanged(e) {
                     <tr v-for="item in items" :key="item.id" class="month-item">
                         <td
                             class="text-no-wrap cursor-pointer"
-                            @click="$router.push(`/prestations?status=-5&date=${[item.date1, item.date2]}`)"
+                            @click="
+                                $router.push(
+                                    `/prestations?status=-5&date=${[dateObject.format(item.date1, 'shortDate'), dateObject.format(item.date2, 'shortDate')]}`
+                                )
+                            "
                         >
                             {{ formatDateToMonthShortYear(item.label) }}
                         </td>

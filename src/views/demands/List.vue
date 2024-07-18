@@ -239,16 +239,21 @@ function save(values: any, { setErrors }: any) {
         if (valid) {
             saving.value = true;
             store
-                .addItem(editedItem.value)
+                .addItem({ ...editedItem.value, event_date: formatedDemandDate.value })
                 .then((response) => {
                     if (response.data.error) {
                         setErrors({ apiError: response.data.message });
                         return;
                     }
+                    const dateObject1 = response.data.event_date != null ? new Date(response.data.event_date) : null;
+                    const d = {
+                        ...response.data,
+                        event_date: dateObject1
+                    };
                     if (editedItem.value.id != null) {
-                        Object.assign(demands.value[editedIndex.value], response.data);
+                        Object.assign(demands.value[editedIndex.value], d);
                     } else {
-                        demands.value.unshift(response.data);
+                        demands.value.unshift(d);
                     }
                     saving.value = false;
                     dialogEdit.value = false;

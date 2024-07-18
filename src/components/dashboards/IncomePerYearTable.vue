@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { usePrestationStore } from '@/views/prestations/Controller';
 import { useDate } from 'vuetify';
 import { formatDateToYear, formatDate, formatAmount } from '@/utils/helpers/formatters';
+const dateObject = useDate();
 const select = ref('March');
 const months = ref(['March', 'April', 'May', 'June']);
 const items = ref([]);
@@ -61,7 +62,11 @@ store.fetchYearStatistics(props.options).then((response) => {
                     <tr v-for="item in items" :key="item.id" class="month-item">
                         <td
                             class="text-no-wrap cursor-pointer"
-                            @click="$router.push(`/prestations?status=-5&date=${[item.date1, item.date2]}`)"
+                            @click="
+                                $router.push(
+                                    `/prestations?status=-5&date=${[dateObject.format(item.date1, 'shortDate'), dateObject.format(item.date2, 'shortDate')]}`
+                                )
+                            "
                         >
                             {{ item.year }}
                         </td>

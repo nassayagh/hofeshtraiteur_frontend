@@ -21,7 +21,10 @@ export const kFormatter = (num: number) => {
  * @param {String} value date to format
  * @param {Intl.DateTimeFormatOptions} formatting Intl object to format with
  */
-export const formatDate = (value: string, formatting: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }) => {
+export const formatDate = (
+    value: string,
+    formatting: Intl.DateTimeFormatOptions = { month: 'numeric', day: 'numeric', year: 'numeric' }
+) => {
     if (!value) return value;
 
     return new Intl.DateTimeFormat('fr-FR', formatting).format(new Date(value));

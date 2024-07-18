@@ -46,7 +46,7 @@ const breadcrumbs = ref([
         <v-col cols="12" md="6" lg="6" xl="6" xxl="6">
             <CustomerTable
                 class="h-100"
-                :title="$t('CLIENTS RECENTS')"
+                :title="$t('CLIENTS')"
                 :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'past', status: 1 }"
             />
         </v-col>
@@ -54,20 +54,20 @@ const breadcrumbs = ref([
             <DemandTable
                 class="h-100"
                 :title="$t('DEMANDES RECENTS')"
-                :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'past', status: 1 }"
+                :options="{ per_page: 10, order_by: 'event_date', direction: 'asc', statistics: 'past', status: 1 }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <IncomePerMonthTable
                 class="h-100"
-                :title="$t('CA/MOIS - DÉJÀ PASSÉ')"
+                :title="$t('CA/MOIS DÉJÀ PASSÉ')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'month_income', section: 'past' }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <IncomePerMonthTable
                 class="h-100"
-                :title="$t('CA/MOIS - A VENIR')"
+                :title="$t('CA/MOIS A VENIR')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'month_income', section: 'future' }"
             />
         </v-col>
@@ -95,7 +95,7 @@ const breadcrumbs = ref([
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
             <PrestastionTable
                 class="h-100"
-                :title="$t('REGLEMENTS EN ATTENTE')"
+                :title="$t('REG. EN ATTENTE')"
                 :options="{ per_page: 10, order_by: 'event_date', direction: 'ASC', statistics: 'closed' }"
             />
         </v-col>
