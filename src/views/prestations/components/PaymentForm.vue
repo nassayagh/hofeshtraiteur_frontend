@@ -4,7 +4,7 @@ import { t } from '@/plugins/i18n';
 import { usePrestationStore } from '../Controller';
 import { usePaymentMethodStore } from '@/stores/apps/paymentMethod';
 import { useSnackbar } from '@/stores/snackbar';
-import { formatDate } from '@/utils/helpers/formatters';
+import { formatDateToYear, formatDate, formatAmount, formatDateToMonthShortYear } from '@/utils/helpers/formatters';
 const store = usePrestationStore();
 const snackbarStore = useSnackbar();
 const paymentMethodStore = usePaymentMethodStore();
@@ -111,6 +111,12 @@ const formatedDemandDate = computed(() => {
     }
     return null;
 });
+const formatedDemandDateFr = computed(() => {
+    if (item.value.payment_date) {
+        return formatDate(item.value.payment_date);
+    }
+    return null;
+});
 function newPayment() {
     loading.value = false;
     if (!item.value.id) {
@@ -176,7 +182,7 @@ watch(
                         >
                             <template #activator="{ props }">
                                 <VTextField
-                                    v-model="formatedDemandDate"
+                                    v-model="formatedDemandDateFr"
                                     v-bind="props"
                                     :placeholder="$t('Date de la demande')"
                                     hide-details

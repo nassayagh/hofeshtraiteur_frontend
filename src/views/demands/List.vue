@@ -194,11 +194,7 @@ const headers = ref([
 ]);
 const formatedDate = computed(() => {
     if (filters.value.date && filters.value.date.length > 0) {
-        return (
-            dateObject.format(filters.value.date[0], 'shortDate') +
-            ' - ' +
-            dateObject.format(filters.value.date[filters.value.date.length - 1], 'shortDate')
-        );
+        return formatDate(filters.value.date[0], 'shortDate') + ' - ' + formatDate(filters.value.date[filters.value.date.length - 1]);
     }
     return null;
 });

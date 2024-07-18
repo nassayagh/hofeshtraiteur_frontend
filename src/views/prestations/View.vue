@@ -354,6 +354,13 @@ function fetchPrestation() {
             }
             loading.value = false;
             item.value = response.data;
+            item.value.payments = (item.value.payments || []).map((e) => {
+                const dateObject = e.payment_date != null ? new Date(e.payment_date) : null;
+                return {
+                    ...e,
+                    payment_date: dateObject
+                };
+            });
             setPageMeta();
             // snackbarStore.showSuccess(t('Utilisateur enregistrphp artisan serveé avec succès'));
         })
