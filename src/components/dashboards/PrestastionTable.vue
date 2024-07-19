@@ -66,7 +66,7 @@ store.fetchStats(props.options).then((response) => {
                 <thead>
                     <tr>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Nom') }}</th>
-                        <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Date') }}</th>
+                        <th class="text-subtitle-1 font-weight-medium">{{ $t('Date') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Montant') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Type') }}</th>
                         <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Lieu') }}</th>
@@ -82,7 +82,7 @@ store.fetchStats(props.options).then((response) => {
                         <td class="text-no-wrap">
                             {{ item.customer ? `${item.customer.firstname} ${item.customer.lastname}` : '-' }}
                         </td>
-                        <td v-if="props.options.statistics != 'closed'" class="text-no-wrap">
+                        <td class="text-no-wrap">
                             {{ formatDate(item.event_date) }}
                         </td>
                         <td>
