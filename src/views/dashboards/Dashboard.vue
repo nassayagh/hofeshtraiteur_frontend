@@ -89,7 +89,7 @@ const breadcrumbs = ref([
             <PaymentTable
                 class="h-100"
                 :title="$t('REGLEMENTS')"
-                :options="{ per_page: 10, order_by: 'created_at', direction: 'DESC', statistics: 'dashboard' }"
+                :options="{ per_page: 10, order_by: 'payment_date', direction: 'DESC', statistics: 'dashboard' }"
             />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="4" xxl="4">
