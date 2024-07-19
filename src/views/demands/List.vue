@@ -194,13 +194,19 @@ const headers = ref([
 ]);
 const formatedDate = computed(() => {
     if (filters.value.date && filters.value.date.length > 0) {
-        return formatDate(filters.value.date[0], 'shortDate') + ' - ' + formatDate(filters.value.date[filters.value.date.length - 1]);
+        return formatDate(filters.value.date[0]) + ' - ' + formatDate(filters.value.date[filters.value.date.length - 1]);
     }
     return null;
 });
 const formatedDemandDate = computed(() => {
     if (editedItem.value.event_date) {
         return dateObject.format(editedItem.value.event_date, 'shortDate');
+    }
+    return null;
+});
+const formatedDemandDate1 = computed(() => {
+    if (editedItem.value.event_date) {
+        return formatDate(editedItem.value.event_date);
     }
     return null;
 });
@@ -661,10 +667,10 @@ function customerSelected(val) {
                                                             >
                                                                 <template #activator="{ props }">
                                                                     <VTextField
-                                                                        v-model="formatedDemandDate"
+                                                                        v-model="formatedDemandDate1"
                                                                         prepend-inner-icon="bx-calendar"
                                                                         v-bind="props"
-                                                                        :placeholder="$t('Date de la demande')"
+                                                                        :placeholder="$t('Date de l\'évènement')"
                                                                         hide-details
                                                                         clearable
                                                                         readonly
