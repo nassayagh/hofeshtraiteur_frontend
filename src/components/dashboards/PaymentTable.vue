@@ -6,6 +6,7 @@ import { formatDateToMonthShort, formatDate, formatAmount } from '@/utils/helper
 const select = ref('March');
 const months = ref(['March', 'April', 'May', 'June']);
 const items = ref([]);
+const totalAmount = ref(0);
 const loading = ref(true);
 const store = usePaymentStore();
 
@@ -23,8 +24,10 @@ const props = defineProps({
     }
 });
 
-store.fetchItems(props.options).then((response) => {
-    items.value = response.data.data;
+store.fetchStats(props.options).then((response) => {
+    console.log(response.data);
+    items.value = response.data.data.data;
+    totalAmount.value = response.data.total_amount || 0;
     loading.value = false;
 });
 </script>
@@ -36,7 +39,8 @@ store.fetchItems(props.options).then((response) => {
                 <div>
                     <h2 class="text-h4">
                         {{ title }} :
-                        {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + parseFloat(item.amount), 0)) }}
+                        {{ formatAmount(totalAmount) }}
+                        <!--                        {{ formatAmount(items.reduce((acc, item) => parseFloat(acc) + parseFloat(item.amount), 0)) }}-->
                     </h2>
                 </div>
                 <v-spacer></v-spacer>

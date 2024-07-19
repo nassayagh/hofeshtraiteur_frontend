@@ -18,6 +18,9 @@ export const usePaymentStore = defineStore({
         fetchItems(params: any) {
             return axios.get('/payments', { params });
         },
+        fetchStats(params: any) {
+            return axios.get('/statistics/payments', { params });
+        },
 
         // 👉 Add User
         async addItem(userData: any) {

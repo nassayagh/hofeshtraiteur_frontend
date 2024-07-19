@@ -7,6 +7,7 @@ const select = ref('March');
 const months = ref(['March', 'April', 'May', 'June']);
 const items = ref([]);
 const total = ref(0);
+const totalAmount = ref(0);
 const loading = ref(true);
 const store = usePrestationStore();
 
@@ -27,6 +28,7 @@ const props = defineProps({
 store.fetchStats(props.options).then((response) => {
     items.value = response.data.data;
     total.value = response.data.total || 0;
+    totalAmount.value = response.data.total_amount || 0;
     loading.value = false;
 });
 </script>
@@ -37,8 +39,8 @@ store.fetchStats(props.options).then((response) => {
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">
-                        {{ title }} : {{ total || 0 }} -
-                        {{
+                        {{ title }} : {{ total || 0 }} | {{ totalAmount }}
+                        <!--                        {{
                             formatAmount(
                                 items.reduce(
                                     (acc, item) =>
@@ -48,7 +50,7 @@ store.fetchStats(props.options).then((response) => {
                                     0
                                 )
                             )
-                        }}
+                        }}-->
                     </h2>
                 </div>
                 <v-spacer></v-spacer>
