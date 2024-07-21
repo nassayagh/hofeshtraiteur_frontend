@@ -39,7 +39,7 @@ store.fetchStats(props.options).then((response) => {
             <div class="d-sm-flex align-center">
                 <div>
                     <h2 class="text-h4">
-                        {{ title }} : {{ total || 0 }} | {{ totalAmount }}
+                        {{ title }} : {{ total || 0 }} | {{ formatAmount(totalAmount) }}
                         <!--                        {{
                             formatAmount(
                                 items.reduce(
