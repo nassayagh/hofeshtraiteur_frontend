@@ -60,7 +60,7 @@ const paymentStatus = ref(null);
 const documentStatus = ref(null);
 const dateModal = ref(false);
 const selectedStatus = ref();
-const rowPerPage = ref(25);
+const rowPerPage = ref(100);
 const currentPage = ref(2);
 const totalPage = ref(2);
 const totalCustomers = ref(0);
@@ -80,8 +80,8 @@ const filters = ref({
     event_type: null
 });
 const options = ref({
-    itemsPerPage: 25,
-    rowsPerPage: 25,
+    itemsPerPage: 100,
+    rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
     sortBy: [{ key: 'created_at', order: 'DESC' }]
@@ -540,6 +540,12 @@ watchEffect(() => {
                             </v-card>
                         </v-dialog>
                     </v-toolbar>
+                </template>
+                <template v-slot:item.firstname="{ item }">
+                    <span class="cursor-pointer" @click="$router.push('/customers/' + item.id)">{{ item.firstname }}</span>
+                </template>
+                <template v-slot:item.lastname="{ item }">
+                    <span class="cursor-pointer" @click="$router.push('/customers/' + item.id)">{{ item.lastname }}</span>
                 </template>
                 <template v-slot:item.created_at="{ item }">
                     {{ formatDate(item.created_at) }}

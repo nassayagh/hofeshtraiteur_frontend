@@ -479,7 +479,7 @@ watch(
                                                 <h2 class="text-h4 mt-1">{{ $t('Note liée à la prestation') }}</h2>
                                             </div>
                                             <div class="mt-4">
-                                                <p class="mb-1">{{ item.comment || $t('Aucun note') }}</p>
+                                                <p class="mb-1"  v-html="(item.comment ||  $t('Aucun commentaire')).replace(/\n/g, '<br/>')"></p>
                                                 <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                             </div>
                                         </v-card-text>
@@ -495,7 +495,7 @@ watch(
                                                 <comment-prestation v-model="item" />
                                             </div>
                                             <div class="mt-4">
-                                                <p class="mb-1">{{ item.commentaire || $t('Aucun commentaire') }}</p>
+                                                <p class="mb-1" v-html="(item.commentaire ||  $t('Aucun commentaire')).replace(/\n/g, '<br/>')"></p>
                                                 <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                             </div>
                                         </v-card-text>
@@ -510,7 +510,7 @@ watch(
                                         <h2 class="text-h4 mt-1">{{ $t("Raison de l'annulation") }}</h2>
                                     </div>
                                     <div class="mt-4">
-                                        <p class="mb-1">{{ item.cancel_comment || $t('Aucun commentaire') }}</p>
+                                        <p class="mb-1" v-html="(item.cancel_comment ||  $t('Aucun commentaire')).replace(/\n/g, '<br/>')"></p>
                                         <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                     </div>
                                 </v-card-text>

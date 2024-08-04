@@ -49,14 +49,14 @@ const valid = ref(false);
 const dialog = ref(false);
 const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
-const sorting = ref([{ key: 'id', order: 'DESC' }]);
+const sorting = ref([{ key: 'name', order: 'ASC' }]);
 const pageCount = ref(0);
 const options = ref({
     itemsPerPage: 100,
     rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
-    sortBy: [{ key: 'id', order: 'desc' }]
+    sortBy: [{ key: 'name', order: 'ASC' }]
 });
 const yesNo = ref([
     { id: 0, label: t('Non') },
@@ -108,11 +108,11 @@ function getText(status: string) {
 }
 const dialogDelete = ref(false);
 const headers = ref([
-    {
+    /*{
         title: 'ID',
         align: 'start',
         key: 'id'
-    },
+    },*/
     {
         title: t('Nom'),
         align: 'start',
