@@ -55,6 +55,7 @@ function save() {
 }
 
 function serviceSelected(val) {
+    console.log("service",val);
     if (val) {
         const service = prestationServices.value.find((e) => e.name == val);
         if (service) {
@@ -77,7 +78,7 @@ function serviceSelected(val) {
                 :flat="item.id != null"
                 variant="elevated"
                 :color="item.id != null ? null : 'primary'"
-                @click="loading = false"
+                @click="loading = false;item = {}"
             >
                 <EditIcon v-if="item.id" stroke-width="1.5" size="20" class="text-primary" />
                 <span v-else>{{ buttonText }}</span>

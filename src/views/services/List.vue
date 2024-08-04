@@ -283,7 +283,7 @@ watchEffect(() => {
                         <v-spacer></v-spacer>
                         <v-dialog v-model="dialog" max-width="350px">
                             <template v-slot:activator="{ props }">
-                                <v-btn color="primary" variant="flat" @click="editItem = {}" dark v-bind="props">{{
+                                <v-btn color="primary" variant="flat" @click="editedItem = {}" dark v-bind="props">{{
                                     $t('Ajouter une service')
                                 }}</v-btn>
                             </template>
@@ -303,7 +303,7 @@ watchEffect(() => {
                                                     ></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <v-text-field v-model="editedItem.price" :label="$t('Prix')"></v-text-field> </v-col
+                                                    <v-text-field v-model="editedItem.price" type="number" :label="$t('Prix')"></v-text-field> </v-col
                                                 ><!--
                                                 <v-col cols="12">
                                                     <v-textarea v-model="editedItem.description" :label="$t('Description')"></v-textarea>
