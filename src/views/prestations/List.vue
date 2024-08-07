@@ -970,6 +970,7 @@ watchEffect(() => {
                                         <v-combobox
                                             v-model="editedItem.event_type_id"
                                             :placeholder="$t('Type d\'événement')"
+                                            :label="$t('Type d\'événement')"
                                             :items="eventTypes"
                                             item-title="name"
                                             item-value="id"
@@ -992,6 +993,7 @@ watchEffect(() => {
                                                     prepend-inner-icon="bx-calendar"
                                                     v-bind="props"
                                                     :placeholder="$t('Date de l\'évènement')"
+                                                    :label="$t('Date de l\'évènement')"
                                                     hide-details
                                                     clearable
                                                     readonly

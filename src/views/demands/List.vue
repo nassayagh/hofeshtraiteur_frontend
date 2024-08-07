@@ -520,6 +520,7 @@ function customerSelected(val) {
                                     density="compact"
                                     v-model="filters.event_type_id"
                                     :placeholder="$t('Prestation')"
+                                    :label="$t('Prestation')"
                                     :items="eventTypes"
                                     item-value="id"
                                     item-title="name"
@@ -562,6 +563,7 @@ function customerSelected(val) {
                                             v-bind="props"
                                             density="compact"
                                             :placeholder="$t('Date')"
+                                            :label="$t('Date')"
                                             hide-details
                                             variant="solo"
                                             clearable
@@ -611,6 +613,7 @@ function customerSelected(val) {
                                                             <v-autocomplete
                                                                 v-model="editedItem.customer_id"
                                                                 :placeholder="$t('Client')"
+                                                                :label="$t('Client')"
                                                                 :items="customers"
                                                                 item-value="id"
                                                                 item-title="name"
