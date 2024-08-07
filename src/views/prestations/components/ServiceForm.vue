@@ -80,7 +80,7 @@ function serviceSelected(val) {
                 :color="item.id != null ? null : 'primary'"
                 @click="loading = false;item = {}"
             >
-                <EditIcon v-if="item.id" stroke-width="1.5" size="20" class="text-primary" />
+                <EditIcon v-if="item.id" stroke-width="1.5" size="20" class="text-primary" density="compact" />
                 <span v-else>{{ buttonText }}</span>
             </v-btn>
         </template>
