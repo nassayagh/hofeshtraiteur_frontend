@@ -93,13 +93,13 @@ store.fetchStats(props.options).then((response) => {
                             }}
                         </td>
                         <td class="text-no-wrap text-truncate">
-                            <v-tooltip :text="item.event_type">
+                            <v-tooltip v-if="item.eventtype" :text="item.eventtype.name">
                                 <template v-slot:activator="{ props }">
                                     <span v-bind="props">
                                         {{
-                                            item.event_type == null || item.event_type.length < 30
-                                                ? item.event_type
-                                                : `${item.event_type.replace('\n', ' ').slice(0, 29)}...`
+                                            item.eventtype.name == null || item.eventtype.name.length < 30
+                                                ? item.eventtype.name
+                                                : `${item.eventtype.name.replace('\n', ' ').slice(0, 29)}...`
                                         }}
                                     </span>
                                 </template>

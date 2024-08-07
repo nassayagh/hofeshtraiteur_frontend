@@ -64,7 +64,7 @@ store.fetchItems(props.options).then((response) => {
                 </thead>
                 <tbody>
                     <tr v-for="item in items" :key="item.id" class="month-item">
-                        <td class="text-no-wrap cursor-pointer" @click="$router.push(`/prestations?event_type=${item.name}`)">
+                        <td class="text-no-wrap cursor-pointer" @click="$router.push(`/prestations?event_type=${item.id}`)">
                             {{ item.name }}
                         </td>
                         <td class="text-no-wrap" v-for="year in dataYears">
