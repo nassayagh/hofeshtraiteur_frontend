@@ -59,7 +59,7 @@ const page = ref({
     title:
         t('Détails du prestation') +
         ' ' +
-        (item.value.event_type || '') +
+        (item.value.eventtype?(item.value.eventtype.name || '') : '') +
         ' ' +
         (item.value.customer || { firstname: '' }).firstname +
         ' ' +
@@ -84,7 +84,7 @@ const breadcrumbs = ref([
         href: store.pageLink(item.value.status)
     },*/
     {
-        text: item.value.event_type || '',
+        text: item.value.eventtype?item.value.eventtype.name : '',
         disabled: true,
         href: '#'
     }
@@ -95,7 +95,7 @@ function setPageMeta() {
         title:
             t('Prestation') +
             ' ' +
-            (item.value.demand.event_type || '') +
+            (item.value.eventtype?(item.value.eventtype.name || '') : '') +
             ' (' +
             (item.value.customer || { firstname: '' }).firstname +
             ' ' +
@@ -207,7 +207,7 @@ const headers = ref([
     {
         title: 'Prestation',
         align: 'start',
-        key: 'event_type'
+        key: 'eventtype.name'
     },
     {
         title: 'Date de la prestation',
@@ -472,7 +472,7 @@ watch(
                     <v-row class="align-end justify-end align-content-end">
                         <v-col class="h-100" cols="12">
                             <v-row>
-                                <v-col cols="12" md="6">
+<!--                                <v-col cols="12" md="6">
                                     <v-card elevation="10" class="h-100">
                                         <v-card-text>
                                             <div class="d-flex align-start">
@@ -480,12 +480,12 @@ watch(
                                             </div>
                                             <div class="mt-4">
                                                 <p class="mb-1"  v-html="(item.comment ||  $t('Aucun commentaire')).replace(/\n/g, '<br/>')"></p>
-                                                <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
+                                                &lt;!&ndash;                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>&ndash;&gt;
                                             </div>
                                         </v-card-text>
                                     </v-card>
-                                </v-col>
-                                <v-col cols="12" md="6">
+                                </v-col>-->
+                                <v-col cols="12">
                                     <v-card elevation="10" class="h-100">
                                         <v-card-text>
                                             <div class="d-flex align-start">
@@ -495,7 +495,7 @@ watch(
                                                 <comment-prestation v-model="item" />
                                             </div>
                                             <div class="mt-4">
-                                                <p class="mb-1" v-html="(item.commentaire ||  $t('Aucun commentaire')).replace(/\n/g, '<br/>')"></p>
+                                                <p class="mb-1" v-html="(item.comment ||  $t('Aucun commentaire')).replace(/\n/g, '<br/>')"></p>
                                                 <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                             </div>
                                         </v-card-text>
@@ -550,7 +550,7 @@ watch(
                         <tbody>
                             <tr v-for="(service, index) in item.services" :key="service.id" class="month-item">
                                 <td>
-                                    {{ service.name }}
+                                    {{ service.service_name }}
                                 </td>
                                 <td>
                                     {{ service.quantity }}
@@ -613,7 +613,7 @@ watch(
                         <tbody>
                             <tr v-for="(pa, index) in item.payments" :key="payment.id">
                                 <td>
-                                    {{ pa.payment_method }}
+                                    {{ pa.payment_method_name || pa.payment_method }}
                                 </td>
                                 <td>
                                     {{ formatAmount(pa.amount) }}

@@ -48,7 +48,7 @@ const page = ref({
     title:
         t('Détails de la demande') +
         ' ' +
-        (item.value.event_type || '') +
+        (item.value.eventtype?(item.value.eventtype.name || '') : '') +
         ' ' +
         (item.value.customer || { firstname: '' }).firstname +
         ' ' +
@@ -68,7 +68,7 @@ const breadcrumbs = ref([
         href: '/demands'
     },
     {
-        text: item.value.event_type || '',
+        text: item.value.eventtype?item.value.eventtype.name : '',
         disabled: true,
         href: '#'
     }
@@ -79,7 +79,7 @@ function setPageMeta() {
         title:
             t('Détails de la demande') +
             ' ' +
-            (item.value.event_type || '') +
+            (item.value.eventtype?(item.value.eventtype.name || '') : '') +
             ' (' +
             (item.value.customer || { firstname: '' }).firstname +
             ' ' +
@@ -100,7 +100,7 @@ function setPageMeta() {
             href: '/demands'
         },
         {
-            text: item.value.event_type || '',
+            text: item.value.eventtype?item.value.eventtype.name:'',
             disabled: true,
             href: '#'
         }
@@ -190,7 +190,7 @@ const headers = ref([
     {
         title: 'Prestation',
         align: 'start',
-        key: 'event_type'
+        key: 'eventtype.name'
     },
     {
         title: 'Date de la demande',
@@ -364,7 +364,7 @@ watchEffect(() => {
                    Nombre de convives : 11
                    Commentaires :-->
                             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Source :') }} {{ item.source || '' }}</p>
-                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.event_type || '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.eventtype?item.eventtype.name : '' }}</p>
                             <p class="text-subtitle-1 textSecondary mt-3">
                                 {{ $t("Date de l'événement :") }} {{ formatDate(item.event_date) || '' }}
                             </p>
@@ -420,7 +420,7 @@ watchEffect(() => {
                                     {{ demand.id }}
                                 </td>
                                 <td>
-                                    <h6 class="text-h6 font-weight-medium text-medium-emphasis">{{ demand.event_type }}</h6>
+                                    <h6 class="text-h6 font-weight-medium text-medium-emphasis">{{ demand.eventtype?demand.eventtype.name:'' }}</h6>
                                 </td>
                                 <td>
                                     {{ formatDate(demand.demand_date) }}
@@ -472,7 +472,7 @@ watchEffect(() => {
                                 </td>
                                 <td>
                                     <h6 class="text-h6 font-weight-medium text-medium-emphasis">
-                                        {{ prestation.demand ? prestation.demand.event_type : '' }}
+                                        {{ prestation.eventtype ? prestation.eventtype.name : '' }}
                                     </h6>
                                 </td>
                                 <td>

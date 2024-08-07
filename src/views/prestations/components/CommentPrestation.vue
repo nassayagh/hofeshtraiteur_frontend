@@ -20,7 +20,7 @@ const item = computed({
 });
 const dialog = ref(false);
 const loading = ref(false);
-const comment = ref(item.value.commentaire || '');
+const comment = ref(item.value.comment || '');
 
 const title = computed(() => `${t('Commentaire')}`);
 function validateItemConfirm() {
@@ -47,12 +47,12 @@ function validateItemConfirm() {
     <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ props }">
             <v-btn density="compact" dark v-bind="props" variant="outlined" color="primary" @click="loading = false"
-                >{{ !item.commentaire || item.commentaire.length == 0 ? $t('Ajouter') : $t('Modifier') }}
+                >{{ !item.comment || item.comment.length == 0 ? $t('Ajouter') : $t('Modifier') }}
             </v-btn>
         </template>
         <v-card>
             <v-card-title class="text-h5 text-center py-6">{{
-                !item.commentaire || item.commentaire.length == 0 ? $t('Ajouter un commentaire') : $t('Modifier le commentaire')
+                !item.comment || item.comment.length == 0 ? $t('Ajouter un commentaire') : $t('Modifier le commentaire')
             }}</v-card-title>
             <v-divider />
             <v-card-text>

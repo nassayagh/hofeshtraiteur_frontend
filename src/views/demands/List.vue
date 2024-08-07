@@ -166,7 +166,7 @@ const headers = ref([
     {
         title: t('Prest.'),
         align: 'start',
-        key: 'event_type'
+        key: 'eventtype.name'
     },
     /*{
         title: t('Date de la demande'),
@@ -518,10 +518,10 @@ function customerSelected(val) {
                             <v-col>
                                 <v-select
                                     density="compact"
-                                    v-model="filters.event_type"
+                                    v-model="filters.event_type_id"
                                     :placeholder="$t('Prestation')"
                                     :items="eventTypes"
-                                    item-value="name"
+                                    item-value="id"
                                     item-title="name"
                                     clearable
                                     multiple
@@ -649,9 +649,11 @@ function customerSelected(val) {
                                                         </v-col>
                                                         <v-col cols="12" md="6">
                                                             <v-combobox
-                                                                v-model="editedItem.event_type"
+                                                                v-model="editedItem.event_type_id"
                                                                 :placeholder="$t('Type d\'événement')"
-                                                                :items="eventTypes.map((e) => e.name)"
+                                                                :items="eventTypes"
+                                                                item-value="id"
+                                                                item-title="name"
                                                                 clearable
                                                                 hide-details
                                                                 variant="outlined"
@@ -832,11 +834,11 @@ function customerSelected(val) {
                         </template>
                     </v-tooltip>
                 </template>
-                <template v-slot:item.event_type="{ item }">
-                    <v-tooltip :text="item.event_type">
+                <template v-slot:item.eventtype="{ item }">
+                    <v-tooltip v-if="item.eventtype" :text="item.eventtype?item.eventtype.name:''">
                         <template v-slot:activator="{ props }">
                             <span v-bind="props">{{
-                                !item.event_type || item.event_type.length < 10 ? item.event_type : `${item.event_type.slice(0, 9)}...`
+                                !item.eventtype.name || item.eventtype.name.length < 10 ? item.eventtype.name : `${item.eventtype.name.slice(0, 9)}...`
                             }}</span>
                         </template>
                     </v-tooltip>
