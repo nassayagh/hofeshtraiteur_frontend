@@ -71,7 +71,7 @@ const dialogEdit = ref(false);
 const errorMessage = ref(null);
 const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
-const sorting = ref([{ key: 'created_at', order: 'DESC' }]);
+const sorting = ref([{ key: 'firstname', order: 'asc' }]);
 const pageCount = ref(0);
 const filters = ref({
     search: null,
@@ -84,7 +84,7 @@ const options = ref({
     rowsPerPage: 100,
     page: 1,
     sortDesc: [true],
-    sortBy: [{ key: 'created_at', order: 'DESC' }]
+    sortBy: [{ key: 'firstname', order: 'asc' }]
 });
 
 const editedIndex = ref(-1);
@@ -261,8 +261,8 @@ function fetchCustomers() {
 
     timeout.value = setTimeout(() => {
         loading.value = true;
-        let by = 'id';
-        let direction = 'desc';
+        let by = 'firstname';
+        let direction = 'asc';
         console.log(sorting.value);
         if (sorting.value.length > 0) {
             by = sorting.value[0].key;
