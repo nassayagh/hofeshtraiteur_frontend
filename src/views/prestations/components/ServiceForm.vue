@@ -12,6 +12,7 @@ const serviceStore = useServiceStore();
 const props = defineProps({
     modelValue: Object,
     prestation: Object,
+    isNew: { type: Boolean, default: false },
     title: t('Service'),
     buttonText: t('Ajouter un service')
 });
@@ -32,7 +33,11 @@ onMounted(() => {
         console.log(prestationServices.value);
     });
 });
-
+function openDialog() {
+    if(!item.value || !item.value.id) {
+      //  item.value = {}
+    }
+}
 function save() {
     loading.value = true;
     store
@@ -42,7 +47,10 @@ function save() {
             dialog.value = false;
             emit('update:item', response.data);
             //item.value = {};
-            //item.value = {};
+            if(props.isNew){
+                item.value = {};
+            }
+            //
             snackbarStore.showSuccess(t('Service enregistré avec succès'));
         })
         .catch((error) => {
@@ -78,10 +86,10 @@ function serviceSelected(val) {
                 :flat="item.id != null"
                 variant="elevated"
                 :color="item.id != null ? null : 'primary'"
-                @click="loading = false;item = {}"
+                @click="loading = false"
             >
                 <EditIcon v-if="item.id" stroke-width="1.5" size="20" class="text-primary" density="compact" />
-                <span v-else>{{ buttonText }}</span>
+                <span v-else>{{ buttonText }} </span>
             </v-btn>
         </template>
         <v-card>

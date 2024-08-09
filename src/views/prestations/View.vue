@@ -524,12 +524,14 @@ watch(
             <v-card elevation="10" class="overflow-hidden h-100">
                 <v-card-item class="py-4 px-6 text-white bg-info">
                     <h4 class="text-h6 d-flex align-center">
-                        <span>{{ $t('Désignation des services attendus') }}</span>
+                        <span>{{ $t('Désignation des services attendus') }}</span> : {{ item.services?item.services.length:0 }} -
+                        {{ formatAmount(item.service_total || 0) }}
                         <v-spacer> </v-spacer>
                         <!--                        v-if="item.status < store.statuses.processing"-->
                         <service-form
                             v-model="service"
                             :prestation="item"
+                            is-new
                             @update:item="updatePrestation"
                             :button-text="$t('Ajouter un service')"
                             :title="$t('Ajouter un service')"
