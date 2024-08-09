@@ -809,6 +809,17 @@ watchEffect(() => {
                             </span>
                         </template>
                     </v-tooltip>
+<!--                    <v-tooltip v-else-if="item.event_type" :text="item.event_type">
+                        <template v-slot:activator="{ props }">
+                            <span v-bind="props">
+                                {{
+                                    item.event_type == null || item.event_type.length < 10
+                                        ? item.event_type
+                                        : `${item.event_type.replace('\n', ' ').slice(0, 9)}...`
+                                }}
+                            </span>
+                        </template>
+                    </v-tooltip>-->
                 </template>
                 <template v-slot:item.amount_left="{ index, item }">
                     <payment-form
@@ -915,7 +926,7 @@ watchEffect(() => {
                         @click="editItem({ customer: {}, source: 'admin' })"
                         dark
                         v-bind="props"
-                    >{{ $t('Ajouter une demande') }}</v-btn
+                    >{{ $t('Ajouter une prestation') }}</v-btn
                     >
                 </template>
                 <v-card>
