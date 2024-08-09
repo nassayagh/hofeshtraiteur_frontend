@@ -15,6 +15,8 @@ const props = defineProps({
     prestation: Object,
     title: t('PaymentMethod'),
     variant: { type: String, default: 'elevated' },
+    density: { type: String, default: 'default' },
+    classes: { type: String, default: '' },
     buttonText: t('Ajouter un paymentMethod')
 });
 
@@ -144,7 +146,9 @@ watch(
                 :icon="item.id != null"
                 :flat="item.id != null"
                 :variant="variant"
+                :density="density"
                 :color="item.id != null ? null : 'primary'"
+                :class="classes"
                 @click="newPayment"
             >
                 <slot>

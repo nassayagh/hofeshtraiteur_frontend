@@ -24,6 +24,7 @@ import DatePicker from '@/components/DatePicker.vue';
 import DemandsDashboard from '@/views/demands/DemandsDashboard.vue';
 import ValidateDemand from '@/components/ValidateDemand.vue';
 import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
+import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const customerStore = useCustomerStore();
@@ -850,11 +851,57 @@ function customerSelected(val) {
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ index, item }">
-                    <div class="d-flex align-center">
+                        <v-btn size="30" icon variant="flat" class="grey100">
+                            <v-avatar size="22">
+                                <DotsVerticalIcon size="20" color="grey100" />
+                            </v-avatar>
+                            <v-menu activator="parent">
+                                <v-list>
+                                    <validate-demand v-if="!item.prestation" v-model="demands[index]" />
+                                    <v-list-item
+                                        value="action"
+                                        hide-details
+                                        min-height="38"
+                                        @click="editItem(item)"
+                                    >
+                                        <v-list-item-title>
+                                            <v-avatar size="20" class="mr-2">
+                                                <component is="EditIcon" stroke-width="2" size="20" />
+                                            </v-avatar>
+                                            {{ $t('Modifier') }}
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item
+                                        value="action"
+                                        hide-details
+                                        min-height="38"
+                                        :to="'/demands/' + item.id"
+                                    >
+                                        <v-list-item-title>
+                                            <v-avatar size="20" class="mr-2">
+                                                <component is="EyeIcon" stroke-width="2" size="20" />
+                                            </v-avatar>
+                                            {{ $t('Voir') }}
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item
+                                        value="action"
+                                        hide-details
+                                        min-height="38"
+                                        @click="deleteItem(item)"
+                                    >
+                                        <v-list-item-title>
+                                            <v-avatar size="20" class="mr-2">
+                                                <component is="TrashIcon" stroke-width="2" size="20" />
+                                            </v-avatar>
+                                            {{ $t('Supprimer') }}
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </v-btn>
+<!--                    <div class="d-flex align-center">
                         <validate-demand v-if="!item.prestation" v-model="demands[index]" :icon="true" />
-                        <!--                        <v-btn density="compact" color="primary" class="mx-2" variant="outlined" :to="'/demands/' + item.id">{{
-                            $t('Voir')
-                        }}</v-btn>-->
                         <v-tooltip :text="$t('Voir')">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat :to="'/demands/' + item.id" v-bind="props"
@@ -876,7 +923,7 @@ function customerSelected(val) {
                                 /></v-btn>
                             </template>
                         </v-tooltip>
-                    </div>
+                    </div>-->
                 </template>
                 <template v-slot:no-data>
                     <span>{{ $t('Aucune donnée disponible') }}</span>

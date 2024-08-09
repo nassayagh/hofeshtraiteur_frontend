@@ -25,6 +25,7 @@ import ValidateDemand from '@/components/ValidateDemand.vue';
 import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
 import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
 import PaymentForm from '@/views/prestations/components/PaymentForm.vue';
+import { tableActionData } from '@/_mockApis/components/table/basicTables';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const hallStore = useHallStore();
@@ -627,6 +628,7 @@ watchEffect(() => {
         <v-col cols="12">
             <v-data-table-server
                 class="border rounded-md"
+                density="compact"
                 :headers="headers"
                 :loading="loading"
                 :items="items"
@@ -829,10 +831,12 @@ watchEffect(() => {
                         :button-text="$t('Ajouter un paiement')"
                         :title="$t('Ajouter un paiement')"
                         variant="text"
+                        density="compact"
+                        classes="px-1"
                     >
                         <span
                             v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0"
-                            class="text-error font-weight-bold"
+                            class="text-error font-weight-bold "
                             >{{ formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0)) }}</span
                         >
                     </payment-form>
@@ -840,8 +844,10 @@ watchEffect(() => {
                 <template v-slot:item.services_sum_total="{ item }">
                     <v-chip
                         variant="tonal"
+                        density="compact"
+                        small
                         :color="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0 ? 'error' : 'success'"
-                        class="font-weight-bold"
+                        class="font-weight-bold body-text-1 px-1"
                         >{{ formatAmount(item.payments_sum_amount || 0) }} / {{ formatAmount(item.services_sum_total || 0) }}</v-chip
                     >
                 </template>
@@ -853,7 +859,43 @@ watchEffect(() => {
                     <ChangeHall v-if="!item.hall" v-model="items[index]" show-demand-info />
                 </template>
                 <template v-slot:item.actions="{ index, item }">
-                    <close-prestation v-if="item.status == store.statuses.validated" @refresh="fetchItems" v-model="items[index]" icon />
+                    <v-btn size="30" icon variant="flat" class="grey100">
+                        <v-avatar size="22">
+                            <DotsVerticalIcon size="20" color="grey100" />
+                        </v-avatar>
+                        <v-menu activator="parent">
+                            <v-list>
+                                <v-list-item
+                                    value="action"
+                                    hide-details
+                                    min-height="38"
+                                    @click="editItem(item)"
+                                >
+                                    <v-list-item-title>
+                                        <v-avatar size="20" class="mr-2">
+                                            <component is="EditIcon" stroke-width="2" size="20" />
+                                        </v-avatar>
+                                        {{ $t('Modifier') }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-list-item
+                                    value="action"
+                                    hide-details
+                                    min-height="38"
+                                    :to="'/prestations/' + item.id"
+                                >
+                                    <v-list-item-title>
+                                        <v-avatar size="20" class="mr-2">
+                                            <component is="EyeIcon" stroke-width="2" size="20" />
+                                        </v-avatar>
+                                        {{ $t('Voir') }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <close-prestation v-if="item.status == store.statuses.validated" @refresh="fetchItems" v-model="items[index]" />
+                            </v-list>
+                        </v-menu>
+                    </v-btn>
+<!--                    <close-prestation v-if="item.status == store.statuses.validated" @refresh="fetchItems" v-model="items[index]" icon />
                     <v-btn icon flat density="compact" class="mx-2" :to="'/prestations/' + item.id">
                         <EyeIcon stroke-width="1.5" size="20" class="text-primary" />
                     </v-btn>
@@ -863,7 +905,7 @@ watchEffect(() => {
                             ><PencilIcon stroke-width="1.5" size="20" class="text-primary"
                             /></v-btn>
                         </template>
-                    </v-tooltip>
+                    </v-tooltip>-->
                     <!--                    <v-btn-group
                             base-color="primaruy"
                         variant="elevated"
