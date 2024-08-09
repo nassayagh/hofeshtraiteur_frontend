@@ -525,7 +525,7 @@ watch(
                 <v-card-item class="py-4 px-6 text-white bg-info">
                     <h4 class="text-h6 d-flex align-center">
                         <span>{{ $t('Désignation des services attendus') }}</span> : {{ item.services?item.services.length:0 }} -
-                        {{ formatAmount(item.service_total || 0) }}
+                        {{ formatAmount(totalAmount || 0) }}
                         <v-spacer> </v-spacer>
                         <!--                        v-if="item.status < store.statuses.processing"-->
                         <service-form
