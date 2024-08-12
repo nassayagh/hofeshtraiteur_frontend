@@ -174,8 +174,8 @@ const headers = ref([
     },
     { title: t('La réception se déroulera plutôt'), key: 'reception_period' },
     { title: t('Heure'), key: 'reception_start_time' },
-    { title: t('Lieu'), key: 'demand.event_location' },
-    { title: t('Convives'), key: 'demand.number_people' },
+    { title: t('Lieu'), key: 'event_location' },
+    { title: t('Convives'), key: 'number_people' },
 
     {
         title: t('En attente de règlement'),
@@ -234,7 +234,7 @@ const headersDefault = ref([
     { title: t('Moment'), key: 'reception_period' },
     { title: t('Heure'), key: 'reception_start_time' },
     /*   { title: t('Lieu'), key: 'demand.event_location' },*/
-    { title: t('Con.'), key: 'demand.number_people' },
+    { title: t('Con.'), key: 'number_people' },
     { title: t('Salle'), key: 'hall' },
 
     {
@@ -298,7 +298,7 @@ function save(values: any, { setErrors }: any) {
         if (valid) {
             saving.value = true;
             store
-                .addItem(editedItem.value)
+                .addItem({ ...editedItem.value, event_date: formatedDemandDate.value })
                 .then((response) => {
                     if (response.data.error) {
                         setErrors({ apiError: response.data.message });
@@ -314,6 +314,7 @@ function save(values: any, { setErrors }: any) {
                     editedItem.value = { customer: {} };
                     snackbarStore.showSuccess(t('Prestations enregistreé avec succès'));
                     fetchEventTypes();
+                    fetchItems();
                 })
                 .catch((error) => {
                     saving.value = false;
@@ -591,7 +592,6 @@ const formatedDemandDate1 = computed(() => {
     return null;
 });
 
-
 watch(
     [search, options, filters /*currentPage, rowPerPage*/],
     () => {
@@ -660,7 +660,7 @@ watchEffect(() => {
                                 ></v-text-field>
                             </v-col>
                             <v-col>
-                                <v-select
+                                <v-autocomplete
                                     density="compact"
                                     v-model="filters.event_type"
                                     :placeholder="$t('Prestation')"
@@ -672,10 +672,10 @@ watchEffect(() => {
                                     variant="solo"
                                     flat
                                     clearable
-                                ></v-select>
+                                ></v-autocomplete>
                             </v-col>
                             <v-col>
-                                <v-select
+                                <v-autocomplete
                                     density="compact"
                                     v-model="filters.hall"
                                     :placeholder="$t('Salle')"
@@ -687,7 +687,7 @@ watchEffect(() => {
                                     variant="solo"
                                     flat
                                     clearable
-                                ></v-select>
+                                ></v-autocomplete>
                             </v-col>
                             <v-col>
                                 <v-select
@@ -800,7 +800,7 @@ watchEffect(() => {
                     {{ formatDate(item.event_date) }}
                 </template>
                 <template v-slot:item.eventtype.name="{ item }">
-                    <v-tooltip v-if="item.eventtype" :text="item.eventtype?item.eventtype.name:''">
+                    <v-tooltip v-if="item.eventtype" :text="item.eventtype ? item.eventtype.name : ''">
                         <template v-slot:activator="{ props }">
                             <span v-bind="props">
                                 {{
@@ -811,7 +811,7 @@ watchEffect(() => {
                             </span>
                         </template>
                     </v-tooltip>
-<!--                    <v-tooltip v-else-if="item.event_type" :text="item.event_type">
+                    <!--                    <v-tooltip v-else-if="item.event_type" :text="item.event_type">
                         <template v-slot:activator="{ props }">
                             <span v-bind="props">
                                 {{
@@ -836,7 +836,7 @@ watchEffect(() => {
                     >
                         <span
                             v-if="Math.max(item.services_sum_total - item.payments_sum_amount, 0) > 0"
-                            class="text-error font-weight-bold "
+                            class="text-error font-weight-bold"
                             >{{ formatAmount(Math.max(item.services_sum_total - item.payments_sum_amount, 0)) }}</span
                         >
                     </payment-form>
@@ -865,12 +865,7 @@ watchEffect(() => {
                         </v-avatar>
                         <v-menu activator="parent">
                             <v-list>
-                                <v-list-item
-                                    value="action"
-                                    hide-details
-                                    min-height="38"
-                                    @click="editItem(item)"
-                                >
+                                <v-list-item value="action" hide-details min-height="38" @click="editItem(item)">
                                     <v-list-item-title>
                                         <v-avatar size="20" class="mr-2">
                                             <component is="EditIcon" stroke-width="2" size="20" />
@@ -878,12 +873,7 @@ watchEffect(() => {
                                         {{ $t('Modifier') }}
                                     </v-list-item-title>
                                 </v-list-item>
-                                <v-list-item
-                                    value="action"
-                                    hide-details
-                                    min-height="38"
-                                    :to="'/prestations/' + item.id"
-                                >
+                                <v-list-item value="action" hide-details min-height="38" :to="'/prestations/' + item.id">
                                     <v-list-item-title>
                                         <v-avatar size="20" class="mr-2">
                                             <component is="EyeIcon" stroke-width="2" size="20" />
@@ -891,11 +881,15 @@ watchEffect(() => {
                                         {{ $t('Voir') }}
                                     </v-list-item-title>
                                 </v-list-item>
-                                <close-prestation v-if="item.status == store.statuses.validated" @refresh="fetchItems" v-model="items[index]" />
+                                <close-prestation
+                                    v-if="item.status == store.statuses.validated"
+                                    @refresh="fetchItems"
+                                    v-model="items[index]"
+                                />
                             </v-list>
                         </v-menu>
                     </v-btn>
-<!--                    <close-prestation v-if="item.status == store.statuses.validated" @refresh="fetchItems" v-model="items[index]" icon />
+                    <!--                    <close-prestation v-if="item.status == store.statuses.validated" @refresh="fetchItems" v-model="items[index]" icon />
                     <v-btn icon flat density="compact" class="mx-2" :to="'/prestations/' + item.id">
                         <EyeIcon stroke-width="1.5" size="20" class="text-primary" />
                     </v-btn>
@@ -968,7 +962,7 @@ watchEffect(() => {
                         @click="editItem({ customer: {}, source: 'admin' })"
                         dark
                         v-bind="props"
-                    >{{ $t('Ajouter une prestation') }}</v-btn
+                        >{{ $t('Ajouter une prestation') }}</v-btn
                     >
                 </template>
                 <v-card>
@@ -979,7 +973,7 @@ watchEffect(() => {
                         <v-card-text>
                             <v-container class="px-0">
                                 <v-row>
-<!--                                    <v-col cols="12">
+                                    <!--                                    <v-col cols="12">
                                         <v-autocomplete
                                             v-model="editedItem.customer_id"
                                             :placeholder="$t('Client')"
@@ -1020,7 +1014,7 @@ watchEffect(() => {
                                         ></v-text-field>
                                     </v-col>-->
                                     <v-col cols="12" md="6">
-                                        <v-combobox
+                                        <v-autocomplete
                                             v-model="editedItem.event_type_id"
                                             :placeholder="$t('Type d\'événement')"
                                             :label="$t('Type d\'événement')"
@@ -1030,7 +1024,7 @@ watchEffect(() => {
                                             clearable
                                             hide-details
                                             variant="outlined"
-                                        ></v-combobox>
+                                        ></v-autocomplete>
                                     </v-col>
                                     <v-col cols="12" md="6">
                                         <v-dialog
@@ -1061,11 +1055,7 @@ watchEffect(() => {
                                                                 {{ $t('Annuler') }}
                                                             </VBtn>
                                                             <VSpacer />
-                                                            <VBtn
-                                                                variant="elevated"
-                                                                color="primary"
-                                                                @click="dateDemandModal = false"
-                                                            >
+                                                            <VBtn variant="elevated" color="primary" @click="dateDemandModal = false">
                                                                 {{ $t('OK') }}
                                                             </VBtn>
                                                         </template>

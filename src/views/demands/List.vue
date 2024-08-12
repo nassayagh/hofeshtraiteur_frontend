@@ -118,7 +118,8 @@ const editedItem = ref({
     changePassword: true,
     jdate: '',
     role: '',
-    rolestatus: ''
+    rolestatus: '',
+    event_type_id: null
 });
 const defaultItem = ref({
     id: null,
@@ -219,13 +220,13 @@ const filteredList = computed(() => {
     });
 });
 
-function editItem(item: any) {
+function editItem(item: any, index: number) {
     loading.value = false;
-    editedIndex.value = demands.value.indexOf(item);
+    editedIndex.value = index;
     editedItem.value = Object.assign({}, item);
     dialogEdit.value = true;
 }
-function deleteItem(item: any) {
+function deleteItem(item: any, index: number) {
     editedItem.value = item;
     dialogDelete.value = true;
 }
@@ -238,6 +239,7 @@ function close() {
     }, 300);
 }
 function save(values: any, { setErrors }: any) {
+    console.log(editedItem.value);
     refForm.value?.validate().then(({ valid }) => {
         if (valid) {
             saving.value = true;
@@ -264,6 +266,7 @@ function save(values: any, { setErrors }: any) {
                     snackbarStore.showSuccess(t('Demande enregistrée avec succès'));
                     fetchEventTypes();
                     store.fetchStatistics();
+                    fetchDemands();
                 })
                 .catch((error) => {
                     saving.value = false;
@@ -517,7 +520,7 @@ function customerSelected(val) {
                                 ></v-text-field>
                             </v-col>
                             <v-col>
-                                <v-select
+                                <v-autocomplete
                                     density="compact"
                                     v-model="filters.event_type_id"
                                     :placeholder="$t('Prestation')"
@@ -529,7 +532,7 @@ function customerSelected(val) {
                                     multiple
                                     hide-details
                                     variant="solo"
-                                ></v-select>
+                                ></v-autocomplete>
                             </v-col>
                             <!--                            <v-col>
                                 <v-select
@@ -652,7 +655,7 @@ function customerSelected(val) {
                                                             ></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="6">
-                                                            <v-combobox
+                                                            <v-autocomplete
                                                                 v-model="editedItem.event_type_id"
                                                                 :placeholder="$t('Type d\'événement')"
                                                                 :items="eventTypes"
@@ -661,7 +664,7 @@ function customerSelected(val) {
                                                                 clearable
                                                                 hide-details
                                                                 variant="outlined"
-                                                            ></v-combobox>
+                                                            ></v-autocomplete>
                                                         </v-col>
                                                         <v-col cols="12" md="6">
                                                             <v-dialog
@@ -839,10 +842,12 @@ function customerSelected(val) {
                     </v-tooltip>
                 </template>
                 <template v-slot:item.eventtype="{ item }">
-                    <v-tooltip v-if="item.eventtype" :text="item.eventtype?item.eventtype.name:''">
+                    <v-tooltip v-if="item.eventtype" :text="item.eventtype ? item.eventtype.name : ''">
                         <template v-slot:activator="{ props }">
                             <span v-bind="props">{{
-                                !item.eventtype.name || item.eventtype.name.length < 10 ? item.eventtype.name : `${item.eventtype.name.slice(0, 9)}...`
+                                !item.eventtype.name || item.eventtype.name.length < 10
+                                    ? item.eventtype.name
+                                    : `${item.eventtype.name.slice(0, 9)}...`
                             }}</span>
                         </template>
                     </v-tooltip>
@@ -851,56 +856,41 @@ function customerSelected(val) {
                     <v-chip :color="store.statusColor(item.status)" size="small" label>{{ store.statusText(item.status) }}</v-chip>
                 </template>
                 <template v-slot:item.actions="{ index, item }">
-                        <v-btn size="30" icon variant="flat" class="grey100">
-                            <v-avatar size="22">
-                                <DotsVerticalIcon size="20" color="grey100" />
-                            </v-avatar>
-                            <v-menu activator="parent">
-                                <v-list>
-                                    <validate-demand v-if="!item.prestation" v-model="demands[index]" />
-                                    <v-list-item
-                                        value="action"
-                                        hide-details
-                                        min-height="38"
-                                        @click="editItem(item)"
-                                    >
-                                        <v-list-item-title>
-                                            <v-avatar size="20" class="mr-2">
-                                                <component is="EditIcon" stroke-width="2" size="20" />
-                                            </v-avatar>
-                                            {{ $t('Modifier') }}
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item
-                                        value="action"
-                                        hide-details
-                                        min-height="38"
-                                        :to="'/demands/' + item.id"
-                                    >
-                                        <v-list-item-title>
-                                            <v-avatar size="20" class="mr-2">
-                                                <component is="EyeIcon" stroke-width="2" size="20" />
-                                            </v-avatar>
-                                            {{ $t('Voir') }}
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item
-                                        value="action"
-                                        hide-details
-                                        min-height="38"
-                                        @click="deleteItem(item)"
-                                    >
-                                        <v-list-item-title>
-                                            <v-avatar size="20" class="mr-2">
-                                                <component is="TrashIcon" stroke-width="2" size="20" />
-                                            </v-avatar>
-                                            {{ $t('Supprimer') }}
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>
-                        </v-btn>
-<!--                    <div class="d-flex align-center">
+                    <v-btn size="30" icon variant="flat" class="grey100">
+                        <v-avatar size="22">
+                            <DotsVerticalIcon size="20" color="grey100" />
+                        </v-avatar>
+                        <v-menu activator="parent">
+                            <v-list>
+                                <validate-demand v-if="!item.prestation" v-model="demands[index]" />
+                                <v-list-item value="action" hide-details min-height="38" @click="editItem(item, index)">
+                                    <v-list-item-title>
+                                        <v-avatar size="20" class="mr-2">
+                                            <component is="EditIcon" stroke-width="2" size="20" />
+                                        </v-avatar>
+                                        {{ $t('Modifier') }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-list-item value="action" hide-details min-height="38" :to="'/demands/' + item.id">
+                                    <v-list-item-title>
+                                        <v-avatar size="20" class="mr-2">
+                                            <component is="EyeIcon" stroke-width="2" size="20" />
+                                        </v-avatar>
+                                        {{ $t('Voir') }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-list-item value="action" hide-details min-height="38" @click="deleteItem(item, index)">
+                                    <v-list-item-title>
+                                        <v-avatar size="20" class="mr-2">
+                                            <component is="TrashIcon" stroke-width="2" size="20" />
+                                        </v-avatar>
+                                        {{ $t('Supprimer') }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </v-btn>
+                    <!--                    <div class="d-flex align-center">
                         <validate-demand v-if="!item.prestation" v-model="demands[index]" :icon="true" />
                         <v-tooltip :text="$t('Voir')">
                             <template v-slot:activator="{ props }">

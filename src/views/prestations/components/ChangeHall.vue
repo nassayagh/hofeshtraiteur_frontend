@@ -68,7 +68,16 @@ onMounted(() => {
                 <v-row>
                     <v-col cols="12">
                         <v-col cols="12">
-                            <v-select v-model="hall" :items="halls" item-value="id" item-title="name" :label="$t('Salle liée')" />
+                            <v-autocomplete
+                                v-model="hall"
+                                :items="halls"
+                                item-value="id"
+                                item-title="name"
+                                :label="$t('Salle liée')"
+                                clearable
+                                hide-details
+                                variant="outlined"
+                            />
                         </v-col>
                     </v-col>
                 </v-row>

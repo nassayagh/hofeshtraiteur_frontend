@@ -59,7 +59,7 @@ const page = ref({
     title:
         t('Détails du prestation') +
         ' ' +
-        (item.value.eventtype?(item.value.eventtype.name || '') : '') +
+        (item.value.eventtype ? item.value.eventtype.name || '' : '') +
         ' ' +
         (item.value.customer || { firstname: '' }).firstname +
         ' ' +
@@ -84,7 +84,7 @@ const breadcrumbs = ref([
         href: store.pageLink(item.value.status)
     },*/
     {
-        text: item.value.eventtype?item.value.eventtype.name : '',
+        text: item.value.eventtype ? item.value.eventtype.name : '',
         disabled: true,
         href: '#'
     }
@@ -95,7 +95,7 @@ function setPageMeta() {
         title:
             t('Prestation') +
             ' ' +
-            (item.value.eventtype?(item.value.eventtype.name || '') : '') +
+            (item.value.eventtype ? item.value.eventtype.name || '' : '') +
             ' (' +
             (item.value.customer || { firstname: '' }).firstname +
             ' ' +
@@ -374,6 +374,14 @@ function fetchPrestation() {
 
 function updatePrestation(val) {
     item.value = val;
+    service.value = {
+        id: null,
+        service_id: null,
+        name: '',
+        price: 0,
+        total: 0,
+        quantity: 0
+    };
 }
 
 watch(
@@ -472,7 +480,7 @@ watch(
                     <v-row class="align-end justify-end align-content-end">
                         <v-col class="h-100" cols="12">
                             <v-row>
-<!--                                <v-col cols="12" md="6">
+                                <!--                                <v-col cols="12" md="6">
                                     <v-card elevation="10" class="h-100">
                                         <v-card-text>
                                             <div class="d-flex align-start">
@@ -495,7 +503,10 @@ watch(
                                                 <comment-prestation v-model="item" />
                                             </div>
                                             <div class="mt-4">
-                                                <p class="mb-1" v-html="(item.comment ||  $t('Aucun commentaire')).replace(/\n/g, '<br/>')"></p>
+                                                <p
+                                                    class="mb-1"
+                                                    v-html="(item.comment || $t('Aucun commentaire')).replace(/\n/g, '<br/>')"
+                                                ></p>
                                                 <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                             </div>
                                         </v-card-text>
@@ -510,7 +521,10 @@ watch(
                                         <h2 class="text-h4 mt-1">{{ $t("Raison de l'annulation") }}</h2>
                                     </div>
                                     <div class="mt-4">
-                                        <p class="mb-1" v-html="(item.cancel_comment ||  $t('Aucun commentaire')).replace(/\n/g, '<br/>')"></p>
+                                        <p
+                                            class="mb-1"
+                                            v-html="(item.cancel_comment || $t('Aucun commentaire')).replace(/\n/g, '<br/>')"
+                                        ></p>
                                         <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                     </div>
                                 </v-card-text>
@@ -524,7 +538,7 @@ watch(
             <v-card elevation="10" class="overflow-hidden h-100">
                 <v-card-item class="py-4 px-6 text-white bg-info">
                     <h4 class="text-h6 d-flex align-center">
-                        <span>{{ $t('Désignation des services attendus') }}</span> : {{ item.services?item.services.length:0 }} -
+                        <span>{{ $t('Désignation des services attendus') }}</span> : {{ item.services ? item.services.length : 0 }} -
                         {{ formatAmount(totalAmount || 0) }}
                         <v-spacer> </v-spacer>
                         <!--                        v-if="item.status < store.statuses.processing"-->
