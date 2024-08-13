@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, watchEffect } from 'vue';
+import { useEditor, EditorContent } from '@tiptap/vue-3';
+import StarterKit from '@tiptap/starter-kit';
+import EditorMenubar from '@/components/forms/plugins/editor/EditorMenubar.vue';
 import { t } from '@/plugins/i18n';
 import { useDemandStore } from '@/stores/apps/demands';
 import { useSnackbar } from '@/stores/snackbar';
@@ -21,16 +24,20 @@ const item = computed({
 const dialog = ref(false);
 const loading = ref(false);
 const comment = ref(item.value.commentaire || '');
-
+const editor = useEditor({
+    extensions: [StarterKit],
+    content: item.value.commentaire
+});
 const title = computed(() => `${t('Commentaire')}`);
 function validateItemConfirm() {
     loading.value = true;
     store
-        .addComment(item.value.id, comment.value)
+        .addComment(item.value.id, editor.value?.getHTML())
         .then((response) => {
             item.value = response.data;
             dialog.value = false;
             snackbarStore.showSuccess(t('Commentaire ajouté avec succès'));
+            emit('saved', response.data);
             //router.push(store.pageLink(item.value.status));
         })
         .catch((error) => {
@@ -44,7 +51,7 @@ function validateItemConfirm() {
 </script>
 
 <template>
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog v-model="dialog" max-width="1000px">
         <template v-slot:activator="{ props }">
             <v-btn density="compact" dark v-bind="props" variant="outlined" color="primary" @click="loading = false"
                 >{{ !item.commentaire || item.commentaire.length == 0 ? $t('Ajouter') : $t('Modifier') }}
@@ -57,8 +64,13 @@ function validateItemConfirm() {
             <v-divider />
             <v-card-text>
                 <v-row>
-                    <v-col cols="12">
+                    <!--                    <v-col cols="12">
                         <v-textarea v-model="comment" :placeholder="$t('Commentaire')" :label="$t('Commentaire')" />
+                    </v-col>-->
+                    <v-col cols="12">
+                        <label>{{ $t('Commentaire') }}</label>
+                        <EditorMenubar :editor="editor" />
+                        <editor-content :editor="editor" />
                     </v-col>
                 </v-row>
             </v-card-text>

@@ -25,6 +25,7 @@ import DemandsDashboard from '@/views/demands/DemandsDashboard.vue';
 import ValidateDemand from '@/components/ValidateDemand.vue';
 import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
 import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
+import DemandForm from '@/views/demands/DemandForm.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const customerStore = useCustomerStore();
@@ -111,15 +112,9 @@ const options = ref({
 const editedIndex = ref(-1);
 const editedItem = ref({
     id: null,
-    avatar: '1.jpg',
-    name: '',
-    email: '',
-    password: '',
-    changePassword: true,
-    jdate: '',
-    role: '',
-    rolestatus: '',
-    event_type_id: null
+    event_type_id: null,
+    hall_id: null,
+    customer: {}
 });
 const defaultItem = ref({
     id: null,
@@ -593,7 +588,8 @@ function customerSelected(val) {
                                 </v-dialog>
                             </v-col>
                             <v-col class="">
-                                <v-dialog v-model="dialogEdit" max-width="600px">
+                                <demand-form v-model="editedItem" @saved="fetchDemands" />
+                                <!--                                <v-dialog v-model="dialogEdit" max-width="600px">
                                     <template v-slot:activator="{ props }">
                                         <v-btn
                                             color="primary"
@@ -757,10 +753,10 @@ function customerSelected(val) {
                                                             ></v-textarea>
                                                         </v-col>
 
-                                                        <!--
+                                                        &lt;!&ndash;
                                                 <v-col cols="12">
                                                     <v-textarea v-model="editedItem.description" :label="$t('Description')"></v-textarea>
-                                                </v-col>-->
+                                                </v-col>&ndash;&gt;
                                                     </v-row>
                                                     <div v-if="errors.apiError" class="mt-2">
                                                         <v-alert color="error">{{ errors.apiError }}</v-alert>
@@ -778,7 +774,7 @@ function customerSelected(val) {
                                             </v-card-actions>
                                         </Form>
                                     </v-card>
-                                </v-dialog>
+                                </v-dialog>-->
                             </v-col>
                         </v-row>
 
@@ -863,14 +859,8 @@ function customerSelected(val) {
                         <v-menu activator="parent">
                             <v-list>
                                 <validate-demand v-if="!item.prestation" v-model="demands[index]" />
-                                <v-list-item value="action" hide-details min-height="38" @click="editItem(item, index)">
-                                    <v-list-item-title>
-                                        <v-avatar size="20" class="mr-2">
-                                            <component is="EditIcon" stroke-width="2" size="20" />
-                                        </v-avatar>
-                                        {{ $t('Modifier') }}
-                                    </v-list-item-title>
-                                </v-list-item>
+                                <demand-form v-model="demands[index]" :is-new="false" @saved="fetchDemands" />
+
                                 <v-list-item value="action" hide-details min-height="38" :to="'/demands/' + item.id">
                                     <v-list-item-title>
                                         <v-avatar size="20" class="mr-2">

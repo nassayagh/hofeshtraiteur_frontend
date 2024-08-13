@@ -22,6 +22,7 @@ import ValidateDemand from '@/components/ValidateDemand.vue';
 import CommentDemand from '@/views/demands/CommentDemand.vue';
 import CustomerWidget from '@/components/CustomerWidget.vue';
 import HallWidget from '@/views/prestations/components/HallWidget.vue';
+import DemandForm from '@/views/demands/DemandForm.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -48,7 +49,7 @@ const page = ref({
     title:
         t('Détails de la demande') +
         ' ' +
-        (item.value.eventtype?(item.value.eventtype.name || '') : '') +
+        (item.value.eventtype ? item.value.eventtype.name || '' : '') +
         ' ' +
         (item.value.customer || { firstname: '' }).firstname +
         ' ' +
@@ -68,7 +69,7 @@ const breadcrumbs = ref([
         href: '/demands'
     },
     {
-        text: item.value.eventtype?item.value.eventtype.name : '',
+        text: item.value.eventtype ? item.value.eventtype.name : '',
         disabled: true,
         href: '#'
     }
@@ -79,7 +80,7 @@ function setPageMeta() {
         title:
             t('Détails de la demande') +
             ' ' +
-            (item.value.eventtype?(item.value.eventtype.name || '') : '') +
+            (item.value.eventtype ? item.value.eventtype.name || '' : '') +
             ' (' +
             (item.value.customer || { firstname: '' }).firstname +
             ' ' +
@@ -100,7 +101,7 @@ function setPageMeta() {
             href: '/demands'
         },
         {
-            text: item.value.eventtype?item.value.eventtype.name:'',
+            text: item.value.eventtype ? item.value.eventtype.name : '',
             disabled: true,
             href: '#'
         }
@@ -307,14 +308,19 @@ watchEffect(() => {
         </v-col>
     </v-row>
     <v-row v-else>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="3">
             {{ $t('Status :') }}
             <v-chip rounded="md" class="font-weight-bold" :color="store.statusColor(item.status)" size="small" label
                 >{{ store.statusText(item.status) }}
             </v-chip>
         </v-col>
-        <v-col cols="12" md="6" justify="end" align-content="end" align="end">
-            <validate-demand v-if="!item.prestation && item.status == store.statuses.started" v-model="item" />
+        <v-col cols="12" md="9" justify="end" align-content="end" align="end">
+            <demand-form v-if="!loading" v-model="item" @saved="fetchDemand" :button-text="$t('Modifier La Demande')" />
+            <validate-demand
+                v-if="!item.prestation && item.status == store.statuses.started && !loading"
+                v-model="item"
+                @saved="fetchDemand"
+            />
             <v-btn
                 v-if="item.prestation && item.prestation.id"
                 variant="elevated"
@@ -364,7 +370,9 @@ watchEffect(() => {
                    Nombre de convives : 11
                    Commentaires :-->
                             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Source :') }} {{ item.source || '' }}</p>
-                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.eventtype?item.eventtype.name : '' }}</p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t('Type événement :') }} {{ item.eventtype ? item.eventtype.name : '' }}
+                            </p>
                             <p class="text-subtitle-1 textSecondary mt-3">
                                 {{ $t("Date de l'événement :") }} {{ formatDate(item.event_date) || '' }}
                             </p>
@@ -386,9 +394,17 @@ watchEffect(() => {
                                 <v-card-title>{{ $t('Description de la demande') }}</v-card-title>
                                 <v-card-text v-html="(item.comment || '').replace(/\n/g, '<br/>')"></v-card-text>
                             </v-card>
-                            <v-card flat variant="outlined" class="mt-4" density="compact">
+                            <!--                            <v-card flat variant="outlined" class="mt-4" density="compact">
                                 <v-card-title>{{ $t('Commentaire') }} <comment-demand v-model="item" /></v-card-title>
-                                <v-card-text v-html="(item.commentaire || '').replace(/\n/g, '<br/>')"></v-card-text>
+                                <v-card-text v-html="item.commentaire"></v-card-text>
+                            </v-card>-->
+                        </v-col>
+                        <v-col cols="12">
+                            <v-card flat variant="outlined" class="mt-1" density="compact">
+                                <v-card-title
+                                    >{{ $t('Commentaire') }} <comment-demand v-if="!loading" v-model="item" @saved="fetchDemand"
+                                /></v-card-title>
+                                <v-card-text v-html="item.commentaire"></v-card-text>
                             </v-card>
                         </v-col>
                     </v-row>
@@ -420,7 +436,9 @@ watchEffect(() => {
                                     {{ demand.id }}
                                 </td>
                                 <td>
-                                    <h6 class="text-h6 font-weight-medium text-medium-emphasis">{{ demand.eventtype?demand.eventtype.name:'' }}</h6>
+                                    <h6 class="text-h6 font-weight-medium text-medium-emphasis">
+                                        {{ demand.eventtype ? demand.eventtype.name : '' }}
+                                    </h6>
                                 </td>
                                 <td>
                                     {{ formatDate(demand.demand_date) }}

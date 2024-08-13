@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, watchEffect } from 'vue';
+import { useEditor, EditorContent } from '@tiptap/vue-3';
+import StarterKit from '@tiptap/starter-kit';
+import EditorMenubar from '@/components/forms/plugins/editor/EditorMenubar.vue';
 import { t } from '@/plugins/i18n';
 import { useDemandStore } from '@/stores/apps/demands';
 import { useHallStore } from '@/stores/apps/hall';
 import { useSnackbar } from '@/stores/snackbar';
 import { formatDate } from '@/utils/helpers/formatters';
 import { router } from '@/router';
+
 const store = useDemandStore();
 const snackbarStore = useSnackbar();
 const hallStore = useHallStore();
@@ -13,6 +17,7 @@ const hallStore = useHallStore();
 const props = defineProps({
     modelValue: Object,
     density: { type: String, default: 'default' },
+    comment: { type: String, default: '' },
     icon: { type: Boolean, default: false }
 });
 
@@ -24,7 +29,11 @@ const item = computed({
 });
 const dialog = ref(false);
 const loading = ref(false);
-const comment = ref(item.value.commentaire);
+
+const editor = useEditor({
+    extensions: [StarterKit],
+    content: item.value.commentaire
+});
 const hall = ref(item.value.hall_id);
 const halls = ref([]);
 
@@ -35,11 +44,12 @@ const title = computed(
 function validateItemConfirm() {
     loading.value = true;
     store
-        .validateItem(item.value.id, { comment: comment.value, hall: hall.value })
+        .validateItem(item.value.id, { comment: editor.value?.getHTML(), hall: hall.value })
         .then((response) => {
             item.value = response.data;
             dialog.value = false;
             snackbarStore.showSuccess(t('Devis validé avec succès'));
+            emit('saved', response.data);
             //router.push('/demands');
         })
         .catch((error) => {
@@ -59,7 +69,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog v-model="dialog" max-width="1000px">
         <template v-slot:activator="{ props }">
             <v-btn
                 v-if="!item.prestation"
@@ -84,7 +94,10 @@ onMounted(() => {
                         {{ title }}
                     </v-col>
                     <v-col cols="12">
-                        <v-textarea v-model="comment" :label="$t('Note de liée')" />
+                        <!--                        <v-textarea v-model="comment" :label="$t('Note de liée')" />-->
+                        <label>{{ $t('Commentaire') }}</label>
+                        <EditorMenubar :editor="editor" />
+                        <editor-content :editor="editor" />
                     </v-col>
                     <v-col cols="12">
                         <v-select v-model="hall" :items="halls" item-value="id" item-title="name" :label="$t('Salle liée')" />
