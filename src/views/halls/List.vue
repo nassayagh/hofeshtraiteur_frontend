@@ -108,6 +108,7 @@ function getText(status: string) {
 }
 const dialogDelete = ref(false);
 const headers = ref([
+    { title: 'Actions', key: 'actions', sortable: false },
     /*{
         title: 'ID',
         align: 'start',
@@ -177,8 +178,7 @@ const headers = ref([
         title: t('Cmt'),
         align: 'start',
         key: 'comment'
-    },
-    { title: 'Actions', key: 'actions', sortable: false }
+    }
 ]);
 
 function editItem(item: any) {

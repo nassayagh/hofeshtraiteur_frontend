@@ -19,6 +19,7 @@ import { router } from '@/router';
 import { basicTableData1 } from '@/_mockApis/components/table/basicTables';
 import { useDemandStore } from '@/stores/apps/demands';
 import { usePrestationStore } from '@/views/prestations/Controller';
+import DemandForm from '@/views/demands/DemandForm.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -127,6 +128,10 @@ const editedItem = ref({
     jdate: '',
     role: '',
     rolestatus: ''
+});
+const demand = ref({
+    id: null,
+    customer: {}
 });
 const defaultItem = ref({
     id: null,
@@ -250,6 +255,11 @@ function fetchCustomer() {
             loading.value = false;
             item.value = response.data;
             setPageMeta();
+            demand.value = {
+                id: null,
+                customer_id: item.value.id,
+                customer: item.value
+            };
             // snackbarStore.showSuccess(t('Utilisateur enregistrphp artisan serveé avec succès'));
         })
         .catch((error) => {
@@ -379,9 +389,11 @@ watchEffect(() => {
         <v-col cols="12" lg="6">
             <v-card elevation="10" class="overflow-hidden h-100">
                 <v-card-item class="py-4 px-6 text-white bg-info">
-                    <h4 class="text-h6">
+                    <h4 class="text-h6 d-flex align-center">
                         {{ $t('Les devis de') }} {{ item.firstname || '' }}
                         {{ item.lastname || '' }}
+                        <v-spacer />
+                        <demand-form v-model="demand" @saved="fetchCustomer" :show-customer="false" />
                     </h4>
                 </v-card-item>
                 <v-card-text class="pa-6">

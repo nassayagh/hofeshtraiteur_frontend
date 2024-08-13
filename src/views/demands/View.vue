@@ -391,7 +391,7 @@ watchEffect(() => {
                         </v-col>
                         <v-col cols="12" md="6" lg="7">
                             <v-card flat variant="outlined" density="compact">
-                                <v-card-title>{{ $t('Description de la demande') }}</v-card-title>
+                                <v-card-title>{{ $t('Commentaire client') }}</v-card-title>
                                 <v-card-text v-html="(item.comment || '').replace(/\n/g, '<br/>')"></v-card-text>
                             </v-card>
                             <!--                            <v-card flat variant="outlined" class="mt-4" density="compact">

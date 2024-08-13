@@ -86,13 +86,13 @@ function getText(status: string) {
 }
 const dialogDelete = ref(false);
 const headers = ref([
+    { title: 'Actions', key: 'actions', sortable: false },
     {
         title: 'Nom',
         align: 'start',
         key: 'name'
     } /*
-    { title: 'Description', key: 'description' },*/,
-    { title: 'Actions', key: 'actions', sortable: false }
+    { title: 'Description', key: 'description' },*/
 ]);
 
 function editItem(item: any) {

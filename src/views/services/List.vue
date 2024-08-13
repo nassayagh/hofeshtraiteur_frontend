@@ -87,6 +87,7 @@ function getText(status: string) {
 }
 const dialogDelete = ref(false);
 const headers = ref([
+    { title: 'Actions', key: 'actions', sortable: false },
     {
         title: 'Nom',
         align: 'start',
@@ -96,8 +97,7 @@ const headers = ref([
         title: 'Prix',
         align: 'start',
         key: 'price'
-    },
-    { title: 'Actions', key: 'actions', sortable: false }
+    }
 ]);
 
 function editItem(item: any) {
@@ -303,7 +303,11 @@ watchEffect(() => {
                                                     ></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <v-text-field v-model="editedItem.price" type="number" :label="$t('Prix')"></v-text-field> </v-col
+                                                    <v-text-field
+                                                        v-model="editedItem.price"
+                                                        type="number"
+                                                        :label="$t('Prix')"
+                                                    ></v-text-field> </v-col
                                                 ><!--
                                                 <v-col cols="12">
                                                     <v-textarea v-model="editedItem.description" :label="$t('Description')"></v-textarea>
