@@ -452,32 +452,32 @@ watchEffect(() => {
                                 ></v-text-field>
                             </v-col>
                             <v-col>
-                                <v-select
+                                <v-autocomplete
                                     density="compact"
                                     v-model="filters.event_type"
                                     :placeholder="$t('Prestation')"
                                     :items="eventTypes"
-                                    item-value="name"
+                                    item-value="id"
                                     item-title="name"
                                     multiple
                                     hide-details
                                     variant="solo"
                                     clearable
-                                ></v-select>
+                                ></v-autocomplete>
                             </v-col>
                             <v-col>
-                                <v-select
+                                <v-autocomplete
                                     density="compact"
                                     v-model="filters.payment_method"
                                     :placeholder="$t('Mode de paiement')"
                                     :items="methods"
-                                    item-value="name"
+                                    item-value="id"
                                     item-title="name"
                                     multiple
                                     hide-details
                                     variant="solo"
                                     clearable
-                                ></v-select>
+                                ></v-autocomplete>
                             </v-col>
                             <v-col>
                                 <v-dialog ref="dialog" v-model="dateModal" v-model:return-value="filters.date" persistent width="290px">
