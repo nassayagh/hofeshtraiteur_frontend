@@ -119,10 +119,12 @@ function editItem(item: any, index: number) {
 
 function close() {
     dialogEdit.value = false;
-    /*setTimeout(() => {
-        item.value = Object.assign({ customer: {} }, { customer: { id: null, customer: {} } });
-        //editedIndex.value = -1;
-    }, 300);*/
+    if (item.value.id == null) {
+        setTimeout(() => {
+            item.value = Object.assign({ customer: {} }, { customer: { id: null, customer: {} } });
+            //editedIndex.value = -1;
+        }, 300);
+    }
 }
 
 function save(values: any, { setErrors }: any) {
@@ -135,6 +137,7 @@ function save(values: any, { setErrors }: any) {
                 .then((response) => {
                     if (response.data.error) {
                         setErrors({ apiError: response.data.message });
+                        snackbarStore.showError(response.data.message);
                         return;
                     }
                     const dateObject1 = response.data.event_date != null ? new Date(response.data.event_date) : null;
@@ -473,11 +476,13 @@ function customerSelected(val) {
                                 <v-text-field v-model="item.event_location" hide-details :label="$t('Lieu de l\'événement')"></v-text-field>
                             </v-col>-->
                             <v-col cols="12" md="6">
-                                <v-select
+                                <v-autocomplete
                                     v-model="item.hall_id"
                                     :items="halls"
                                     item-value="id"
                                     item-title="name"
+                                    hide-details
+                                    variant="outlined"
                                     :label="$t('Salle liée')"
                                 />
                             </v-col>

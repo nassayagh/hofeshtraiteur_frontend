@@ -117,10 +117,12 @@ function editItem(item: any, index: number) {
 
 function close() {
     dialogEdit.value = false;
-    /*setTimeout(() => {
-        item.value = Object.assign({ customer: {} }, { customer: { id: null, customer: {} } });
-        //editedIndex.value = -1;
-    }, 300);*/
+    if (item.value.id == null) {
+        setTimeout(() => {
+            item.value = Object.assign({ customer: {} }, { customer: { id: null, customer: {} } });
+            //editedIndex.value = -1;
+        }, 300);
+    }
 }
 
 function save(values: any, { setErrors }: any) {

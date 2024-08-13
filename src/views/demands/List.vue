@@ -413,6 +413,7 @@ function fetchEventTypes() {
         });
 }
 function fetchCustomers() {
+    editedItem.value = { customer: {} };
     customerStore
         .fetchItems({
             term: '',
