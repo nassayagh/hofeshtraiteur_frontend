@@ -18,6 +18,7 @@ const refForm = ref<VForm>();
 import { useSnackbar } from '@/stores/snackbar';
 import DatePicker from '@/components/DatePicker.vue';
 import CustomerDashboard from '@/views/customers/CustomerDashboard.vue';
+import CustomerForm from '@/views/customers/CustomerForm.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 // theme breadcrumb
@@ -73,6 +74,8 @@ const search = ref('');
 const rolesbg = ref(['primary', 'secondary', 'error', 'success', 'warning']);
 const sorting = ref([{ key: 'firstname', order: 'asc' }]);
 const pageCount = ref(0);
+const prospect = ref({});
+const client = ref({ is_customer: true });
 const filters = ref({
     search: null,
     status: null,
@@ -196,7 +199,7 @@ function save(values: any, { setErrors }: any) {
                     }
                     saving.value = false;
                     dialogEdit.value = false;
-                    editedItem.value = { changePassword: true };
+
                     snackbarStore.showSuccess(t('Client enregistré avec succès'));
                     store.fetchStatistics();
                 })
@@ -259,6 +262,8 @@ function fetchCustomers() {
     } catch (e) {
         /* empty */
     }
+    client.value = { is_customer: true };
+    prospect.value = {};
 
     timeout.value = setTimeout(() => {
         loading.value = true;
@@ -462,18 +467,20 @@ watchEffect(() => {
                                 </v-dialog>
                             </v-col>
                             <v-col class="d-flex gap-2 justify-space-between">
-                                <v-btn color="primary" class="align-self-end" variant="flat" @click="editItem({})" dark>{{
+                                <!--                                <v-btn color="primary" class="align-self-end" variant="flat" @click="editItem({})" dark>{{
                                     $t('Ajouter un Prospect')
-                                }}</v-btn>
+                                }}</v-btn>-->
+                                <customer-form v-model="prospect" :button-text="$t('Ajouter un Prospect')" @saved="fetchCustomers" />
+                                <customer-form v-model="client" :button-text="$t('Ajouter un client')" @saved="fetchCustomers" />
 
-                                <v-btn
+                                <!--                                <v-btn
                                     color="primary"
                                     class="align-self-end"
                                     variant="flat"
                                     @click="editItem({ is_customer: true })"
                                     dark
                                     >{{ $t('Ajouter un client') }}</v-btn
-                                >
+                                >-->
                                 <v-dialog v-model="dialogEdit" max-width="600px">
                                     <v-card>
                                         <v-card-title class="pa-4 bg-secondary">
@@ -556,16 +563,17 @@ watchEffect(() => {
                         item.is_customer == 1 ? $t('Client') : $t('Prospet')
                     }}</v-chip>
                 </template>
-                <template v-slot:item.actions="{ item }">
+                <template v-slot:item.actions="{ index, item }">
                     <div class="d-flex align-center">
                         <v-btn density="compact" color="primary" variant="outlined" :to="'/customers/' + item.id">{{ $t('Voir') }}</v-btn>
-                        <v-tooltip :text="$t('Modifier')">
+                        <customer-form v-model="customers[index]" :is-new="false" @saved="fetchCustomers" />
+                        <!--                        <v-tooltip :text="$t('Modifier')">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat @click="editItem(item)" v-bind="props"
                                     ><PencilIcon stroke-width="1.5" size="20" class="text-primary"
                                 /></v-btn>
                             </template>
-                        </v-tooltip>
+                        </v-tooltip>-->
                         <v-tooltip :text="$t('Supprimer')">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat @click="deleteItem(item)" v-bind="props"

@@ -20,6 +20,7 @@ import { basicTableData1 } from '@/_mockApis/components/table/basicTables';
 import { useDemandStore } from '@/stores/apps/demands';
 import { usePrestationStore } from '@/views/prestations/Controller';
 import DemandForm from '@/views/demands/DemandForm.vue';
+import CustomerForm from '@/views/customers/CustomerForm.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -299,8 +300,12 @@ watchEffect(() => {
             <v-row align="center">
                 <v-col cols="12" md="4">
                     <v-card elevation="10" class="overflow-hidden h-100">
-                        <v-card-item class="py-4 px-6 text-white bg-primary">
-                            <h4 class="text-h6">{{ $t('Identification du customereur') }}</h4>
+                        <v-card-item class="py-4 px-6 text-white bg-info">
+                            <h4 class="text-h6 d-flex align-center">
+                                {{ $t('Identification du customereur') }}
+                                <v-spacer />
+                                <customer-form v-model="item" @saved="fetchCustomer" :button-text="$t('Modifier')" />
+                            </h4>
                         </v-card-item>
                         <v-card-text class="pa-6">
                             <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Prénom :') }} {{ item.firstname || '' }}</p>
@@ -387,7 +392,7 @@ watchEffect(() => {
             </v-row>
         </v-col>
         <v-col cols="12" lg="6">
-            <v-card elevation="10" class="overflow-hidden h-100">
+            <v-card elevation="10" class="overflow-x-hidden h-100">
                 <v-card-item class="py-4 px-6 text-white bg-info">
                     <h4 class="text-h6 d-flex align-center">
                         {{ $t('Les devis de') }} {{ item.firstname || '' }}
@@ -396,7 +401,7 @@ watchEffect(() => {
                         <demand-form v-model="demand" @saved="fetchCustomer" :show-customer="false" />
                     </h4>
                 </v-card-item>
-                <v-card-text class="pa-6">
+                <v-card-text class="pa-6 overflow-y-auto" style="max-height: 500px">
                     <v-table class="month-table">
                         <thead>
                             <tr>
@@ -440,14 +445,14 @@ watchEffect(() => {
             </v-card>
         </v-col>
         <v-col cols="12" lg="6">
-            <v-card elevation="10" class="overflow-hidden h-100">
+            <v-card elevation="10" class="overflow-x-hidden h-100">
                 <v-card-item class="py-4 px-6 text-white bg-info">
                     <h4 class="text-h6">
                         {{ $t('Prestations de devis de') }} {{ item.firstname || '' }}
                         {{ item.lastname || '' }}
                     </h4>
                 </v-card-item>
-                <v-card-text class="pa-6">
+                <v-card-text class="pa-6 overflow-y-auto" style="max-height: 500px">
                     <v-table class="month-table">
                         <thead>
                             <tr>
