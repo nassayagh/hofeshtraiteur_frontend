@@ -53,15 +53,11 @@ const item = computed({
             <p class="text-subtitle-1 textSecondary mt-3">
                 {{ $t('La réception se déroulera plutôt :') }} {{ item.reception_period || '' }}
             </p>
-            <p class="text-subtitle-1 textSecondary mt-3">
-                {{ $t('Heure de réception :') }} {{ item.reception_start_time || '' }}
-            </p>
-            <p class="text-subtitle-1 textSecondary mt-3">
+            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Heure de réception :') }} {{ item.reception_start_time || '' }}</p>
+            <!--            <p class="text-subtitle-1 textSecondary mt-3">
                 {{ $t("Lieu de l'événement :") }} {{ item.event_location || '' }}
-            </p>
-            <p class="text-subtitle-1 textSecondary mt-3">
-                {{ $t('Nombre de convives :') }} {{ item.number_people || '' }}
-            </p>
+            </p>-->
+            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nombre de convives :') }} {{ item.number_people || '' }}</p>
             <!--            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.status >= store.statuses.processing">
                 {{ $t('Date lancement de la prestation :') }} {{ formatDate(item.start_date) || '' }}
             </p>-->

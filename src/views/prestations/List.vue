@@ -26,6 +26,7 @@ import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
 import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
 import PaymentForm from '@/views/prestations/components/PaymentForm.vue';
 import { tableActionData } from '@/_mockApis/components/table/basicTables';
+import PrestationForm from '@/views/prestations/PrestationForm.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const hallStore = useHallStore();
@@ -138,6 +139,7 @@ const defaultItem = ref({
 });
 const dialogDelete = ref(false);
 const headers = ref([
+    { title: t('Act'), key: 'actions', sortable: false },
     {
         title: t('Prénom'),
         align: 'start',
@@ -188,10 +190,10 @@ const headers = ref([
         align: 'start',
         key: 'services_sum_total',
         sortable: false
-    },
-    { title: t('Actions'), key: 'actions', sortable: false }
+    }
 ]);
 const headersDefault = ref([
+    { title: t('Act'), key: 'actions', sortable: false },
     {
         title: t('Prénom'),
         align: 'start',
@@ -216,11 +218,11 @@ const headersDefault = ref([
         key: 'customer.phone',
         sortable: false
     },
-    {
+    /*{
         title: t('Source'),
         align: 'start',
         key: 'demand.source'
-    },
+    },*/
     {
         title: t('Prest.'),
         align: 'start',
@@ -232,7 +234,7 @@ const headersDefault = ref([
         key: 'event_date'
     },
     { title: t('Moment'), key: 'reception_period' },
-    { title: t('Heure'), key: 'reception_start_time' },
+    /* { title: t('Heure'), key: 'reception_start_time' },*/
     /*   { title: t('Lieu'), key: 'demand.event_location' },*/
     { title: t('Con.'), key: 'number_people' },
     { title: t('Salle'), key: 'hall' },
@@ -248,8 +250,7 @@ const headersDefault = ref([
         align: 'start',
         key: 'services_sum_total',
         sortable: false
-    },
-    { title: t('Actions'), key: 'actions', sortable: false }
+    }
 ]);
 const activePage = computed(() => route.params.status);
 const formatedDate = computed(() => {
@@ -865,14 +866,14 @@ watchEffect(() => {
                         </v-avatar>
                         <v-menu activator="parent">
                             <v-list>
-                                <v-list-item value="action" hide-details min-height="38" @click="editItem(item)">
+                                <!--                                <v-list-item value="action" hide-details min-height="38" @click="editItem(item)">
                                     <v-list-item-title>
                                         <v-avatar size="20" class="mr-2">
                                             <component is="EditIcon" stroke-width="2" size="20" />
                                         </v-avatar>
                                         {{ $t('Modifier') }}
                                     </v-list-item-title>
-                                </v-list-item>
+                                </v-list-item>-->
                                 <v-list-item value="action" hide-details min-height="38" :to="'/prestations/' + item.id">
                                     <v-list-item-title>
                                         <v-avatar size="20" class="mr-2">
@@ -881,6 +882,7 @@ watchEffect(() => {
                                         {{ $t('Voir') }}
                                     </v-list-item-title>
                                 </v-list-item>
+                                <prestation-form @saved="fetchItems" v-model="items[index]" :is-new="false" />
                                 <close-prestation
                                     v-if="item.status == store.statuses.validated"
                                     @refresh="fetchItems"
@@ -973,46 +975,6 @@ watchEffect(() => {
                         <v-card-text>
                             <v-container class="px-0">
                                 <v-row>
-                                    <!--                                    <v-col cols="12">
-                                        <v-autocomplete
-                                            v-model="editedItem.customer_id"
-                                            :placeholder="$t('Client')"
-                                            :items="customers"
-                                            item-value="id"
-                                            item-title="name"
-                                            clearable
-                                            hide-details
-                                            variant="outlined"
-                                            @update:modelValue="customerSelected"
-                                        >
-                                        </v-autocomplete>
-                                    </v-col>
-                                    <v-col cols="12" md="6">
-                                        <v-text-field
-                                            v-model="editedItem.customer.firstname"
-                                            :rules="[requiredValidator]"
-                                            :label="$t('Prénom')"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6">
-                                        <v-text-field
-                                            v-model="editedItem.customer.lastname"
-                                            :rules="[requiredValidator]"
-                                            :label="$t('Nom')"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6">
-                                        <v-text-field
-                                            v-model="editedItem.customer.email"
-                                            :label="$t('Email')"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6">
-                                        <v-text-field
-                                            v-model="editedItem.customer.phone"
-                                            :label="$t('Téléphone')"
-                                        ></v-text-field>
-                                    </v-col>-->
                                     <v-col cols="12" md="6">
                                         <v-autocomplete
                                             v-model="editedItem.event_type_id"

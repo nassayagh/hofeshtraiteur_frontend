@@ -28,14 +28,14 @@ const loading = ref(false);
 const prestationServices = ref([]);
 
 onMounted(() => {
-    serviceStore.fetchItems({ per_page: 500 }).then((response) => {
+    serviceStore.fetchItems({ per_page: 500, prestation: props.prestation.id }).then((response) => {
         prestationServices.value = response.data.data;
         console.log(prestationServices.value);
     });
 });
 function openDialog() {
-    if(!item.value || !item.value.id) {
-      //  item.value = {}
+    if (!item.value || !item.value.id) {
+        //  item.value = {}
     }
 }
 function save() {
@@ -47,7 +47,7 @@ function save() {
             dialog.value = false;
             emit('update:item', response.data);
             //item.value = {};
-            if(props.isNew){
+            if (props.isNew) {
                 item.value = {};
             }
             //
@@ -63,7 +63,7 @@ function save() {
 }
 
 function serviceSelected(val) {
-    console.log("service",val);
+    console.log('service', val);
     if (val) {
         const service = prestationServices.value.find((e) => e.name == val);
         if (service) {

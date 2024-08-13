@@ -41,19 +41,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'update:item']);
 
 // theme breadcrumb
-const page = ref({ title: t('Gestion des demandes') });
-const breadcrumbs = ref([
-    {
-        text: t('Dashboard'),
-        disabled: false,
-        href: '/'
-    },
-    {
-        text: t('Gestion des demandes'),
-        disabled: true,
-        href: '#'
-    }
-]);
+
 const demands = ref([]);
 const eventTypes = ref([]);
 const customers = ref([]);
@@ -61,7 +49,6 @@ const halls = ref([]);
 const store = useDemandStore();
 
 onMounted(() => {
-    fetchDemands();
     fetchEventTypes();
     fetchCustomers();
     hallStore.fetchItems({ per_page: 1000 }).then((response) => {
@@ -166,7 +153,7 @@ function save(values: any, { setErrors }: any) {
                     //item.value = { customer: {} };
                     snackbarStore.showSuccess(t('Demande enregistrée avec succès'));
                     fetchEventTypes();
-                    fetchDemands();
+
                     //store.fetchStatistics();
                 })
                 .catch((error) => {
@@ -192,7 +179,7 @@ function save(values: any, { setErrors }: any) {
 
 //Computed Property
 const formTitle = computed(() => {
-    return editedIndex.value === -1 ? 'Nouvelle demande' : 'Modifier la demande';
+    return item.value.id == null ? 'Nouvelle demande' : 'Modifier la demande';
 });
 const dateRange = computed(() => {
     if (filters.value.date && filters.value.date.length) {

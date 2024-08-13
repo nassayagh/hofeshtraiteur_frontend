@@ -29,6 +29,7 @@ import StartPrestation from '@/views/prestations/components/StartPrestation.vue'
 import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
 import CommentPrestation from '@/views/prestations/components/CommentPrestation.vue';
 import HallWidget from '@/views/prestations/components/HallWidget.vue';
+import PrestationForm from '@/views/prestations/PrestationForm.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -402,7 +403,7 @@ watch(
         </v-col>
     </v-row>
     <v-row v-else>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="2">
             {{ $t('Status :') }}
             <v-chip rounded="md" class="font-weight-bold" :color="store.statusColor(item.status)" size="small" label
                 >{{ store.statusText(item.status) }}
@@ -411,8 +412,12 @@ watch(
                 >{{ $t('Le') }} {{ formatDate(item.cancelled_date) || '' }}</span
             >
         </v-col>
-        <v-col cols="12" md="8" justify="end" align-content="end" align="end">
-            <validate-prestation v-if="item.status == store.statuses.started || item.status == store.statuses.cancelled" v-model="item" />
+        <v-col cols="12" md="10" justify="end" align-content="end" align="end">
+            <validate-prestation
+                v-if="!loading && (item.status == store.statuses.started || item.status == store.statuses.cancelled)"
+                v-model="item"
+            />
+            <prestation-form v-if="!loading" v-model="item" @saved="fetchPrestation" />
             <!--            <start-prestation v-if="item.status == store.statuses.validated" v-model="item" />-->
             <close-prestation v-if="item.status == store.statuses.validated" v-model="item" />
             <cancel-prestation v-model="item" v-if="item.status != store.statuses.cancelled" />
@@ -500,13 +505,10 @@ watch(
                                                 <h2 class="text-h4 mt-1">
                                                     {{ $t('Commentaire') }}
                                                 </h2>
-                                                <comment-prestation v-model="item" />
+                                                <comment-prestation v-model="item" @saved="fetchPrestation" />
                                             </div>
                                             <div class="mt-4">
-                                                <p
-                                                    class="mb-1"
-                                                    v-html="(item.comment || $t('Aucun commentaire')).replace(/\n/g, '<br/>')"
-                                                ></p>
+                                                <p class="mb-1" v-html="item.comment || $t('Aucun commentaire')"></p>
                                                 <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                             </div>
                                         </v-card-text>

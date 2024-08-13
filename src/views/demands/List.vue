@@ -130,6 +130,7 @@ const defaultItem = ref({
 });
 const dialogDelete = ref(false);
 const headers = ref([
+    { title: 'Act', key: 'actions', sortable: false },
     {
         title: t('ID'),
         align: 'start',
@@ -186,8 +187,7 @@ const headers = ref([
     { title: t('Heure'), key: 'reception_start_time' },
     { title: t('Lieu'), key: 'event_location' },
     { title: t('Salle'), key: 'hall.name' },
-    { title: t('Conv'), key: 'number_people' },
-    { title: 'Actions', key: 'actions', sortable: false }
+    { title: t('Conv'), key: 'number_people' }
 ]);
 const formatedDate = computed(() => {
     if (filters.value.date && filters.value.date.length > 0) {
@@ -856,9 +856,9 @@ function customerSelected(val) {
                         <v-avatar size="22">
                             <DotsVerticalIcon size="20" color="grey100" />
                         </v-avatar>
-                        <v-menu activator="parent">
+                        <v-menu activator="parent" close-on-content-click>
                             <v-list>
-                                <validate-demand v-if="!item.prestation" v-model="demands[index]" />
+                                <validate-demand v-if="!item.prestation" v-model="demands[index]" @saved="fetchDemands" />
                                 <demand-form v-model="demands[index]" :is-new="false" @saved="fetchDemands" />
 
                                 <v-list-item value="action" hide-details min-height="38" :to="'/demands/' + item.id">
