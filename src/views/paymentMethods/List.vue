@@ -338,6 +338,11 @@ watchEffect(() => {
                         {{ getText(item.status) }}
                     </v-chip>
                 </template>
+                <template v-slot:item.name="{ item }">
+                    <span @click="editItem(item)" class="cursor-pointer">
+                        {{ item.name }}
+                    </span>
+                </template>
                 <template v-slot:item.actions="{ item }">
                     <v-btn icon small @click="editItem(item)" flat>
                         <EditIcon stroke-width="1.5" size="20" class="text-primary" />

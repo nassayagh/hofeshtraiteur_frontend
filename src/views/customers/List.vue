@@ -186,6 +186,7 @@ function save(values: any, { setErrors }: any) {
                 .then((response) => {
                     if (response.data.error) {
                         setErrors({ apiError: response.data.message });
+                        snackbarStore.showError(response.data.message);
                         return;
                     }
                     if (editedItem.value.id != null) {

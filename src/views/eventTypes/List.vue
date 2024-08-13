@@ -337,6 +337,11 @@ watchEffect(() => {
                         {{ getText(item.status) }}
                     </v-chip>
                 </template>
+                <template v-slot:item.name="{ item }">
+                    <span @click="editItem(item)" class="cursor-pointer">
+                        {{ item.name }}
+                    </span>
+                </template>
                 <template v-slot:item.actions="{ item }">
                     <v-icon color="info" size="small" class="me-2" @click="editItem(item)"> mdi-pencil </v-icon>
                     <v-icon color="error" size="small" @click="deleteItem(item)"> mdi-delete </v-icon>

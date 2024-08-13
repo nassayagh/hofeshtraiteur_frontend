@@ -18,7 +18,7 @@ export const useSnackbar = defineStore('snackbar', {
             this.color = color;
             this.show = true;
         },
-        showError(message: string, color: string = 'danger') {
+        showError(message: string, color: string = 'error') {
             this.message = message;
             this.color = color;
             this.show = true;
