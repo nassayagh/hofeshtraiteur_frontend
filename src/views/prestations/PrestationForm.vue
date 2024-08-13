@@ -473,11 +473,13 @@ function customerSelected(val) {
                                 <v-text-field v-model="item.event_location" hide-details :label="$t('Lieu de l\'événement')"></v-text-field>
                             </v-col>-->
                             <v-col cols="12" md="6">
-                                <v-select
+                                <v-autocomplete
                                     v-model="item.hall_id"
                                     :items="halls"
                                     item-value="id"
                                     item-title="name"
+                                    hide-details
+                                    variant="outlined"
                                     :label="$t('Salle liée')"
                                 />
                             </v-col>
