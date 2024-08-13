@@ -449,6 +449,7 @@ watchEffect(() => {
                                     :placeholder="$t('Rechercher prénom, nom, email, téléphone...')"
                                     hide-details
                                     variant="solo"
+                                    clearable
                                 ></v-text-field>
                             </v-col>
                             <v-col>

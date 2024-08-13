@@ -360,6 +360,7 @@ watchEffect(() => {
                                 :placeholder="$t('Rechercher...')"
                                 hide-details
                                 variant="solo"
+                                clearable
                             ></v-text-field>
                         </v-toolbar-title>
                         <v-spacer></v-spacer>

@@ -278,6 +278,7 @@ watchEffect(() => {
                                 :placeholder="$t('Rechercher...')"
                                 hide-details
                                 variant="solo"
+                                clearable
                             ></v-text-field>
                         </v-toolbar-title>
                         <v-spacer></v-spacer>
@@ -343,6 +344,11 @@ watchEffect(() => {
                             </v-card>
                         </v-dialog>
                     </v-toolbar>
+                </template>
+                <template v-slot:item.name="{ item }">
+                    <span @click="editItem(item)" class="cursor-pointer">
+                        {{ item.name }}
+                    </span>
                 </template>
                 <template v-slot:item.status="{ item }">
                     <v-chip :color="getColor(item.status)">
