@@ -70,6 +70,9 @@ store.fetchStats(props.options).then((response) => {
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Montant') }}</th>
                         <th class="text-subtitle-1 font-weight-medium">{{ $t('Type') }}</th>
                         <th v-if="props.options.statistics != 'closed'" class="text-subtitle-1 font-weight-medium">{{ $t('Lieu') }}</th>
+                        <th v-if="props.options.statistics == 'future'" class="text-subtitle-1 font-weight-medium">
+                            {{ $t('NB Jour') }}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -117,6 +120,9 @@ store.fetchStats(props.options).then((response) => {
                                     </span>
                                 </template>
                             </v-tooltip>
+                        </td>
+                        <td v-if="props.options.statistics == 'future'">
+                            {{ item.days_left }}
                         </td>
                     </tr>
                 </tbody>

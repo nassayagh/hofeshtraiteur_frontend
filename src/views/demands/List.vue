@@ -184,7 +184,7 @@ const headers = ref([
 
     { title: t("Date 'évén"), key: 'event_date' },
     { title: t('Moment'), key: 'reception_period' },
-    { title: t('Heure'), key: 'reception_start_time' },
+    /*{ title: t('Heure'), key: 'reception_start_time' },*/
     { title: t('Lieu'), key: 'event_location' },
     { title: t('Salle'), key: 'hall.name' },
     { title: t('Conv'), key: 'number_people' }

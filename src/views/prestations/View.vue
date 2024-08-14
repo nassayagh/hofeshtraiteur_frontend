@@ -508,7 +508,25 @@ watch(
                                                 <comment-prestation v-model="item" @saved="fetchPrestation" />
                                             </div>
                                             <div class="mt-4">
-                                                <p class="mb-1" v-html="item.comment || $t('Aucun commentaire')"></p>
+                                                <div class="formatted-text mb-1" v-html="item.comment || $t('Aucun commentaire')"></div>
+                                                <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-col>
+                                <v-col cols="12" v-if="item.demand && item.demand.comment">
+                                    <v-card elevation="10" class="h-100">
+                                        <v-card-text>
+                                            <div class="d-flex align-start">
+                                                <h2 class="text-h4 mt-1">
+                                                    {{ $t('Commentaire client') }}
+                                                </h2>
+                                            </div>
+                                            <div class="mt-4">
+                                                <div
+                                                    class="formatted-text mb-1"
+                                                    v-html="item.demand.comment || $t('Aucun commentaire')"
+                                                ></div>
                                                 <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                             </div>
                                         </v-card-text>
@@ -523,10 +541,10 @@ watch(
                                         <h2 class="text-h4 mt-1">{{ $t("Raison de l'annulation") }}</h2>
                                     </div>
                                     <div class="mt-4">
-                                        <p
+                                        <div
                                             class="mb-1"
                                             v-html="(item.cancel_comment || $t('Aucun commentaire')).replace(/\n/g, '<br/>')"
-                                        ></p>
+                                        ></div>
                                         <!--                                    <span class="text-subtitle-1 text-medium-emphasis font-weight-medium">Monthly Revenue</span>-->
                                     </div>
                                 </v-card-text>

@@ -26,12 +26,20 @@ const item = computed({
             <h4 class="text-h6">{{ $t('Identification du demandeur') }}</h4>
         </v-card-item>
         <v-card-text class="pl-6 pr-6">
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Prénom :') }} {{ item.customer.firstname || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom :') }} {{ item.customer.lastname || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Email :') }} {{ item.customer.email || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Téléphone :') }} {{ item.customer.phone || '' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">
-                {{ $t("Date d'enregistrement :") }} {{ formatDate(item.customer.created_at) || '' }}
+                {{ $t('Prénom :') }} <strong>{{ item.customer.firstname || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Nom :') }} <strong>{{ item.customer.lastname || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Email :') }} <strong>{{ item.customer.email || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Téléphone :') }} <strong>{{ item.customer.phone || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t("Date d'enregistrement :") }} <strong>{{ formatDate(item.customer.created_at) || '' }}</strong>
             </p>
             <p class="text-subtitle-1 textSecondary mt-3">
                 {{ $t('Type :') }}
@@ -43,26 +51,39 @@ const item = computed({
             <v-divider />
         </v-card-text>
         <v-card-text class="pl-6 pr-6" v-if="showDemandInfo">
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Source :') }} {{ props.source || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Type événement :') }} {{ item.event_type || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Date de la demande :') }} {{ formatDate(item.demand_date) || '' }}</p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Type événement :') }} <strong>{{ item.eventtype ? item.eventtype.name : item.event_type || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Date de la demande :') }} <strong>{{ formatDate(item.demand_date) || '' }}</strong>
+            </p>
 
             <p class="text-subtitle-1 textSecondary mt-3">
-                {{ $t('Date création de la prestation :') }} {{ formatDate(item.created_at) || '' }}
+                {{ $t('Date création de la prestation :') }} <strong>{{ formatDate(item.created_at) || '' }}</strong>
             </p>
             <p class="text-subtitle-1 textSecondary mt-3">
-                {{ $t('La réception se déroulera plutôt :') }} {{ item.reception_period || '' }}
+                {{ $t('La réception se déroulera plutôt :') }} <strong>{{ item.reception_period || '' }}</strong>
             </p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Heure de réception :') }} {{ item.reception_start_time || '' }}</p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Heure de réception :') }} <strong>{{ item.reception_start_time || '' }}</strong>
+            </p>
             <!--            <p class="text-subtitle-1 textSecondary mt-3">
                 {{ $t("Lieu de l'événement :") }} {{ item.event_location || '' }}
             </p>-->
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nombre de convives :') }} {{ item.number_people || '' }}</p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Nombre de convives :') }} <strong>{{ item.number_people || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Nombre de jours restants :') }} <strong>{{ item.days_left || '' }}</strong>
+            </p>
             <!--            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.status >= store.statuses.processing">
                 {{ $t('Date lancement de la prestation :') }} {{ formatDate(item.start_date) || '' }}
             </p>-->
             <p class="text-subtitle-1 textSecondary mt-3" v-if="item.status >= store.statuses.closed">
-                {{ $t('Date clôture de la prestation :') }} {{ formatDate(item.closed_date) || '' }}
+                {{ $t('Date clôture de la prestation :') }} <strong>{{ formatDate(item.closed_date) || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Source :') }} <strong>{{ props.source || '' }}</strong>
             </p>
         </v-card-text>
     </v-card>

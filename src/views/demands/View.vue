@@ -336,10 +336,18 @@ watchEffect(() => {
                     <h4 class="text-h6">{{ $t('Identification du demandeur') }}</h4>
                 </v-card-item>
                 <v-card-text class="pa-6">
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Prénom :') }} {{ item.customer.firstname || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom :') }} {{ item.customer.lastname || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Email :') }} {{ item.customer.email || '' }}</p>
-                    <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Téléphone :') }} {{ item.customer.phone || '' }}</p>
+                    <p class="text-subtitle-1 textSecondary mt-3">
+                        {{ $t('Prénom :') }} <strong>{{ item.customer.firstname || '' }}</strong>
+                    </p>
+                    <p class="text-subtitle-1 textSecondary mt-3">
+                        {{ $t('Nom :') }} <strong>{{ item.customer.lastname || '' }}</strong>
+                    </p>
+                    <p class="text-subtitle-1 textSecondary mt-3">
+                        {{ $t('Email :') }} <strong>{{ item.customer.email || '' }}</strong>
+                    </p>
+                    <p class="text-subtitle-1 textSecondary mt-3">
+                        {{ $t('Téléphone :') }} <strong>{{ item.customer.phone || '' }}</strong>
+                    </p>
                     <!--                    <p class="text-subtitle-1 textSecondary mt-3">
                         {{ $t("Date d'enregistrement :") }} {{ formatDate(item.customer.created_at) || '' }}
                     </p>-->
@@ -369,30 +377,36 @@ watchEffect(() => {
                    Lieu de l'événement : 11 avenue Barbuse, 77270 Paris, France
                    Nombre de convives : 11
                    Commentaires :-->
-                            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Source :') }} {{ item.source || '' }}</p>
+
                             <p class="text-subtitle-1 textSecondary mt-3">
-                                {{ $t('Type événement :') }} {{ item.eventtype ? item.eventtype.name : '' }}
+                                {{ $t('Type événement :') }} <strong>{{ item.eventtype ? item.eventtype.name : '' }}</strong>
                             </p>
                             <p class="text-subtitle-1 textSecondary mt-3">
-                                {{ $t("Date de l'événement :") }} {{ formatDate(item.event_date) || '' }}
+                                {{ $t("Date de l'événement :") }} <strong>{{ formatDate(item.event_date) || '' }}</strong>
                             </p>
                             <p class="text-subtitle-1 textSecondary mt-3">
-                                {{ $t('La réception se déroulera plutôt :') }} {{ item.reception_period || '' }}
+                                {{ $t('La réception se déroulera plutôt :') }} <strong>{{ item.reception_period || '' }}</strong>
                             </p>
                             <p class="text-subtitle-1 textSecondary mt-3">
-                                {{ $t('Heure de réception :') }} {{ item.reception_start_time || '' }}
+                                {{ $t('Heure de réception :') }} <strong>{{ item.reception_start_time || '' }}</strong>
                             </p>
                             <p class="text-subtitle-1 textSecondary mt-3">
-                                {{ $t("Lieu de l'événement :") }} {{ item.event_location || '' }}
+                                {{ $t("Lieu de l'événement :") }} <strong>{{ item.event_location || '' }}</strong>
                             </p>
                             <p class="text-subtitle-1 textSecondary mt-3">
-                                {{ $t('Nombre de convives :') }} {{ item.number_people || '' }}
+                                {{ $t('Nombre de convives :') }} <strong>{{ item.number_people || '' }}</strong>
+                            </p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t('Nombre de jours restants :') }} <strong>{{ item.days_left || '' }}</strong>
+                            </p>
+                            <p class="text-subtitle-1 textSecondary mt-3">
+                                {{ $t('Source :') }} <strong>{{ item.source || '' }}</strong>
                             </p>
                         </v-col>
                         <v-col cols="12" md="6" lg="7">
                             <v-card flat variant="outlined" density="compact">
                                 <v-card-title>{{ $t('Commentaire client') }}</v-card-title>
-                                <v-card-text v-html="(item.comment || '').replace(/\n/g, '<br/>')"></v-card-text>
+                                <v-card-text class="formatted-text" v-html="(item.comment || '').replace(/\n/g, '<br/>')"></v-card-text>
                             </v-card>
                             <!--                            <v-card flat variant="outlined" class="mt-4" density="compact">
                                 <v-card-title>{{ $t('Commentaire') }} <comment-demand v-model="item" /></v-card-title>
@@ -404,7 +418,7 @@ watchEffect(() => {
                                 <v-card-title
                                     >{{ $t('Commentaire') }} <comment-demand v-if="!loading" v-model="item" @saved="fetchDemand"
                                 /></v-card-title>
-                                <v-card-text v-html="item.commentaire"></v-card-text>
+                                <v-card-text class="formatted-text" v-html="item.commentaire"></v-card-text>
                             </v-card>
                         </v-col>
                     </v-row>

@@ -38,21 +38,42 @@ const item = computed({
             /></v-alert>
         </v-card-text>
         <v-card-text v-else class="pl-6 pr-6">
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom :') }} {{ item.hall.name || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Adresse :') }} {{ item.hall.address || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Nom du régisseur :') }} {{ item.hall.manager_name || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Téléphone du régisseur :') }} {{ item.hall.manager_phone || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3">{{ $t('Mail du régisseur :') }} {{ item.hall.manager_email || '' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.packing">{{ $t('Parking :') }} {{ 'Oui' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.kitchen">{{ $t('Cuisine :') }} {{ 'Oui' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.cold_rooom">{{ $t('Chambre froidre :') }} {{ 'Oui' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.ladder">{{ $t('Escalier pour déchargement :') }} {{ 'Oui' }}</p>
-            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.transportation_fee">
-                {{ $t('Frais de déplacement à prévoir :') }} {{ 'Oui' }}
-            </p>
-            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.table">{{ $t('Table de buffet :') }} {{ 'Oui' }}</p>
             <p class="text-subtitle-1 textSecondary mt-3">
-                {{ $t('Bac de poubelle :') }} {{ item.hall.bin == 'salle' ? $t('Géré par la salle') : $t('Géré par le client') }}
+                {{ $t('Nom :') }} <strong>{{ item.hall.name || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Adresse :') }} <strong>{{ item.hall.address || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Nom du régisseur :') }} <strong>{{ item.hall.manager_name || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Téléphone du régisseur :') }} <strong>{{ item.hall.manager_phone || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Mail du régisseur :') }} <strong>{{ item.hall.manager_email || '' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.packing">
+                {{ $t('Parking :') }} <strong>{{ 'Oui' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.kitchen">
+                {{ $t('Cuisine :') }} <strong>{{ 'Oui' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.cold_rooom">
+                {{ $t('Chambre froidre :') }} <strong>{{ 'Oui' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.ladder">
+                {{ $t('Escalier pour déchargement :') }} <strong>{{ 'Oui' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.transportation_fee">
+                {{ $t('Frais de déplacement à prévoir :') }} <strong>{{ 'Oui' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3" v-if="item.hall.table">
+                {{ $t('Table de buffet :') }} <strong>{{ 'Oui' }}</strong>
+            </p>
+            <p class="text-subtitle-1 textSecondary mt-3">
+                {{ $t('Bac de poubelle :') }}
+                <strong>{{ item.hall.bin == 'salle' ? $t('Géré par la salle') : $t('Géré par le client') }}</strong>
             </p>
             <p class="text-subtitle-1 textSecondary mt-3" v-html="item.hall.comment ? item.hall.comment : ''"></p>
         </v-card-text>

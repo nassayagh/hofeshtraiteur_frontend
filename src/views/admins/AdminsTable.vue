@@ -100,14 +100,14 @@ const defaultItem = ref({
 });
 const dialogDelete = ref(false);
 const headers = ref([
+    { title: 'Actions', key: 'actions', sortable: false },
     {
         title: 'Nom',
         align: 'start',
         key: 'name'
     },
-    { title: 'Email', key: 'email' },
+    { title: 'Email', key: 'email' }
     /* { title: 'Protein (g)', key: 'protein' },*/
-    { title: 'Actions', key: 'actions', sortable: false }
 ]);
 
 //Methods

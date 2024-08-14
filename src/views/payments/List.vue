@@ -120,6 +120,7 @@ const defaultItem = ref({
 });
 const dialogDelete = ref(false);
 const headers = ref([
+    { title: 'Actions', key: 'actions', sortable: false },
     {
         title: t('Prénom'),
         align: 'start',
@@ -163,9 +164,8 @@ const headers = ref([
         title: t('Date du paiement'),
         align: 'start',
         key: 'payment_date'
-    },
+    }
     /* { title: 'Protein (g)', key: 'protein' },*/
-    { title: 'Actions', key: 'actions', sortable: false }
 ]);
 const formatedDate = computed(() => {
     if (filters.value.date && filters.value.date.length > 0) {

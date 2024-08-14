@@ -356,8 +356,20 @@ watchEffect(() => {
                     </v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-icon color="info" size="small" class="me-2" @click="editItem(item)"> mdi-pencil </v-icon>
-                    <v-icon color="error" size="small" @click="deleteItem(item)"> mdi-delete </v-icon>
+                    <v-tooltip :text="$t('Modifier')">
+                        <template v-slot:activator="{ props }">
+                            <v-btn icon flat @click="editItem(item)" v-bind="props">
+                                <EditIcon stroke-width="1.5" size="20" class="text-primary" />
+                            </v-btn>
+                        </template>
+                    </v-tooltip>
+                    <v-tooltip :text="$t('Supprimer')">
+                        <template v-slot:activator="{ props }">
+                            <v-btn icon flat @click="deleteItem(item)" v-bind="props"
+                                ><TrashIcon stroke-width="1.5" size="20" class="text-error"
+                            /></v-btn>
+                        </template>
+                    </v-tooltip>
                 </template>
                 <template v-slot:no-data>
                     <span>{{ $t('Aucune donnée disponible') }}</span>
