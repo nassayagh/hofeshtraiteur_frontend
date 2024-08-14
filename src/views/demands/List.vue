@@ -26,6 +26,7 @@ import ValidateDemand from '@/components/ValidateDemand.vue';
 import ChangeHall from '@/views/prestations/components/ChangeHall.vue';
 import ClosePrestation from '@/views/prestations/components/ClosePrestation.vue';
 import DemandForm from '@/views/demands/DemandForm.vue';
+import CancelDemand from '@/components/CancelDemand.vue';
 const snackbarStore = useSnackbar();
 const eventStore = useEventTypeStore();
 const customerStore = useCustomerStore();
@@ -878,6 +879,7 @@ function customerSelected(val) {
                                         {{ $t('Supprimer') }}
                                     </v-list-item-title>
                                 </v-list-item>
+                                <cancel-demand v-if="!item.prestation" v-model="demands[index]" @saved="fetchDemands" />
                             </v-list>
                         </v-menu>
                     </v-btn>

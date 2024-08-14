@@ -23,6 +23,7 @@ import CommentDemand from '@/views/demands/CommentDemand.vue';
 import CustomerWidget from '@/components/CustomerWidget.vue';
 import HallWidget from '@/views/prestations/components/HallWidget.vue';
 import DemandForm from '@/views/demands/DemandForm.vue';
+import DeleteDemand from '@/views/demands/DeleteDemand.vue';
 
 const snackbarStore = useSnackbar();
 const item = ref({
@@ -299,6 +300,10 @@ watch(
 watchEffect(() => {
     if (currentPage.value > totalPage.value) currentPage.value = totalPage.value;
 });
+
+function deleted() {
+    router.push('/demands');
+}
 </script>
 <template>
     <BaseBreadcrumb v-if="!loading" :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
@@ -315,6 +320,7 @@ watchEffect(() => {
             </v-chip>
         </v-col>
         <v-col cols="12" md="9" justify="end" align-content="end" align="end">
+            <delete-demand v-model="item" @deleted="deleted" />
             <demand-form v-if="!loading" v-model="item" @saved="fetchDemand" :button-text="$t('Modifier La Demande')" />
             <validate-demand
                 v-if="!item.prestation && item.status == store.statuses.started && !loading"
@@ -533,3 +539,16 @@ watchEffect(() => {
         </v-col>
     </v-row>
 </template>
+<style scoped lang="scss">
+.formatted-text {
+    p {
+        padding-top: 10px;
+    }
+    li {
+        margin-left: 12px;
+        p {
+            margin-top: 0 !important;
+        }
+    }
+}
+</style>

@@ -39,3 +39,16 @@
 
 
 @import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css';
+
+.formatted-text {
+  p {
+    padding-top: 10px;
+  }
+  li {
+    margin-left: 12px;
+    p {
+      padding-top: 0 !important;
+    }
+  }
+
+}

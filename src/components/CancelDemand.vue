@@ -27,6 +27,7 @@ function cancelItemConfirm() {
             item.value = response.data;
             dialog.value = false;
             snackbarStore.showSuccess(t('Devis annulé avec succès'));
+            emit('saved', response.data);
             //router.push('/demands');
         })
         .then(() => {
@@ -36,9 +37,9 @@ function cancelItemConfirm() {
 </script>
 
 <template>
-    <v-dialog v-model="dialog" max-width="350px">
+    <v-dialog v-model="dialog" max-width="550px">
         <template v-slot:activator="{ props }">
-            <v-btn v-if="item.status == 0" color="error" class="ml-3" variant="outlined" dark v-bind="props"
+            <v-btn v-if="item.status == 0" color="error" class="mx-3" variant="outlined" dark v-bind="props"
                 >{{ $t('Annuler la demande') }}
             </v-btn>
         </template>

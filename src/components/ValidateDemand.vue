@@ -80,6 +80,7 @@ onMounted(() => {
                 :density="density"
                 color="primary"
                 :icon="icon"
+                class="mx-2"
                 @click="loading = false"
                 >{{ !icon ? $t('Valider en prestation') : '' }}
                 <CheckIcon v-if="icon" stroke-width="1.5" size="20" />
