@@ -98,7 +98,7 @@ const statistics = ref({
 });
 const filters = ref({
     search: null,
-    status: [0],
+    status: 0,
     date: null,
     event_type: null
 });
@@ -240,7 +240,7 @@ function save(values: any, { setErrors }: any) {
         if (valid) {
             saving.value = true;
             store
-                .addItem({ ...editedItem.value, event_date: formatedDemandDate.value })
+                .addItem({ ...editedItem.value, event_date: formatedDemandDate.value, source: editedItem.value.source || 'admin' })
                 .then((response) => {
                     if (response.data.error) {
                         setErrors({ apiError: response.data.message });
@@ -542,7 +542,6 @@ function customerSelected(val) {
                                     clearable
                                     hide-details
                                     variant="solo"
-                                    multiple
                                 ></v-select>
                             </v-col>
                             <!--                            <v-col>
