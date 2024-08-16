@@ -172,11 +172,11 @@ const headers = ref([
         align: 'start',
         key: 'demand_date'
     },*/
-    /* {
+    {
         title: t('Statut'),
         align: 'start',
         key: 'status'
-    },*/
+    },
     {
         title: t('Source'),
         align: 'start',

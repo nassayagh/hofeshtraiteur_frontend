@@ -119,7 +119,7 @@ export const useDemandStore = defineStore({
             } else if (status == 2) {
                 return t('Terminé');
             } else {
-                return t('Nouvelle demande');
+                return t('En cours');
             }
         },
         getStatuses() {}
