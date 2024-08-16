@@ -531,7 +531,7 @@ function customerSelected(val) {
                                     variant="solo"
                                 ></v-autocomplete>
                             </v-col>
-                            <!--                            <v-col>
+                            <v-col>
                                 <v-select
                                     density="compact"
                                     v-model="filters.status"
@@ -542,8 +542,9 @@ function customerSelected(val) {
                                     clearable
                                     hide-details
                                     variant="solo"
+                                    multiple
                                 ></v-select>
-                            </v-col>-->
+                            </v-col>
                             <!--                            <v-col>
                                 <v-select
                                     density="compact"

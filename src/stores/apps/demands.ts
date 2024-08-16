@@ -16,7 +16,8 @@ export const useDemandStore = defineStore({
         },
         statusesList: [
             { id: 0, label: t('Nouvelle demande') },
-            /*{ id: 1, label: t('Validé') },*/
+            { id: 1, label: t('Validé') },
+            { id: 2, label: t('Terminé') },
             { id: -1, label: t('Annulé') }
         ],
         statistics: {
@@ -119,7 +120,7 @@ export const useDemandStore = defineStore({
             } else if (status == 2) {
                 return t('Terminé');
             } else {
-                return t('En cours');
+                return t('Nouvelle demande');
             }
         },
         getStatuses() {}
