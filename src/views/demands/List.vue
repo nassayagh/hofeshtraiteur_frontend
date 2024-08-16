@@ -98,7 +98,7 @@ const statistics = ref({
 });
 const filters = ref({
     search: null,
-    status: null,
+    status: [0],
     date: null,
     event_type: null
 });
