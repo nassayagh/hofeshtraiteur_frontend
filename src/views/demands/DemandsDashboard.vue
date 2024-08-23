@@ -24,7 +24,7 @@ store.fetchStatistics({});
                         <v-spacer></v-spacer>
                         <div class="ml-auto">
                             <v-btn depressed color="white" class="btn-custom-sm" small icon >
-                                <CalendarQuestionIcon  class="text-primary" />
+                                <CalendarQuestionIcon  class="text-primary" />coucou
                             </v-btn>
                         </div>
                     </div>
